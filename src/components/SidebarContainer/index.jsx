@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import SidebarMenu from '../SidebarMenu/page'
 // import SidebarNew from '@/components/SidebarNew'
 
 export default function SidebarContainer(props) {
@@ -8,14 +9,9 @@ export default function SidebarContainer(props) {
 
   return (
     <div
-      className={`hidden lg:block relative lg:w-[200px] xl:w-[280px] bg-blue-800`}
+      className={`hidden lg:block relative lg:w-[200px] xl:w-[250px] bg-white`}
     >
-      {/* <SidebarNew
-        roleName={props.roleName}
-        setCollapsed={setCollapsed}
-        collapsed={collapsed}
-        className="z-40"
-      /> */}
+      <SidebarMenu />
     </div>
   )
 }
