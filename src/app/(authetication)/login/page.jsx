@@ -1,4 +1,5 @@
 'use client'
+import Image from "next/image"
 import { useState } from "react"
 
 export default function Login() {
@@ -8,8 +9,10 @@ export default function Login() {
     return (
         <section className="flex items-center justify-center relative w-full shadow-lg isolate bg-[#fefefd]">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full">
-                <div className='flex relative lg:w-1/2 h-screen bg-[#019BD6]'>
-                    {/* <img src='/images/background2.jpg' width={900} height={800} className='block z-30' /> */}
+                <div className='flex flex-col items-center justify-between py-40 relative lg:w-1/2 h-screen bg-primary'>
+                    {/* <h1 className="text-4xl font-bold">Sistema Banclima</h1> */}
+                    {/* <img src='/assets/01.png'  className='object-contain w-[650px]' /> */}
+                    {/* <Image src='/assets/01.png' width={400} height={267}/> */}
                 </div>
                 <div className="flex flex-col text-start gap-10 w-full lg:w-1/2 py-10 px-14 lg:px-20">
                     <h1 className="text-md lg:text-4xl text-center font-bold tracking-tight text-gray-900 sm:text-6xl">

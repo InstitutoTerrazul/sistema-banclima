@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Parceria Digital Moura',
-  description: 'Desenvolvido por Jogga Digital',
+  title: 'Sistema Banclima Moeda social',
+  description: '',
 }
 
 export default function Layout({ children }) {

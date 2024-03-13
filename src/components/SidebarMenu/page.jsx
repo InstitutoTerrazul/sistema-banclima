@@ -1,5 +1,4 @@
 'use client'
-
 import Image from 'next/image'
 import {
   ArrowsClockwise,
@@ -31,7 +30,7 @@ export default function SidebarMenu(props) {
   const topNavigation = [
     {
       name: 'Dashboard',
-      href: '/',
+      href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
       isActive: pathname === '/',
       hasPermission: ['Distributor'],
@@ -40,21 +39,21 @@ export default function SidebarMenu(props) {
   const firstLevel = [
     {
       name: 'Cadastrar cadastrador',
-      href: '/',
+      href: '/cadastrar-cadastrador',
       icon: <UserList weight="thin" size={24} />,
       isActive: pathname.includes('/cadastrar-revenda'),
       hasPermission: ['Distributor'],
     },
     {
       name: 'Cadastrar equipe',
-      href: '/',
+      href: '/cadastrar-equipe',
       icon: <UsersFour weight="thin" size={24} />,
       isActive: pathname === '/alterar-revenda',
       hasPermission: ['Distributor'],
     },
     {
       name: 'Cadastrar cliente',
-      href: '/',
+      href: '/cadastrar-cliente',
       icon: <UserPlus weight="thin" size={24} />,
       isActive: pathname === '/renovar-revenda',
       hasPermission: ['Distributor'],
@@ -94,7 +93,7 @@ export default function SidebarMenu(props) {
   return (
     <>
       <Sidebar
-        className="relative flex flex-col justify-between h-screen w-full text-sm text-white bg-primary hover:bg-primary z-40"
+        className="relative flex flex-col justify-between h-screen w-full text-sm text-white bg-white hover:bg-white z-40"
         collapsed={props.collapsed}
       >
 
