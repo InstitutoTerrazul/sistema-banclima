@@ -9,18 +9,22 @@ export default function Login() {
     return (
         <section className="flex items-center justify-center relative w-full shadow-lg isolate bg-[#fefefd]">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full">
-                <div className='flex flex-col items-center justify-between py-40 relative lg:w-1/2 h-screen bg-primary'>
-                    {/* <h1 className="text-4xl font-bold">Sistema Banclima</h1> */}
-                    {/* <img src='/assets/01.png'  className='object-contain w-[650px]' /> */}
-                    {/* <Image src='/assets/01.png' width={400} height={267}/> */}
+                <div className='flex flex-col items-end justify-center py-40 px-10 relative lg:w-[55%] h-screen bg-[url(/login-bg.jpg)] bg-cover bg-no-repeat after:absolute after:bg-primary/[.20] after:top-0 after:bottom-0 after:right-0 after:left-0 after:z-20'>
+                   <span className="text-3xl font-normal text-white text-end z-40">Bem vindo ao <span className="font-bold">sistema de Banclima</span> </span>
+                    <span className="text-xl font-normal text-white text-end z-40">Entre e acesse as informações sobre o total de emissoes evitadas.</span>
                 </div>
-                <div className="flex flex-col text-start gap-10 w-full lg:w-1/2 py-10 px-14 lg:px-20">
-                    <h1 className="text-md lg:text-4xl text-center font-bold tracking-tight text-gray-900 sm:text-6xl">
+                <div className=" flex-1 flex flex-col items-center text-start gap-10 w-full py-10 px-10 lg:px-20">
+                    <img
+                        className="w-[180px] h-[72px]"
+                        src="/assets/logo.png"
+                        alt=""
+                    />
+                    <h1 className="text-md lg:text-3xl text-center font-bold tracking-tight text-gray-900 sm:text-6xl">
                         Faça seu login
                     </h1>
 
-                    <div className="flex items-center justify-start gap-x-8 px-20">
-                        <form className="flex flex-col items-center justify-center w-full gap-6 px-8">
+                    <div className="flex flex-col items-center justify-start gap-x-8 w-full lg:px-10 2xl:px-20">
+                        <form className="flex flex-col items-center justify-center w-full gap-6 2xl:px-8">
                             <input type="text" placeholder="Usuário" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={username} onChange={e => setUsername(e.target.value)} />
                             <input type="email" placeholder="Senha" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={e => setPassword(e.target.value)} />
                             <button type="submit" className=" w-full bg-[#019BD6] hover:bg-blue-400 rounded-lg p-3 text-lg font-bold text-white">Entrar</button>
