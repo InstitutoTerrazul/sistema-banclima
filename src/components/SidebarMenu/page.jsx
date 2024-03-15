@@ -36,6 +36,17 @@ export default function SidebarMenu(props) {
       hasPermission: ['Distributor'],
     },
   ]
+
+  const secondOption = [
+    {
+      name: 'Inserir consumo',
+      href: '/inserir-consumo',
+      icon: <Pen weight="thin" size={24} />,
+      isActive: pathname === '/',
+      hasPermission: ['Distributor'],
+    },
+  ]
+
   const firstLevel = [
     {
       name: 'Cadastrar cadastrador',
@@ -159,38 +170,48 @@ export default function SidebarMenu(props) {
                 </MenuItem>
               ))}
             </SubMenu>
-              <SubMenu
-                label="Consulta"
-                className="bg-primary"
-                icon={<ListMagnifyingGlass weight="thin" size={24} />}
+            <SubMenu
+              label="Consulta"
+              className="bg-primary"
+              icon={<ListMagnifyingGlass weight="thin" size={24} />}
+            >
+              {secondLevel.map((item, i) => (
+                <MenuItem
+                  key={i}
+                  component={<Link href={item.href} />}
+                  className="hover:text-yellow bg-primary/80"
+                  icon={item.icon}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </SubMenu>
+            {secondOption.map((item, i) => (
+              <MenuItem
+                key={i}
+                component={<Link href={item.href} />}
+                className="hover:text-yellow bg-primary"
+                icon={item.icon}
               >
-                {secondLevel.map((item, i) => (
-                  <MenuItem
-                    key={i}
-                    component={<Link href={item.href} />}
-                    className="hover:text-yellow bg-primary/80"
-                    icon={item.icon}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-              <SubMenu
-                label="Relatórios"
-                className="bg-primary"
-                icon={<FileText weight="thin" size={24} />}
-              >
-                {secondLevel.map((item, i) => (
-                  <MenuItem
-                    key={i}
-                    component={<Link href={item.href} />}
-                    className="hover:text-yellow bg-primary/80"
-                    icon={item.icon}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
+                {item.name}
+              </MenuItem>
+            ))}
+            <SubMenu
+              label="Relatórios"
+              className="bg-primary"
+              icon={<FileText weight="thin" size={24} />}
+            >
+              {secondLevel.map((item, i) => (
+                <MenuItem
+                  key={i}
+                  component={<Link href={item.href} />}
+                  className="hover:text-yellow bg-primary/80"
+                  icon={item.icon}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </SubMenu>
           </Menu>
           <Menu
             menuItemStyles={{
