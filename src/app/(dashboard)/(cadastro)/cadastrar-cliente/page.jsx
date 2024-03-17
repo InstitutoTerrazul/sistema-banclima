@@ -1,4 +1,18 @@
+'use client'
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function CadastrarCliente() {
+    const router = useRouter();
+
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            router.push('/login');
+        }
+    }, []);
+
     return (
 
         <div className="flex flex-col justify-start items-start p-10 w-full gap-8 bg-white rounded-xl">

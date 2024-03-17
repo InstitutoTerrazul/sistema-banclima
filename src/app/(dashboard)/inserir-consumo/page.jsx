@@ -1,4 +1,18 @@
+'use client'
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function InserirConsumo() {
+    const router = useRouter();
+
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            router.push('/login');
+        }
+    }, []);
+    
     return (
         <form className="flex flex-col items-start justify-center w-full gap-8">
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
