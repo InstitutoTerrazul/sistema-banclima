@@ -59,7 +59,7 @@
     chalk "^2.4.2"
     js-tokens "^4.0.0"
 
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.2":
+"@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.2":
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.0.tgz#584c450063ffda59697021430cb47101b085951e"
   integrity sha512-Chk32uHMg6TnQdvw2e9IlqPpFX/6NLuK0Ys2PqLb7/gL5uFn9mXvK715FGLlOLQrcO4qIkNHkvPGktzzXexsFw==
@@ -2439,6 +2439,13 @@ react-hook-form@^7.51.1:
   version "7.51.1"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.1.tgz#3ce5f8b5ef41903b4054a641cef8c0dc8bf8ae85"
   integrity sha512-ifnBjl+kW0ksINHd+8C/Gp6a4eZOdWyvRv0UBaByShwU8JbVx5hTcTWEcd5VdybvmPTATkVVXk9npXArHmo56w==
+
+react-initials-avatar@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-initials-avatar/-/react-initials-avatar-1.1.2.tgz#e3e08e4d2a1ddac37aea723885860c011f59f548"
+  integrity sha512-B82hHH62m1KLtnfpcAV1/J9a0CeLvPR3Qn5AwPHS0sXDCqbcpQhQ8gecsFYz3ipLCS0ggZrW0U6Spk0yoqMf1g==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

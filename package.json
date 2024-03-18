@@ -17,6 +17,7 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "react-hook-form": "^7.51.1",
+    "react-initials-avatar": "^1.1.2",
     "react-pro-sidebar": "^1.1.0"
   },
   "devDependencies": {
