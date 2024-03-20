@@ -16,6 +16,8 @@ import {
   ListBullets,
   ListMagnifyingGlass,
   FileText,
+  Pencil,
+  NotePencil,
 } from '@phosphor-icons/react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
@@ -66,6 +68,13 @@ export default function SidebarMenu(props) {
       name: 'Cadastrar cliente',
       href: '/cadastrar-cliente',
       icon: <UserPlus weight="thin" size={24} />,
+      isActive: pathname === '/renovar-revenda',
+      hasPermission: ['Distributor'],
+    },
+    {
+      name: 'Editar cliente',
+      href: '/cadastrar-cliente',
+      icon: <NotePencil weight="thin" size={24} />,
       isActive: pathname === '/renovar-revenda',
       hasPermission: ['Distributor'],
     },

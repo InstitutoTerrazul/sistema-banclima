@@ -70,7 +70,7 @@ export default function InserirConsumo() {
                 <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                     <div className={`absolute top-0 left-0 bg-red-500 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 
-                    <h1 className="text-2xl font-bold text-gray-800">Dados contas de consumo</h1>
+                    <h1 className="text-2xl font-bold text-gray-800">Dados de emissões</h1>
 
                     <input type="text" placeholder="Kg CO2e Energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <input type="text" placeholder="Kg CO2e Água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
