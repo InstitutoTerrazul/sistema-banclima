@@ -31,6 +31,7 @@ export default function CadastrarCliente() {
     const [geracaoResiduos, setGeracaoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
+    const [btnText, setBtnText] = useState('Cadastrar');
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -47,6 +48,7 @@ export default function CadastrarCliente() {
     }, []);
 
     const submitForm = async () => {
+        setBtnText('Cadastrando...');
 
         const data = {
             nome: name,
@@ -85,6 +87,7 @@ export default function CadastrarCliente() {
                 // console.log('Post created:', data);
                 const data = await response.json();
                 console.log('Post created:', data);
+                setBtnText('Cadastrado!');
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
             } else {
@@ -186,7 +189,7 @@ export default function CadastrarCliente() {
                 </div>
             </div>
             <div className="flex flex-row justify-end items-center w-full gap-8">
-                <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg">Cadastrar</button>
+                <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg">{btnText}</button>
             </div>
         </form>
     );

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 export default function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [btnText, setBtnText] = useState('Entrar')
     const router = useRouter();
 
 
@@ -15,6 +16,7 @@ export default function Login() {
 
 
     const sendLead = async () => {
+        setBtnText('Entrando...')
 
         const data = {
             login: username,
@@ -24,7 +26,7 @@ export default function Login() {
         console.log(data)
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/administradores/login', {
+            const response = await fetch('http://191.252.38.35:8080/api/usuarios/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,6 +36,7 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Post created:', data);
+                btnText('logado com sucesso!')
                 localStorage.setItem('user', JSON.stringify(data));
                 router.push('/dashboard');
             } else {
@@ -65,7 +68,7 @@ export default function Login() {
                         <form onSubmit={handleSubmit(sendLead)} className="flex flex-col items-center justify-center w-full gap-6 2xl:px-8">
                             <input type="text" placeholder="Usuário" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={username} onChange={e => setUsername(e.target.value)} />
                             <input type="password" placeholder="Senha" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={e => setPassword(e.target.value)} />
-                            <button type="submit" className=" w-full bg-[#019BD6] hover:bg-blue-400 rounded-lg p-3 text-lg font-bold text-white">Entrar</button>
+                            <button type="submit" className=" w-full bg-[#019BD6] hover:bg-blue-400 rounded-lg p-3 text-lg font-bold text-white">{btnText}</button>
                         </form>
                     </div>
                 </div>
