@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userData, setUserData] = useState({});
     const router = useRouter();
 
     useEffect(() => {
@@ -18,6 +19,10 @@ export const AuthProvider = ({ children }) => {
             router.push('/login');
         }
     }, [router]);
+
+    useEffect(() => {
+        console.log('userData', userData);
+    }, [userData]);
 
     const signIn = (userData) => {
         // Set user data in localStorage after successful authentication
@@ -34,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, signIn, signOut, isAuthenticated, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

@@ -18,6 +18,7 @@ import {
   FileText,
   Pencil,
   NotePencil,
+  Plus,
 } from '@phosphor-icons/react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
@@ -48,6 +49,15 @@ export default function SidebarMenu(props) {
       hasPermission: ['Distributor'],
     },
   ]
+  const thirdOption = [
+    {
+      name: 'Criar projeto',
+      href: '/criar-projeto',
+      icon: <Plus weight="thin" size={24} />,
+      isActive: pathname === '/',
+      hasPermission: ['Distributor'],
+    },
+  ]
 
   const firstLevel = [
     {
@@ -73,7 +83,7 @@ export default function SidebarMenu(props) {
     },
     {
       name: 'Editar cliente',
-      href: '/cadastrar-cliente',
+      href: '/editar-cliente',
       icon: <NotePencil weight="thin" size={24} />,
       isActive: pathname === '/renovar-revenda',
       hasPermission: ['Distributor'],
@@ -196,6 +206,16 @@ export default function SidebarMenu(props) {
               ))}
             </SubMenu>
             {secondOption.map((item, i) => (
+              <MenuItem
+                key={i}
+                component={<Link href={item.href} />}
+                className="hover:text-yellow bg-primary"
+                icon={item.icon}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+            {thirdOption.map((item, i) => (
               <MenuItem
                 key={i}
                 component={<Link href={item.href} />}

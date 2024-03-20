@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 
-export default function CadastrarCliente() {
+export default function EditarCliente() {
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -31,7 +31,7 @@ export default function CadastrarCliente() {
     const [geracaoResiduos, setGeracaoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
-    const [btnText, setBtnText] = useState('Cadastrar');
+    const [btnText, setBtnText] = useState('Editar');
 
     const [co2Emissions, setCo2Emissions] = useState('');
 
@@ -133,7 +133,13 @@ export default function CadastrarCliente() {
 
     return (
         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-start justify-center w-full gap-8">
-            <h1 className="text-2xl font-bold text-gray-800 text-start">Cadastrar Cliente</h1>
+            <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Cliente</h1>
+
+            <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
+                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg">Buscar</button>
+            </div>
+
             <div className="flex flex-row justify-center items-center w-full gap-8">
                 <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                     <div className={`absolute top-0 left-0 bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
@@ -222,6 +228,7 @@ export default function CadastrarCliente() {
                 </div>
             </div>
             <div className="flex flex-row justify-end items-center w-full gap-8">
+                <button type="submit" className="flex items-center justify-center bg-red-500 text-white px-8 py-2 rounded-lg">Excluir</button>
                 <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg">{btnText}</button>
             </div>
         </form>

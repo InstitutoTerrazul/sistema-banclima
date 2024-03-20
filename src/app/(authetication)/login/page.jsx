@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
+import { useAuth } from "@/contexts/AuthContext";
 
 
 export default function Login() {
@@ -10,6 +11,9 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [btnText, setBtnText] = useState('Entrar')
     const router = useRouter();
+
+    const { setUserData } = useAuth();
+
 
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -36,8 +40,9 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Post created:', data);
-                btnText('logado com sucesso!')
+                setBtnText('logado com sucesso!')
                 localStorage.setItem('user', JSON.stringify(data));
+                setUserData(data);
                 router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
