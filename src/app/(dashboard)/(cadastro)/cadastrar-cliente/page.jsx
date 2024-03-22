@@ -28,10 +28,17 @@ export default function CadastrarCliente() {
     const [consumoEnergia, setConsumoEnergia] = useState('');
     const [consumoAgua, setConsumoAgua] = useState('');
     const [consumoGas, setConsumoGas] = useState('');
-    const [geracaoResiduos, setGeracaoResiduos] = useState('');
+    const [consumoResiduos, setconsumoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
+    const [dateFormatted, setDateFormatted] = useState('');
     const [btnText, setBtnText] = useState('Cadastrar');
+
+    const [emissoesEnergia, setEmissoesEnergia] = useState('');
+    const [emissoesAgua, setEmissoesAgua] = useState('');
+    const [emissoesResiduos, setEmissoesResiduos] = useState('');
+    const [emissoesGas, setEmissoesGas] = useState('');
+
 
     const [co2Emissions, setCo2Emissions] = useState('');
 
@@ -49,6 +56,22 @@ export default function CadastrarCliente() {
         }
     }, []);
 
+    useEffect(() => {
+        const date = new Date(selectedDate);
+        const formattedDate = date.toLocaleDateString('en-GB');
+
+        console.log(formattedDate);
+        setDateFormatted(formattedDate);
+
+    }, [selectedDate]);
+
+    const formatDate = () => {
+        const date = new Date(selectedDate);
+        const formattedDate = date.toLocaleDateString('en-GB');
+
+        console.log(formattedDate);
+    }
+
     const submitForm = async () => {
         setBtnText('Cadastrando...');
 
@@ -60,7 +83,7 @@ export default function CadastrarCliente() {
             habitantes: habitantes,
             projeto: projeto,
             endereco: address,
-            data: selectedDate.toISOString().slice(0, 10),
+            data: dateFormatted,
             matriculaDeEnergia: codEnergia,
             titularEnergiaCpf: titularEnergia,
             matriculaDeAgua: codAgua,
@@ -70,12 +93,40 @@ export default function CadastrarCliente() {
 
         }
 
-        const dataConsumo = {
-            consumoEnergia,
-            consumoAgua,
-            consumoGas,
-            geracaoResiduos
+        const dataConsumoEnergia = {
+            tipoEmissao: "energiaeletrica",
+            nome: name,
+            cpf: cpf,
+            endereco: address,
+            data: dateFormatted,
+            consumo: consumoEnergia,
+            gasto: "0",
+            taxaDeReducao: "0"
         }
+
+        const dataConsumoAgua = {
+            tipoEmissao: "agua",
+            nome: name,
+            cpf: cpf,
+            endereco: address,
+            data: dateFormatted,
+            consumo: consumoAgua,
+            gasto: "0",
+            taxaDeReducao: "0"
+        }
+
+        const dataConsumoResiduos = {
+            tipoEmissao: "residuos",
+            nome: name,
+            cpf: cpf,
+            endereco: address,
+            data: dateFormatted,
+            consumo: consumoResiduos,
+            gasto: "0",
+            taxaDeReducao: "0"
+        }
+
+        console.log('dados do cliente: ', data, 'dados de consumo: ', dataConsumoEnergia, dataConsumoAgua, dataConsumoResiduos);
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/clientes/salvar?login=terrazul&senha=1234567', {
@@ -106,13 +157,60 @@ export default function CadastrarCliente() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(dataConsumo)
+                body: JSON.stringify(dataConsumoEnergia)
             });
             if (response.ok) {
                 // console.log('Post created:', data);
                 const data = await response.json();
-                console.log('Post created:', data);
+                console.log('Post created energia:', data);
                 setBtnText('Cadastrado!');
+                setEmissoesEnergia(data.gasto)
+                // localStorage.setItem('user', JSON.stringify(data));
+                // router.push('/dashboard');
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataConsumoAgua)
+            });
+            if (response.ok) {
+                // console.log('Post created:', data);
+                const data = await response.json();
+                console.log('Post created agua:', data);
+                setBtnText('Cadastrado!');
+                setEmissoesAgua(data.gasto)
+                // localStorage.setItem('user', JSON.stringify(data));
+                // router.push('/dashboard');
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataConsumoResiduos)
+            });
+            if (response.ok) {
+                // console.log('Post created:', data);
+                const data = await response.json();
+                console.log('Post created residuos:', data);
+                setBtnText('Cadastrado!');
+                setEmissoesResiduos(data.gasto)
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
             } else {
@@ -122,6 +220,8 @@ export default function CadastrarCliente() {
             console.error('Error creating post:', error);
         }
     }
+
+
 
     const calculateEmissions = () => {
         const energyConsumptionValue = parseFloat(consumoEnergia);
@@ -150,6 +250,7 @@ export default function CadastrarCliente() {
                         <DatePicker
                             selected={selectedDate}
                             onChange={handleDateChange}
+                            dateFormat="dd/MM/yyyy"
                             maxDate={new Date()} // Set the maximum date to today
                             placeholderText="data"
                             className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
@@ -202,7 +303,7 @@ export default function CadastrarCliente() {
 
                     <input type="number" placeholder="Consumo de energia em kWh" name="" id="" onBlur={calculateEmissions} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoEnergia(e.target.value)} />
                     <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoAgua(e.target.value)} />
-                    <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setGeracaoResiduos(e.target.value)} />
+                    <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setconsumoResiduos(e.target.value)} />
                     <input type="number" placeholder="Consumo de gás em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoGas(e.target.value)} />
                     <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoGas(e.target.value)} />
 
@@ -213,9 +314,9 @@ export default function CadastrarCliente() {
 
                     <h1 className="text-2xl font-bold text-gray-800">Dados de emissões</h1>
 
-                    <input type="text" disabled placeholder="Kg CO2e Energia" value={co2Emissions} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    <input type="text" disabled placeholder="Kg CO2e Água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    <input type="text" disabled placeholder="Kg CO2e Resíduos" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                    <input type="text" disabled placeholder="Kg CO2e Energia" value={emissoesEnergia} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                    <input type="text" disabled placeholder="Kg CO2e Água" value={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                    <input type="text" disabled placeholder="Kg CO2e Resíduos" value={emissoesResiduos} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <input type="text" disabled placeholder="Kg CO2e Gás em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <input type="text" disabled placeholder="Kg CO2e Gás nº de botijões" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
 
