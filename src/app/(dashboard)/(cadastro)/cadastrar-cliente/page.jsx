@@ -39,8 +39,15 @@ export default function CadastrarCliente() {
     const [emissoesResiduos, setEmissoesResiduos] = useState('');
     const [emissoesGas, setEmissoesGas] = useState('');
 
-
     const [co2Emissions, setCo2Emissions] = useState('');
+
+    const [selectedGas, setSelectedGas] = useState('');
+
+    const [showClearBtn, setShowClearBtn] = useState(false);
+
+    const handleGasChange = (event) => {
+        setSelectedGas(event.target.value);
+    };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -60,16 +67,41 @@ export default function CadastrarCliente() {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('en-GB');
 
-        console.log(formattedDate);
         setDateFormatted(formattedDate);
 
     }, [selectedDate]);
 
-    const formatDate = () => {
-        const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+    const clearForm = () => {
+        setName('');
+        setCpf('');
+        setEmail('');
+        setPhone('');
+        setHabitantes('');
+        setAddress('');
+        setDate('');
+        setCodEnergia('');
+        setTitularEnergia('');
+        setCodAgua('');
+        setTitularAgua('');
+        setCodGas('');
+        setTitularGas('');
+        setConsumoEnergia('');
+        setConsumoAgua('');
+        setConsumoGas('');
+        setconsumoResiduos('');
+        setProjeto('');
+        setSelectedDate(null);
+        setDateFormatted('');
+        setEmissoesEnergia('');
+        setEmissoesAgua('');
+        setEmissoesResiduos('');
+        setEmissoesGas('');
+        setCo2Emissions('');
+        setSelectedGas('');
 
-        console.log(formattedDate);
+        setBtnText('Cadastrar');
+        setShowClearBtn(false);
+
     }
 
     const submitForm = async () => {
@@ -125,8 +157,16 @@ export default function CadastrarCliente() {
             gasto: "0",
             taxaDeReducao: "0"
         }
-
-        console.log('dados do cliente: ', data, 'dados de consumo: ', dataConsumoEnergia, dataConsumoAgua, dataConsumoResiduos);
+        const dataConsumoGas = {
+            tipoGas: selectedGas,
+            nome: name,
+            cpf: cpf,
+            endereco: address,
+            data: dateFormatted,
+            consumo: consumoGas,
+            gasto: "0",
+            taxaDeReducao: "0"
+        }
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/clientes/salvar?login=terrazul&senha=1234567', {
@@ -137,12 +177,8 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
                 const data = await response.json();
-                console.log('Post created:', data);
-                setBtnText('Cadastrado!');
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
+                // console.log('Post created:', data);
             } else {
                 console.error('Failed to create post');
             }
@@ -160,13 +196,8 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(dataConsumoEnergia)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
                 const data = await response.json();
-                console.log('Post created energia:', data);
-                setBtnText('Cadastrado!');
                 setEmissoesEnergia(data.gasto)
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
             }
@@ -183,13 +214,8 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(dataConsumoAgua)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
                 const data = await response.json();
-                console.log('Post created agua:', data);
-                setBtnText('Cadastrado!');
                 setEmissoesAgua(data.gasto)
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
             }
@@ -206,13 +232,27 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(dataConsumoResiduos)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
                 const data = await response.json();
-                console.log('Post created residuos:', data);
-                setBtnText('Cadastrado!');
                 setEmissoesResiduos(data.gasto)
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataConsumoGas)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setEmissoesGas(data.gasto)
+                setBtnText('Cadastrado!');
+                setShowClearBtn(true);
             } else {
                 console.error('Failed to create post');
             }
@@ -220,16 +260,6 @@ export default function CadastrarCliente() {
             console.error('Error creating post:', error);
         }
     }
-
-
-
-    const calculateEmissions = () => {
-        const energyConsumptionValue = parseFloat(consumoEnergia);
-        if (!isNaN(energyConsumptionValue)) {
-            const co2EmissionsValue = energyConsumptionValue * 0.817; // Assuming 0.88 kg CO2 per kWh
-            setCo2Emissions(co2EmissionsValue.toFixed(2));
-        }
-    };
 
     return (
         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-start justify-center w-full gap-8">
@@ -242,11 +272,11 @@ export default function CadastrarCliente() {
 
 
                     <div className="flex flex-row w-full gap-4">
-                        <input type="text" placeholder="Nome completo" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setName(e.target.value)} />
+                        <input type="text" placeholder="Nome completo" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
                         <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
                     </div>
                     <div className="flex flex-row w-full gap-4">
-                        <input type="text" placeholder="Endereço" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setAddress(e.target.value)} />
+                        <input type="text" placeholder="Endereço" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
                         <DatePicker
                             selected={selectedDate}
                             onChange={handleDateChange}
@@ -257,7 +287,7 @@ export default function CadastrarCliente() {
                         />
                     </div>
                     <div className="flex flex-row w-full gap-4">
-                        <input type="text" placeholder="Email" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setEmail(e.target.value)} />
+                        <input type="email" placeholder="Email" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <ReactInputMask required mask="(99)99999-9999" maskChar="" placeholder='Telefone' type="text" {...register('phone', {
                             pattern: {
                                 value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
@@ -267,7 +297,7 @@ export default function CadastrarCliente() {
                         })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
                     </div>
                     <div className="flex flex-row w-full gap-4">
-                        <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setHabitantes(e.target.value)} />
+                        <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
                         <select id="mySelect" value={projeto} onChange={(e) => setProjeto(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
                             <option value="" disabled selected>Projeto</option>
                             <option value="Projeto 1">Projeto 1</option>
@@ -283,15 +313,15 @@ export default function CadastrarCliente() {
                     <h1 className="text-2xl font-bold text-gray-800">Dados contas de consumo</h1>
 
                     <div className="flex flex-row w-full gap-4">
-                        <input type="number" placeholder="Código do cliente / energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setCodEnergia(e.target.value)} />
-                        <input type="text" placeholder="Titular de energia do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setTitularEnergia(e.target.value)} />
+                        <input type="number" placeholder="Código do cliente / energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codEnergia} onChange={(e) => setCodEnergia(e.target.value)} />
+                        <input type="text" placeholder="Titular de energia do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularEnergia} onChange={(e) => setTitularEnergia(e.target.value)} />
                     </div>
                     <div className="flex flex-row w-full gap-4">
-                        <input type="number" placeholder="Código do cliente / água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setCodAgua(e.target.value)} />
-                        <input type="text" placeholder="Titular de água do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setTitularAgua(e.target.value)} />
+                        <input type="number" placeholder="Código do cliente / água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codAgua} onChange={(e) => setCodAgua(e.target.value)} />
+                        <input type="text" placeholder="Titular de água do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularAgua} onChange={(e) => setTitularAgua(e.target.value)} />
                     </div>
-                    <input type="number" placeholder="Código do cliente / gas" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setCodGas(e.target.value)} />
-                    <input type="text" placeholder="Titular de gás do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setTitularGas(e.target.value)} />
+                    <input type="number" placeholder="Código do cliente / gas" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codGas} onChange={(e) => setCodGas(e.target.value)} />
+                    <input type="text" placeholder="Titular de gás do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularGas} onChange={(e) => setTitularGas(e.target.value)} />
 
                 </div>
             </div>
@@ -301,11 +331,43 @@ export default function CadastrarCliente() {
 
                     <h1 className="text-2xl font-bold text-gray-800">Dados de consumo - Marco zero</h1>
 
-                    <input type="number" placeholder="Consumo de energia em kWh" name="" id="" onBlur={calculateEmissions} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoEnergia(e.target.value)} />
-                    <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoAgua(e.target.value)} />
-                    <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setconsumoResiduos(e.target.value)} />
-                    <input type="number" placeholder="Consumo de gás em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoGas(e.target.value)} />
-                    <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onChange={(e) => setConsumoGas(e.target.value)} />
+                    <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
+                    <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
+                    <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoResiduos} onChange={(e) => setconsumoResiduos(e.target.value)} />
+                    <div className="flex flex-col">
+                        <label className="font-normal mb-2 text-black" htmlFor="gas">
+                            Tipo de Gas:
+                        </label>
+                        <div className="flex items-center">
+                            <input
+                                type="radio"
+                                id="gasEncanado"
+                                name="gas"
+                                value="encanado"
+                                checked={selectedGas === 'encanado'}
+                                onChange={(e) => setSelectedGas(e.target.value)}
+                                className="mr-2"
+                            />
+                            <label htmlFor="gasEncanado" className="mr-4 text-black">
+                                Gas Encanado
+                            </label>
+                            <input
+                                type="radio"
+                                id="botijao"
+                                name="gas"
+                                value="botijao"
+                                checked={selectedGas === 'botijao'}
+                                onChange={(e) => setSelectedGas(e.target.value)}
+                                className="mr-2"
+                            />
+                            <label htmlFor="botijao" className="mr-4 text-black">Botijão</label>
+                        </div>
+                    </div>
+                    {selectedGas === 'encanado' ? (
+                        <input type="number" placeholder="Consumo de gás em m³" name="" id="" className={`${selectedGas === 'encanado' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => setConsumoGas(e.target.value)} />
+                    ) : (
+                        <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className={`${selectedGas === 'botijao' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => setConsumoGas(e.target.value)} />
+                    )}
 
                 </div>
 
@@ -317,12 +379,13 @@ export default function CadastrarCliente() {
                     <input type="text" disabled placeholder="Kg CO2e Energia" value={emissoesEnergia} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <input type="text" disabled placeholder="Kg CO2e Água" value={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <input type="text" disabled placeholder="Kg CO2e Resíduos" value={emissoesResiduos} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    <input type="text" disabled placeholder="Kg CO2e Gás em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    <input type="text" disabled placeholder="Kg CO2e Gás nº de botijões" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                    <input type="text" disabled placeholder="Kg CO2e Gás " value={emissoesGas} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                    {/* <input type="text" disabled placeholder="Kg CO2e Gás nº de botijões" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" /> */}
 
                 </div>
             </div>
             <div className="flex flex-row justify-end items-center w-full gap-8">
+                {showClearBtn ? <button type="button" className="flex items-center justify-center bg-green-700 px-8 py-2 rounded-lg" onClick={clearForm}>Limpar dados</button> : ''} 
                 <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg">{btnText}</button>
             </div>
         </form>
