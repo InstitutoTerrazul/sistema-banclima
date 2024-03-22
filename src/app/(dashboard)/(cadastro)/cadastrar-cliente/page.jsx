@@ -132,7 +132,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoEnergia,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -143,7 +143,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoAgua,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -154,7 +154,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoResiduos,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -164,7 +164,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoGas,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -197,7 +197,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesEnergia(data.gasto)
+                setEmissoesEnergia(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -215,7 +215,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesAgua(data.gasto)
+                setEmissoesAgua(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -233,7 +233,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesResiduos(data.gasto)
+                setEmissoesResiduos(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -250,7 +250,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesGas(data.gasto)
+                setEmissoesGas(data.emissao)
                 setBtnText('Cadastrado!');
                 setShowClearBtn(true);
             } else {

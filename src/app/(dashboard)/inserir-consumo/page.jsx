@@ -91,8 +91,8 @@ export default function InserirConsumo() {
         setEmissoesAgua('');
         setEmissoesResiduos('');
         setEmissoesGas('');
-        setCo2Emissions('');
         setSelectedGas('');
+        setSearchCpf('');
 
         setBtnText('Cadastrar');
         setShowClearBtn(false);
@@ -145,7 +145,7 @@ export default function InserirConsumo() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoEnergia,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -156,7 +156,7 @@ export default function InserirConsumo() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoAgua,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -167,7 +167,7 @@ export default function InserirConsumo() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoResiduos,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -177,7 +177,7 @@ export default function InserirConsumo() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoGas,
-            gasto: "0",
+            emissao: "0",
             taxaDeReducao: "0"
         }
 
@@ -191,7 +191,7 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesEnergia(data.gasto)
+                setEmissoesEnergia(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -209,7 +209,7 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesAgua(data.gasto)
+                setEmissoesAgua(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -227,7 +227,7 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesResiduos(data.gasto)
+                setEmissoesResiduos(data.emissao)
             } else {
                 console.error('Failed to create post');
             }
@@ -244,7 +244,7 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                setEmissoesGas(data.gasto)
+                setEmissoesGas(data.emissao)
                 setBtnText('Cadastrado!');
                 setShowClearBtn(true);
             } else {
@@ -271,11 +271,11 @@ export default function InserirConsumo() {
                         <h1 className="text-2xl font-bold text-gray-800">Dados cadastrais</h1>
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Nome completo" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
-                            <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
+                            <input type="text" placeholder="Nome completo" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
+                            <ReactInputMask required mask="999.999.999-99" disabled maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Endereço" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
+                            <input type="text" placeholder="Endereço" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
                             <ReactDatePicker
                                 selected={selectedDate}
                                 onChange={handleDateChange}
@@ -286,8 +286,8 @@ export default function InserirConsumo() {
                             />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="email" placeholder="Email" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <ReactInputMask required mask="(99)99999-9999" maskChar="" placeholder='Telefone' type="text" {...register('phone', {
+                            <input type="email" placeholder="Email" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <ReactInputMask required mask="(99)99999-9999" disabled maskChar="" placeholder='Telefone' type="text" {...register('phone', {
                                 pattern: {
                                     value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
                                     message: "Insira um telefone válido"
@@ -296,7 +296,7 @@ export default function InserirConsumo() {
                             })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
+                            <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
                             <select id="mySelect" value={projeto} onChange={(e) => setProjeto(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
                                 <option value="" disabled selected>Projeto</option>
                                 <option value="Projeto 1">Projeto 1</option>
