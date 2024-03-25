@@ -35,7 +35,7 @@ export default function SidebarMenu(props) {
       name: 'Dashboard',
       href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
-      isActive: pathname === '/',
+      // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
   ]
@@ -45,7 +45,7 @@ export default function SidebarMenu(props) {
       name: 'Inserir consumo',
       href: '/inserir-consumo',
       icon: <Pen weight="thin" size={24} />,
-      isActive: pathname === '/',
+      // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
   ]
@@ -54,26 +54,26 @@ export default function SidebarMenu(props) {
       name: 'Criar projeto',
       href: '/criar-projeto',
       icon: <Plus weight="thin" size={24} />,
-      isActive: pathname === '/',
+      // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
   ]
 
   const firstLevel = [
     {
-      name: 'Cadastrar cadastrador',
-      href: '/cadastrar-cadastrador',
+      name: 'Cadastrar Usuário',
+      href: '/cadastrar-usuario',
       icon: <UserList weight="thin" size={24} />,
-      isActive: pathname.includes('/cadastrar-revenda'),
+      // isActive: pathname.includes('/cadastrar-revenda'),
       hasPermission: ['Distributor'],
     },
-    {
-      name: 'Cadastrar equipe',
-      href: '/cadastrar-equipe',
-      icon: <UsersFour weight="thin" size={24} />,
-      isActive: pathname === '/alterar-revenda',
-      hasPermission: ['Distributor'],
-    },
+    // {
+    //   name: 'Cadastrar equipe',
+    //   href: '/cadastrar-equipe',
+    //   icon: <UsersFour weight="thin" size={24} />,
+    //   isActive: pathname === '/alterar-revenda',
+    //   hasPermission: ['Distributor'],
+    // },
     {
       name: 'Cadastrar cliente',
       href: '/cadastrar-cliente',
@@ -85,7 +85,7 @@ export default function SidebarMenu(props) {
       name: 'Editar cliente',
       href: '/editar-cliente',
       icon: <NotePencil weight="thin" size={24} />,
-      isActive: pathname === '/renovar-revenda',
+      // isActive: pathname === '/renovar-revenda',
       hasPermission: ['Distributor'],
     },
   ]
