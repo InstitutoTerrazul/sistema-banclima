@@ -1,20 +1,62 @@
 'use client'
 import AvoidedEmissionsGraph from "@/components/AvoidedEmissionsGraph";
 import HistoryGraph from "@/components/HistoryGraph";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import RegisteredAndBenefitedCustomers from "@/components/RegisteredAndBenefitedCustomers";
+import TotalBenefitsAndEmissionsAvoided from "@/components/TotalBenefitsAndEmissionsAvoided";
+import Select from 'react-select'
 
 
 export default function Home() {
     const router = useRouter();
 
+    const { userData } = useAuth();
+
+    const [projectList, setProjectList] = useState([]);
+    const [selectedProject, setSelectedProject] = useState();
 
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
             router.push('/login');
         }
+
+        getProjects();
     }, []);
+
+    useEffect(() => {
+        // setProjectList(projectList[0]?.nome);
+        console.log(projectList[0]);
+    }, [projectList]);
+
+    const getProjects = async () => {
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('get projetos:', data);
+                setProjectList(data);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    }
+
+    const options = projectList?.map((project) => ({
+        value: project.nome,
+        label: project.nome
+    }))
+
 
     const emissions = [
         {
@@ -41,6 +83,17 @@ export default function Home() {
 
     return (
         <>
+            <h1 className="text-2xl font-bold text-gray-800 text-start">Dashboard</h1>
+
+            <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
+                {/* <select id="mySelect" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 px-2 text-black">
+                    <option value="Projeto 1" selected>Projeto 1</option>
+                    <option value="Projeto 2">Projeto 2</option>
+                </select> */}
+                <Select options={options} onChange={(selectedOption) => setSelectedProject(selectedOption.value)} className=" w-1/2 h-11 text-black z-40"/>
+                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button>
+            </div>
+
             <section className="relative flex flex-row justify-start items-start w-full gap-8">
                 <article className="relative flex flex-row justify-center p-4 bg-white rounded-xl items-start w-[calc(100%/2-10px)] gap-8">
                     <HistoryGraph />
@@ -51,22 +104,7 @@ export default function Home() {
             </section>
 
             <section className="relative flex flex-row xl:flex-row justify-start items-start w-full gap-8">
-                <div className="flex flex-row w-[calc(100%/2)] gap-4">
-                    <article className="flex flex-col items-start justify-center w-[calc(100%/2)] pb-2 gap-4 bg-white rounded-xl">
-                        <div className="bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
-                        <div className="flex flex-col items-start py-2 px-8 justify-center gap-4">
-                            <span className="text-base font-normal text-black">Total de clientes cadastrados</span>
-                            <span className="text-2xl font-medium text-black">10 Clientes</span>
-                        </div>
-                    </article>
-                    <article className="flex flex-col items-start justify-center w-[calc(100%/2)] pb-2 gap-4 bg-white rounded-xl">
-                        <div className="bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
-                        <div className="flex flex-col items-start py-2 px-8 justify-center gap-4">
-                            <span className="text-base font-normal text-black">Total de clientes beneficiados</span>
-                            <span className="text-2xl font-medium text-black">10 Clientes</span>
-                        </div>
-                    </article>
-                </div>
+                <RegisteredAndBenefitedCustomers project={selectedProject} />
                 <div className="flex flex-row w-[calc(100%/2-20px)] gap-4">
                     {emissions.map((emission, i) => (
                         <article key={i} className="relative flex flex-col items-start justify-center w-[calc(100%/4-10px)] pb-2 gap-4 bg-white rounded-xl">
@@ -81,22 +119,7 @@ export default function Home() {
                     ))}
                 </div>
             </section>
-            <section className="relative flex flex-row xl:flex-row justify-start items-start w-full gap-8">
-                <article className="flex flex-col items-center justify-center pb-4 gap-4 w-[calc(100%/2)] bg-white rounded-xl">
-                    <div className="bg-red-500 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
-                    <div className="flex flex-col items-center py-2 px-10 justify-center gap-4">
-                        <span className="text-2xl font-normal text-black">Total de Benefícios</span>
-                        <span className="text-3xl font-medium text-black">10 Clientes</span>
-                    </div>
-                </article>
-                <article className="flex flex-col items-center justify-center pb-4 gap-4 w-[calc(100%/2-20px)] bg-white rounded-xl">
-                    <div className="bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
-                    <div className="flex flex-col items-center py-2 px-10 justify-center gap-4">
-                        <span className="text-2xl font-normal text-black">Total de emissões evitadas</span>
-                        <span className="text-3xl font-medium text-black">10 kg CO2 e</span>
-                    </div>
-                </article>
-            </section>
+            <TotalBenefitsAndEmissionsAvoided project={selectedProject}/>
         </>
     )
 }

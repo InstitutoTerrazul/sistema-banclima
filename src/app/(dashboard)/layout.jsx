@@ -28,7 +28,7 @@ export default async function RootLayout({ children }) {
 
             <div className="flex-1 transition duration-700 bg-bgContent pb-6 w-[1000px]">
               <Header />
-              <div className="flex flex-col gap-6 px-2 xl:px-6 pb-6 ml-0 lg:ml-24 xl:ml-0 mt-10 z-10">
+              <div className="flex flex-col gap-6 px-2 xl:px-6 pb-6 ml-0 lg:ml-24 xl:ml-0 z-10">
                 {children}
               </div>
               <footer className="flex justify-end items-center gap-2 pr-6">
