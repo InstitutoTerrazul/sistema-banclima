@@ -57,14 +57,19 @@ export default function AvoidedEmissionsGraph() {
 
     return (
         <>
-            <Chart
-                options={options}
-                series={options.series}
-                type="bar"
-                width={"100%"}
-                height={350}
-                className="w-full h-96"
-            />
+             {typeof window !== 'undefined' ? 
+                
+                <Chart
+                    options={options}
+                    series={options.series}
+                    type="bar"
+                    width={"100%"}
+                    height={350}
+                    className="w-full h-96"
+                /> : null
+            }
+            
         </>
     )
 }
+

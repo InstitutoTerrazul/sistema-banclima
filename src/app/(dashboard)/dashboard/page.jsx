@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import RegisteredAndBenefitedCustomers from "@/components/RegisteredAndBenefitedCustomers";
 import TotalBenefitsAndEmissionsAvoided from "@/components/TotalBenefitsAndEmissionsAvoided";
 import Select from 'react-select'
+import AvoidedEmission from "@/components/AvoidedEmission";
 
 
 export default function Home() {
@@ -90,7 +91,7 @@ export default function Home() {
                     <option value="Projeto 1" selected>Projeto 1</option>
                     <option value="Projeto 2">Projeto 2</option>
                 </select> */}
-                <Select options={options} onChange={(selectedOption) => setSelectedProject(selectedOption.value)} className=" w-1/2 h-11 text-black z-40"/>
+                <Select options={options} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button>
             </div>
 
@@ -104,8 +105,8 @@ export default function Home() {
             </section>
 
             <section className="relative flex flex-row xl:flex-row justify-start items-start w-full gap-8">
-                <RegisteredAndBenefitedCustomers project={selectedProject} />
-                <div className="flex flex-row w-[calc(100%/2-20px)] gap-4">
+                <RegisteredAndBenefitedCustomers />
+                {/* <div className="flex flex-row w-[calc(100%/2-20px)] gap-4">
                     {emissions.map((emission, i) => (
                         <article key={i} className="relative flex flex-col items-start justify-center w-[calc(100%/4-10px)] pb-2 gap-4 bg-white rounded-xl">
                             <div className={`absolute top-0 ${emission.color} w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
@@ -117,9 +118,10 @@ export default function Home() {
                             </div>
                         </article>
                     ))}
-                </div>
+                </div> */}
+                <AvoidedEmission />
             </section>
-            <TotalBenefitsAndEmissionsAvoided project={selectedProject}/>
+            <TotalBenefitsAndEmissionsAvoided />
         </>
     )
 }
