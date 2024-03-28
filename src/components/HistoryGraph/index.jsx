@@ -1,14 +1,22 @@
 'use client'
-import { ApexOptions } from "apexcharts";
+// import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+// import { CategoryScale, Chart, LinearScale, Point, PointElement } from "chart.js";
+
+// Chart.register(CategoryScale,LinearScale, PointElement, Point );
+// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function HistoryGraph() {
     const [graphData, setGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         getGraphData();
+        setIsLoaded(true);
+
     }, [])
 
     useEffect(() => {
@@ -82,9 +90,39 @@ export default function HistoryGraph() {
         },
     }
 
+    const options2 = {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Historico de Emissões semestrais',
+                padding: {
+                    top: 10,
+                    bottom: 10
+                },
+                
+            }
+        }
+    }
+
+    const opt = {
+        labels: transformedData?.mes,
+        datasets: [
+            {
+                id: 1,
+                label: 'Emissões',
+                data: transformedData?.emissao,
+            },
+        ],
+        title: {
+            display: true,
+            text: 'Custom Chart Title'
+        }
+    }
+
     return (
         <>
-            {(typeof window !== 'undefined') ?
+            {/* {window &&
+
                 <Chart
                     options={options}
                     series={options.series}
@@ -92,8 +130,14 @@ export default function HistoryGraph() {
                     width={"100%"}
                     height={350}
                     className="w-full h-96"
-                /> : null
-            }
+                />
+            } */}
+            <Line
+                datasetIdKey='id'
+                data={opt}
+                options={options2}
+                className="w-full h-96"
+            />
         </>
     )
 }

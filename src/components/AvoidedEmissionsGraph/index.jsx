@@ -1,8 +1,15 @@
 'use client'
-import { ApexOptions } from "apexcharts";
+// import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useEffect, useState } from "react";
+import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function AvoidedEmissionsGraph() {
+
+    useEffect(() => {
+        console.log('window', window);
+    }, [])
 
     var options = {
         series: [{
@@ -54,21 +61,40 @@ export default function AvoidedEmissionsGraph() {
         }
     };
 
+    const opt = {
+        labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        datasets: [
+            {
+                id: 1,
+                label: 'Água',
+                data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+            },
+            {
+                id: 2,
+                label: 'Energia',
+                data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+            },
+            {
+                id: 3,
+                label: 'Resíduos',
+                data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+            },
+            {
+                id: 4,
+                label: 'Gás',
+                data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+            },
+        ],
+    }
+
 
     return (
         <>
-             {typeof window !== 'undefined' ? 
-                
-                <Chart
-                    options={options}
-                    series={options.series}
-                    type="bar"
-                    width={"100%"}
-                    height={350}
-                    className="w-full h-96"
-                /> : null
-            }
-            
+            <Bar
+                datasetIdKey='id'
+                data={opt}
+                className="w-full h-96"
+            />
         </>
     )
 }
