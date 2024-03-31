@@ -19,6 +19,7 @@ import {
   Pencil,
   NotePencil,
   Plus,
+  MagnifyingGlass,
 } from '@phosphor-icons/react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
@@ -35,6 +36,13 @@ export default function SidebarMenu(props) {
       name: 'Dashboard',
       href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
+      // isActive: pathname === '/',
+      hasPermission: ['Distributor'],
+    },
+    {
+      name: 'Consulta',
+      href: '/consulta',
+      icon: <MagnifyingGlass weight="thin" size={24} />,
       // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
@@ -189,7 +197,7 @@ export default function SidebarMenu(props) {
                 </MenuItem>
               ))}
             </SubMenu>
-            <SubMenu
+            {/* <SubMenu
               label="Consulta"
               className="bg-primary"
               icon={<ListMagnifyingGlass weight="thin" size={24} />}
@@ -204,7 +212,7 @@ export default function SidebarMenu(props) {
                   {item.name}
                 </MenuItem>
               ))}
-            </SubMenu>
+            </SubMenu> */}
             {secondOption.map((item, i) => (
               <MenuItem
                 key={i}

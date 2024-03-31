@@ -12,9 +12,9 @@ export const metadata = {
 export default function Layout({ children }) {
   return (
     <html lang="pt-BR">
-      <head >
+      {/* <head >
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      </head>
+      </head> */}
       <body className={`${inter.className} bg-bgContent`}>
         <main className="flex flex-col xl:flex-row min-h-screen mx-auto">
           {children}

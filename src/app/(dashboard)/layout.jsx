@@ -22,9 +22,9 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="pt-BR">
-      <head >
+      {/* <head >
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      </head>
+      </head> */}
       <body className={`${inter.className}`}>
         <main className="relative flex flex-col xl:flex-row bg-blue-300 min-h-screen mx-auto lg:max-w-[1920px]">
           <SidebarContainer />
