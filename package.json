@@ -16,13 +16,15 @@
     "next-auth": "^5.0.0-beta.15",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
+    "react-data-table-component": "^7.6.2",
     "react-datepicker": "^6.4.0",
     "react-dom": "^18",
     "react-hook-form": "^7.51.1",
     "react-initials-avatar": "^1.1.2",
     "react-input-mask": "^2.0.4",
     "react-pro-sidebar": "^1.1.0",
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ReactInputMask from "react-input-mask";
+import DataTable from 'react-data-table-component';
 
 
 export default function Consulta() {
@@ -15,6 +16,38 @@ export default function Consulta() {
     const [selectedProject, setSelectedProject] = useState();
     const [searchCpf, setSearchCpf] = useState('');
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
+    const [tableData, setTableData] = useState([]);
+
+    const columns = [
+        {
+            name: 'Nome',
+            selector: row => row.nome,
+        },
+        {
+            name: 'E-mail',
+            selector: row => row.email,
+        },
+        {
+            name: 'Telefone',
+            selector: row => row.telefone,
+        },
+        {
+            name: 'Endereço',
+            selector: row => row.endereco,
+        },
+        {
+            name: 'Projeto',
+            selector: row => row.projeto,
+        },
+    ];
+
+    const data = tableData.map(row => ({
+        nome: row.nome,
+        email: row.email,
+        telefone: row.telefone,
+        endereco: row.endereco,
+        projeto: row.projeto
+    }))
 
 
     useEffect(() => {
@@ -64,7 +97,7 @@ export default function Consulta() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('lista de clientes:', data);
-                // setProjectList(data);
+                setTableData(data);
             } else {
                 console.error('Failed to create post');
             }
@@ -90,21 +123,7 @@ export default function Consulta() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data searched:', data);
-                // setClientId(data[0].id);
-                // setName(data[0].nome);
-                // setCpf(data[0].cpf);
-                // setEmail(data[0].email);
-                // setPhone(data[0].telefone);
-                // setHabitantes(data[0].habitantes);
-                // setAddress(data[0].endereco);
-                // setDate(data[0].data);
-                // setCodAgua(data[0].matriculaDeAgua);
-                // setProjeto(data[0].projeto);
-                // setTitularAgua(data[0].titularAguaCpf);
-                // setCodEnergia(data[0].matriculaDeEnergia);
-                // setTitularEnergia(data[0].titularEnergiaCpf);
-                // setCodGas(data[0].matriculaDeGas);
-                // setTitularGas(data[0].titularGasCpf);
+                setTableData(data);
                 setSearchBtnText('CPF encontrado!');
             } else {
                 console.error('Failed to create post');
@@ -114,7 +133,8 @@ export default function Consulta() {
         }
 
         setTimeout(() => {
-            setSearchBtnText('Buscar CPF');
+            setSearchBtnText('Buscar');
+            setSearchCpf('');
         }, 2000);
     }
 
@@ -136,6 +156,13 @@ export default function Consulta() {
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => getClientList()} >Buscar</button>
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()} >{searchBtnText}</button>
+            </div>
+
+            <div className="w-full p-2 bg-white rounded-lg">
+                <DataTable
+                    columns={columns}
+                    data={data}
+                />
             </div>
         </>
     )
