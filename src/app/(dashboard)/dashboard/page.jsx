@@ -34,7 +34,7 @@ export default function Home() {
 
     const getProjects = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+            const response = await fetch('https://191.252.38.35:8443/api/projetos/listar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -84,9 +84,7 @@ export default function Home() {
 
     return (
         <>
-            <h1 className="text-2xl font-bold text-gray-800 text-start">Dashboard</h1>
-
-            <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
+            <div className="flex flex-row justify-center items-center w-full gap-8 my-8">
                 {/* <select id="mySelect" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 px-2 text-black">
                     <option value="Projeto 1" selected>Projeto 1</option>
                     <option value="Projeto 2">Projeto 2</option>

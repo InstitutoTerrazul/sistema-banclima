@@ -13,7 +13,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         const data = "projeto 1"
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/totalBeneficioPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('https://191.252.38.35:8443/api/emissoesMensal/totalBeneficioPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/totalEmissoesEvitadasPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('https://191.252.38.35:8443/api/emissoesMensal/totalEmissoesEvitadasPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

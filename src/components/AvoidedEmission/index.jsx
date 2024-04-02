@@ -34,7 +34,7 @@ export default function AvoidedEmission() {
         const data = "projeto 1"
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('https://191.252.38.35:8443/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -30,7 +30,7 @@ export default function Login() {
         console.log(data)
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/usuarios/login', {
+            const response = await fetch('https://calculadora.institutoterrazul.org/api/usuarios/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

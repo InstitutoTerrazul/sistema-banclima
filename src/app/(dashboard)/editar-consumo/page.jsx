@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import ReactDatePicker from "react-datepicker";
 
-export default function InserirConsumo() {
+export default function EditarConsumo() {
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -36,7 +36,7 @@ export default function InserirConsumo() {
     const [dateFormatted, setDateFormatted] = useState('');
     const [searchCpf, setSearchCpf] = useState('');
     const [btnText, setBtnText] = useState('Cadastrar');
-    const [searchBtnText, setSearchBtnText] = useState('Buscar CPF');
+    const [searchBtnText, setSearchBtnText] = useState('Buscar');
 
     const [emissoesEnergia, setEmissoesEnergia] = useState('');
     const [emissoesAgua, setEmissoesAgua] = useState('');
@@ -46,6 +46,9 @@ export default function InserirConsumo() {
     const [selectedGas, setSelectedGas] = useState('');
 
     const [showClearBtn, setShowClearBtn] = useState(false);
+
+    const [selectedMonth, setSelectedMonth] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -65,6 +68,14 @@ export default function InserirConsumo() {
         setDateFormatted(formattedDate);
 
     }, [selectedDate]);
+
+    const handleChangeMounth = (event) => {
+        setSelectedMonth(event.target.value);
+    };
+
+    const handleChange = (event) => {
+        setSelectedYear(event.target.value);
+    };
 
     const clearForm = () => {
         setName('');
@@ -122,7 +133,7 @@ export default function InserirConsumo() {
                 setPhone(data[0].telefone);
                 setHabitantes(data[0].habitantes);
                 setAddress(data[0].endereco);
-                setSearchBtnText('CPF encontrado!');
+                setSearchBtnText('Encontrado!');
             } else {
                 console.error('Failed to create post');
             }
@@ -131,7 +142,7 @@ export default function InserirConsumo() {
         }
 
         setTimeout(() => {
-            setSearchBtnText('Buscar CPF');
+            setSearchBtnText('Buscar');
         }, 2000);
     }
 
@@ -259,7 +270,25 @@ export default function InserirConsumo() {
         <div className="flex flex-col items-start justify-center w-full gap-8">
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onBlur={handleSearchBtn} value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+
+                <select value={selectedMonth} onChange={handleChangeMounth} className="bg-white  h-11 rounded-lg focus:outline-none border border-gray-700/45  text-black">
+                    <option value="">Mês</option>
+                    {Array.from({ length: 12 }, (_, i) => (
+                        <option key={i} value={i + 1}>
+                            {i + 1}
+                        </option>
+                    ))}
+                </select>
+
+                <select value={selectedYear} onChange={handleChange} className="bg-white  h-11 rounded-lg focus:outline-none border border-gray-700/45  text-black">
+                    <option value="">Ano</option>
+                    {Array.from({ length: 20 }, (_, i) => 2021 + i).map((year) => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
+                </select>
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >{searchBtnText}</button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">

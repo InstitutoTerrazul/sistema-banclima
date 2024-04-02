@@ -79,7 +79,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch('https://191.252.38.35:8443/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`https://191.252.38.35:8443/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -171,7 +171,7 @@ export default function EditarCliente() {
 
     const deleteClient = async () => {
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`https://191.252.38.35:8443/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

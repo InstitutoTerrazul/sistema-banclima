@@ -6,8 +6,8 @@ import UserMenu from '../UserMenu';
 
 export default function Header() {
     return (
-        <div className="w-full h-20 bg-background flex flex-col justify-center items-end px-20">
-            <UserMenu />
+        <div className="w-full h-20 bg-transparent flex flex-row justify-between items-center px-10">
+            <span className='text-black font-bold text-xl'>Sistema de gestão - Bolsa de crédito de carbono comunitária</span> <UserMenu />
         </div>
     )
 }

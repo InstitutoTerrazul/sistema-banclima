@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         // localStorage.setItem('user', JSON.stringify(userData));
         // Set user data in localStorage after successful authentication
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/usuarios/login', {
+            const response = await fetch('https://calculadora.institutoterrazul.org/api/usuarios/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
