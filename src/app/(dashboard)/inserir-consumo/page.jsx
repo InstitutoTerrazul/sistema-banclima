@@ -66,6 +66,18 @@ export default function InserirConsumo() {
 
     }, [selectedDate]);
 
+    useEffect(() => {
+        calculateAgua();
+    },[consumoAgua])
+
+    useEffect(() => {
+        calculateGas();
+    }, [consumoGas])
+
+    useEffect(() => {
+        calculateEnergia();
+    },[consumoEnergia])
+
     const clearForm = () => {
         setName('');
         setCpf('');
@@ -255,6 +267,31 @@ export default function InserirConsumo() {
         }
     }
 
+    const calculateGas = () => {
+        if(selectedGas === "encanado") {
+            const calculoGas = consumoGas * 1.59
+            const formatted = calculoGas.toFixed(2).replace(".", ",")
+            setEmissoesGas(formatted)
+        } else {
+            const calculoGas = consumoGas * 25.09
+            const formatted = calculoGas.toFixed(2).replace(".", ",")
+            setEmissoesGas(formatted)
+            // setConsumoGas(consumoGasEletrico);
+        }
+    }
+
+    const calculateAgua = () => {
+        const calculoAgua = consumoAgua * 0.72
+        const formatted = calculoAgua.toFixed(2).replace(".", ",")
+        setEmissoesAgua(formatted)
+    }
+
+    const calculateEnergia = () => {
+        const calculoEnergia = consumoEnergia * 0.0340
+        const formatted = calculoEnergia.toFixed(2).replace(".", ",")
+        setEmissoesEnergia(formatted)
+    }
+
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
@@ -332,7 +369,7 @@ export default function InserirConsumo() {
 
                         <div className="flex flex-row w-full gap-4">
                             <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
-                            <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
+                            <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => {setConsumoAgua(e.target.value)}} />
                         </div>
                         <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoResiduos} onChange={(e) => setconsumoResiduos(e.target.value)} />
                         <div className="flex flex-col">
@@ -365,9 +402,9 @@ export default function InserirConsumo() {
                             </div>
                         </div>
                         {selectedGas === 'encanado' ? (
-                            <input type="number" placeholder="Consumo de gás em m³" name="" id="" className={`${selectedGas === 'encanado' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => setConsumoGas(e.target.value)} />
+                            <input type="number" placeholder="Consumo de gás em m³" name="" id="" className={`${selectedGas === 'encanado' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => {setConsumoGas(e.target.value), calculateGas()}} />
                         ) : (
-                            <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className={`${selectedGas === 'botijao' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => setConsumoGas(e.target.value)} />
+                            <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className={`${selectedGas === 'botijao' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => {setConsumoGas(e.target.value), calculateGas()}} />
                         )}
 
                     </div>
