@@ -117,7 +117,7 @@ export default function EditarConsumo() {
 
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -193,7 +193,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/emissoes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -211,7 +211,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/emissoes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -229,7 +229,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/emissoes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -246,7 +246,7 @@ export default function EditarConsumo() {
             console.error('Error creating post:', error);
         }
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -15,7 +15,7 @@ export default function RegisteredAndBenefitedCustomers() {
         const data = "projeto 1"
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/clientes/totalClientesBeneficiadosPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/clientes/totalClientesBeneficiadosPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export default function RegisteredAndBenefitedCustomers() {
         }
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/clientes/totalClientesCadastradosPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/clientes/totalClientesCadastradosPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

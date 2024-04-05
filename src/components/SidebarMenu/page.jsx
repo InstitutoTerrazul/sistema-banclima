@@ -66,6 +66,15 @@ export default function SidebarMenu(props) {
       hasPermission: ['Distributor'],
     },
   ]
+  const fourthOption = [
+    {
+      name: 'Alterar Calculo de Emissões',
+      href: '/editar-calculo',
+      icon: <Plus weight="thin" size={24} />,
+      // isActive: pathname === '/',
+      hasPermission: ['Distributor'],
+    },
+  ]
 
   const firstLevel = [
     {
@@ -224,6 +233,16 @@ export default function SidebarMenu(props) {
               </MenuItem>
             ))}
             {thirdOption.map((item, i) => (
+              <MenuItem
+                key={i}
+                component={<Link href={item.href} />}
+                className="hover:text-yellow bg-primary"
+                icon={item.icon}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+            {fourthOption.map((item, i) => (
               <MenuItem
                 key={i}
                 component={<Link href={item.href} />}

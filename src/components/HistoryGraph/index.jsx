@@ -37,7 +37,7 @@ export default function HistoryGraph() {
         const data = "projeto 1"
 
         try {
-            const response = await fetch('https://191.252.38.35:8443/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
