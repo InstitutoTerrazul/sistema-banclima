@@ -55,14 +55,14 @@ export default function Login() {
     return (
         <section className="flex items-center justify-center relative w-full shadow-lg isolate bg-[#fefefd]">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full">
-                <div className='flex flex-col items-end justify-center py-40 px-10 relative lg:w-[55%] h-screen bg-[url(/login-bg.jpg)] bg-cover bg-no-repeat after:absolute after:bg-primary/[.20] after:top-0 after:bottom-0 after:right-0 after:left-0 after:z-20'>
+                <div className='flex flex-col items-end justify-center py-40 px-10 relative lg:w-[55%] h-screen bg-[url(/v2/login-bg.jpg)] bg-cover bg-no-repeat after:absolute after:bg-primary/[.20] after:top-0 after:bottom-0 after:right-0 after:left-0 after:z-20'>
                     <span className="text-3xl font-normal text-white text-end z-40">Bem vindo ao <span className="font-bold">sistema Banclima</span> </span>
                     <span className="text-xl font-normal text-white text-end z-40">Entre e acesse as informações sobre o total de emissoes evitadas.</span>
                 </div>
                 <div className=" flex-1 flex flex-col items-center text-start gap-10 w-full py-10 px-10 lg:px-20">
                     <img
                         className="w-[180px] h-[72px]"
-                        src="/assets/logo.png"
+                        src="/v2/assets/logo.png"
                         alt=""
                     />
                     <h1 className="text-md lg:text-3xl text-center font-bold tracking-tight text-gray-900 sm:text-6xl">

@@ -20,6 +20,7 @@ import {
   NotePencil,
   Plus,
   MagnifyingGlass,
+  ArrowsCounterClockwise,
 } from '@phosphor-icons/react'
 
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
@@ -52,7 +53,16 @@ export default function SidebarMenu(props) {
     {
       name: 'Inserir consumo',
       href: '/inserir-consumo',
-      icon: <Pen weight="thin" size={24} />,
+      icon: <Plus weight="thin" size={24} />,
+      // isActive: pathname === '/',
+      hasPermission: ['Distributor'],
+    },
+  ]
+  const fiffthOption = [
+    {
+      name: 'Editar consumo',
+      href: '/editar-consumo',
+      icon: <NotePencil weight="thin" size={24} />,
       // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
@@ -70,7 +80,7 @@ export default function SidebarMenu(props) {
     {
       name: 'Alterar Calculo de Emissões',
       href: '/editar-calculo',
-      icon: <Plus weight="thin" size={24} />,
+      icon: <ArrowsCounterClockwise weight="thin" size={24} />,
       // isActive: pathname === '/',
       hasPermission: ['Distributor'],
     },
@@ -144,8 +154,8 @@ export default function SidebarMenu(props) {
         collapsed={props.collapsed}
       >
 
-        <Image
-          src="/assets/logo.png"
+        <img
+          src="/v2/assets/logo.png"
           width={150}
           height={59}
           alt="Logotipo Parceria Digital Moura"
@@ -223,6 +233,16 @@ export default function SidebarMenu(props) {
               ))}
             </SubMenu> */}
             {secondOption.map((item, i) => (
+              <MenuItem
+                key={i}
+                component={<Link href={item.href} />}
+                className="hover:text-yellow bg-primary"
+                icon={item.icon}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+            {fiffthOption.map((item, i) => (
               <MenuItem
                 key={i}
                 component={<Link href={item.href} />}

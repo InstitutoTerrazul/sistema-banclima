@@ -55,7 +55,7 @@ export default function EditarCalculo() {
         <>
             <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Calculos de Emissão</h1>
 
-            <div className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10">
+            <div className="flex flex-col items-end justify-center gap-4 bg-white rounded-xl p-10">
 
                 <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                     <input type="text" placeholder="Agua" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
@@ -64,11 +64,12 @@ export default function EditarCalculo() {
                 <div className="flex flex-row justify-center items-center w-full gap-8">
                     <input type="text" placeholder="Energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     <div className="flex flex-row justify-center items-center w-full gap-8">
-                        <input type="text" placeholder="Pesquisar" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Pesquisar" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Pesquisar" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        <input type="text" placeholder="% Papel" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        <input type="text" placeholder="% Plastico" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        <input type="text" placeholder="% Orgânico" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                     </div>
                 </div>
+                <button className="flex items-center justify-center bg-primary px-8 py-2 rounded-lg">Inserir</button>
             </div>
 
             <div className="w-full p-2 bg-white rounded-lg">
