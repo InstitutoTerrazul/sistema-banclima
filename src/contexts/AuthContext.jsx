@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userData, setUserData] = useState({});
+    const [projectList, setProjectList] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
@@ -25,7 +26,29 @@ export const AuthProvider = ({ children }) => {
         // const userValue = localStorage.getItem('user')
         // setUserData(JSON.parse(userValue)); 
         console.log('userData', userData);
+        getProjects();
     }, [userData]);
+
+    const getProjects = async () => {
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('get projetos context:', data);
+                setProjectList(data);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    }
 
     const signIn = async (userData) => {
         console.log("CHEGUEI AQUI!!");
@@ -67,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated, projectList, setProjectList }}>
             {children}
         </AuthContext.Provider>
     );

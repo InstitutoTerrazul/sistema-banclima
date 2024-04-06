@@ -7,9 +7,15 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import ReactDatePicker from "react-datepicker";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import Select from 'react-select'
+
 
 export default function EditarConsumo() {
     const router = useRouter();
+
+    const { userData, projectList, setProjectList } = useAuth();
+
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
@@ -339,6 +345,11 @@ export default function EditarConsumo() {
         setEmissoesResiduos(formatted)
     }
 
+    const options = projectList?.map((project) => ({
+        value: project.nome,
+        label: project.nome
+    }))
+
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
             <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Consumo</h1>
@@ -399,11 +410,8 @@ export default function EditarConsumo() {
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                            <select id="mySelect" value={projeto} onChange={(e) => setProjeto(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
-                                <option value="" disabled selected>Projeto</option>
-                                <option value="Projeto 1">Projeto 1</option>
-                                <option value="Projeto 2">Projeto 2</option>
-                            </select>
+                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+
                         </div>
 
                     </div>
