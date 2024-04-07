@@ -41,6 +41,8 @@ export default function CadastrarCliente() {
     const [selectedDate, setSelectedDate] = useState(null);
     const [dateFormatted, setDateFormatted] = useState('');
     const [btnText, setBtnText] = useState('Cadastrar');
+    const [mounth, setMounth] = useState('');
+    const [year, setYear] = useState('');
 
     const [emissoesEnergia, setEmissoesEnergia] = useState('');
     const [emissoesAgua, setEmissoesAgua] = useState('');
@@ -80,6 +82,15 @@ export default function CadastrarCliente() {
         const formattedDate = date.toLocaleDateString('en-GB');
 
         setDateFormatted(formattedDate);
+
+        const dateStr = formattedDate;
+        const dateParts = dateStr.split("-");
+
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        setMounth(month);
+        setYear(year);
 
     }, [selectedDate]);
 
@@ -196,6 +207,18 @@ export default function CadastrarCliente() {
             taxaDeReducao: "0"
         }
 
+        const dataEmissoesMensal = {
+            nome: name,
+            cpf: cpf,
+            projeto: projeto,
+            endereco: address,
+            mes: mounth,
+            ano: year,
+            emissao: '0',
+            taxaDeReducao: '0',
+            beneficio: '0'
+        }
+
         try {
             const response = await fetch('http://191.252.38.35:8080/api/clientes/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
@@ -207,86 +230,105 @@ export default function CadastrarCliente() {
             if (response.ok) {
                 const data = await response.json();
                 // console.log('Post created:', data);
+                try {
+                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dataConsumoEnergia)
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setEmissoesEnergia(data.emissao)
+                        try {
+                            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(dataConsumoAgua)
+                            });
+                            if (response.ok) {
+                                const data = await response.json();
+                                setEmissoesAgua(data.emissao)
+                                try {
+                                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(dataConsumoResiduos)
+                                    });
+                                    if (response.ok) {
+                                        const data = await response.json();
+                                        setEmissoesResiduos(data.emissao)
+                                        try {
+                                            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(dataConsumoGas)
+                                            });
+                                            if (response.ok) {
+                                                const data = await response.json();
+                                                setEmissoesGas(data.emissao)
+                                                setBtnText('Cadastrado!');
+                                                setShowClearBtn(true);
+
+                                                try {
+                                                    const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/salvar?login=terrazul&senha=1234567', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(dataEmissoesMensal)
+                                                    });
+                                                    if (response.ok) {
+                                                        const data = await response.json();
+                                                        // setEmissoesMensal(data)
+                                                        console.log('emissoes mensal:', data);
+                                                    } else {
+                                                        console.error('Failed to save mensal');
+                                                    }
+                                                } catch (error) {
+                                                    console.error('Error creating post:', error);
+                                                }
+                                            } else {
+                                                console.error('Failed to save residuos');
+                                            }
+                                        } catch (error) {
+                                            console.error('Error creating post:', error);
+                                        }
+                                    } else {
+                                        console.error('Failed to create post');
+                                    }
+                                } catch (error) {
+                                    console.error('Error creating post:', error);
+                                }
+                            } else {
+                                console.error('Failed to save agua');
+                            }
+                        } catch (error) {
+                            console.error('Error creating post:', error);
+                        }
+                    } else {
+                        console.error('Failed to save energy');
+                    }
+                } catch (error) {
+                    console.error('Error creating post:', error);
+                }
             } else {
-                console.error('Failed to create post');
+                console.error('Failed to save client');
             }
         } catch (error) {
             console.error('Error creating post:', error);
         }
 
 
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataConsumoEnergia)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setEmissoesEnergia(data.emissao)
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
 
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataConsumoAgua)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setEmissoesAgua(data.emissao)
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
 
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataConsumoResiduos)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setEmissoesResiduos(data.emissao)
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataConsumoGas)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setEmissoesGas(data.emissao)
-                setBtnText('Cadastrado!');
-                setShowClearBtn(true);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
     }
 
     const calculateGas = () => {
@@ -316,8 +358,8 @@ export default function CadastrarCliente() {
 
     const calculateResiduos = () => {
         const papel = 10 / 100
-        const plastico = 21 /100
-        const organico = 45/100
+        const plastico = 21 / 100
+        const organico = 45 / 100
 
         const calculoResiduos = residuesPerPerson * daysOfMouth * habitantes
 
@@ -416,8 +458,8 @@ export default function CadastrarCliente() {
                     <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
                     <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
                     <div className="flex flex-row w-full gap-4">
-                        <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => {setResiduesPerPerson(e.target.value),calculateResiduos()}} />
-                        <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => {setDaysOfMouth(e.target.value), calculateResiduos()}} />
+                        <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
+                        <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} />
                         <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                     </div>
                     <div className="flex flex-col">

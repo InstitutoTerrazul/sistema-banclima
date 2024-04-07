@@ -117,33 +117,61 @@ export default function SidebarMenu(props) {
     },
   ]
 
-  const secondLevel = [
-    // {
-    //   name: 'Cadastrar distribuidor',
-    //   href: '/distribuidor/adicionar',
-    //   icon: <UserPlus weight="thin" size={24} />,
-    //   isActive: pathname === '/distribuidor/adicionar',
-    //   hasPermission: ['Administrator'],
-    // },
-    // {
-    //   name: 'Ver todos os distribuidores',
-    //   href: '/distribuidor',
-    //   icon: <UsersFour weight="thin" size={24} />,
-    //   isActive: pathname === '/distribuidor',
-    //   hasPermission: ['Administrator'],
-    // },
+  const reportsOptions = [
+    {
+      name: 'Listar Projetos',
+      href: '/listar-projetos',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor/adicionar',
+      hasPermission: ['Administrator'],
+    },
+    {
+      name: 'Clientes cadastrados por projeto',
+      href: '/clientes-cadastrados',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor',
+      hasPermission: ['Administrator'],
+    },
+    {
+      name: 'Clientes cadastrados por mês',
+      href: '/clientes-por-projeto-e-mes',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor',
+      hasPermission: ['Administrator'],
+    },
+    {
+      name: '% de redução e beneficios recebidos',
+      href: '/distribuidor',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor',
+      hasPermission: ['Administrator'],
+    },
+    {
+      name: 'Total de emissões evitadas',
+      href: '/distribuidor',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor',
+      hasPermission: ['Administrator'],
+    },
+    {
+      name: 'Total de benefícios',
+      href: '/distribuidor',
+      icon: <FileText weight="thin" size={24} />,
+      isActive: pathname === '/distribuidor',
+      hasPermission: ['Administrator'],
+    },
   ]
 
-  let firstlevelFiltered = firstLevel
-  let secondlevelFiltered = secondLevel
-  if (props.roleName !== 'Administrator') {
-    firstlevelFiltered = firstLevel.filter((item) =>
-      item.hasPermission.includes(props.roleName),
-    )
-    secondlevelFiltered = secondLevel.filter((item) =>
-      item.hasPermission.includes(props.roleName),
-    )
-  }
+  // let firstlevelFiltered = firstLevel
+  // let secondlevelFiltered = secondLevel
+  // if (props.roleName !== 'Administrator') {
+  //   firstlevelFiltered = firstLevel.filter((item) =>
+  //     item.hasPermission.includes(props.roleName),
+  //   )
+  //   secondlevelFiltered = secondLevel.filter((item) =>
+  //     item.hasPermission.includes(props.roleName),
+  //   )
+  // }
 
   // console.log('colapsed: ', collapsed);
 
@@ -162,7 +190,7 @@ export default function SidebarMenu(props) {
           className="mx-6 my-6 scale-110"
         />
 
-        <div className="flex flex-col justify-between lg:h-[70%] 2xl:h-3/4 overflow-hidden">
+        <div className="flex flex-col justify-between lg:h-[85%]  overflow-hidden">
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -277,7 +305,7 @@ export default function SidebarMenu(props) {
               className="bg-primary"
               icon={<FileText weight="thin" size={24} />}
             >
-              {secondLevel.map((item, i) => (
+              {reportsOptions.map((item, i) => (
                 <MenuItem
                   key={i}
                   component={<Link href={item.href} />}
