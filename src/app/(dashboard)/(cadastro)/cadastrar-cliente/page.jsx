@@ -81,13 +81,17 @@ export default function CadastrarCliente() {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('en-GB');
 
+        console.log(formattedDate);
+
         setDateFormatted(formattedDate);
 
         const dateStr = formattedDate;
-        const dateParts = dateStr.split("-");
+        const dateParts = dateStr.split("/");
 
         const month = dateParts[1];
         const year = dateParts[2];
+
+        console.log('mes:', month, 'ano:', year);
 
         setMounth(month);
         setYear(year);
@@ -192,7 +196,7 @@ export default function CadastrarCliente() {
             cpf: cpf,
             endereco: address,
             data: dateFormatted,
-            consumo: consumoResiduos,
+            consumo: residuosKg,
             emissao: "0",
             taxaDeReducao: "0"
         }
@@ -274,9 +278,6 @@ export default function CadastrarCliente() {
                                             if (response.ok) {
                                                 const data = await response.json();
                                                 setEmissoesGas(data.emissao)
-                                                setBtnText('Cadastrado!');
-                                                setShowClearBtn(true);
-
                                                 try {
                                                     const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/salvar?login=terrazul&senha=1234567', {
                                                         method: 'POST',
@@ -288,12 +289,14 @@ export default function CadastrarCliente() {
                                                     if (response.ok) {
                                                         const data = await response.json();
                                                         // setEmissoesMensal(data)
+                                                        setBtnText('Cadastrado!');
+                                                        setShowClearBtn(true);
                                                         console.log('emissoes mensal:', data);
                                                     } else {
                                                         console.error('Failed to save mensal');
                                                     }
                                                 } catch (error) {
-                                                    console.error('Error creating post:', error);
+                                                    console.error('Error to save mensal emissions:', error);
                                                 }
                                             } else {
                                                 console.error('Failed to save residuos');
@@ -325,10 +328,6 @@ export default function CadastrarCliente() {
         } catch (error) {
             console.error('Error creating post:', error);
         }
-
-
-
-
     }
 
     const calculateGas = () => {
@@ -381,6 +380,7 @@ export default function CadastrarCliente() {
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 
+        setconsumoResiduos(toString(calctotal))
         setEmissoesResiduos(formatted)
     }
 
@@ -426,7 +426,7 @@ export default function CadastrarCliente() {
                     </div>
                     <div className="flex flex-row w-full gap-4">
                         <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                        <Select options={options} defaultValue={options[0]} placeholder="Projeto" onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+                        <Select options={options} placeholder="Projeto" onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
                     </div>
 
                 </div>
