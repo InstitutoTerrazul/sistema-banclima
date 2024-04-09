@@ -148,7 +148,7 @@ export default function SidebarMenu(props) {
     },
     {
       name: 'Total de emissões evitadas',
-      href: '/distribuidor',
+      href: '/emissoes-evitadas',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
       hasPermission: ['Administrator'],
