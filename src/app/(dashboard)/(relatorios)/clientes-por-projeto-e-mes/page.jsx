@@ -10,9 +10,9 @@ import DataTable from 'react-data-table-component';
 export default function ClientesPorProjetoEMes() {
     const router = useRouter();
 
-    const { userData } = useAuth();
+    const { userData,setProjectList,projectList } = useAuth();
 
-    const [projectList, setProjectList] = useState([]);
+    // const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
     const [searchCpf, setSearchCpf] = useState('');
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
@@ -39,8 +39,20 @@ export default function ClientesPorProjetoEMes() {
             selector: row => row.endereco,
         },
         {
-            name: 'Projeto',
-            selector: row => row.projeto,
+            name: 'cpf',
+            selector: row => row.cpf,
+        },
+        {
+            name: 'Matricula Energia',
+            selector: row => row.matriculaDeEnergia,
+        },
+        {
+            name: 'Matricula água',
+            selector: row => row.matriculaDeAgua,
+        },
+        {
+            name: 'Matricula gás',
+            selector: row => row.matriculaDeGas,
         },
     ];
 
@@ -49,7 +61,11 @@ export default function ClientesPorProjetoEMes() {
         email: row.email,
         telefone: row.telefone,
         endereco: row.endereco,
-        projeto: row.projeto
+        projeto: row.projeto,
+        cpf: row.cpf,
+        matriculaDeEnergia: row.matriculaDeEnergia,
+        matriculaDeAgua: row.matriculaDeAgua,
+        matriculaDeGas: row.matriculaDeGas
     }))
 
 
@@ -64,7 +80,7 @@ export default function ClientesPorProjetoEMes() {
             router.push('/login');
         }
 
-        getProjects();
+        // getProjects();
     }, []);
 
     const handleChangeMounth = (event) => {
@@ -77,7 +93,7 @@ export default function ClientesPorProjetoEMes() {
 
     const getProjects = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -124,18 +140,18 @@ export default function ClientesPorProjetoEMes() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorProjetoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(dataSearch)
+                body: JSON.stringify(selectedProject)
             });
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data searched:', data);
                 setTableData(data);
-                setSearchBtnText('CPF encontrado!');
+                setSearchBtnText('Encontrado!');
             } else {
                 console.error('Failed to create post');
             }

@@ -46,6 +46,10 @@ export default function EditarConsumo() {
     const [mounth, setMounth] = useState('');
     const [year, setYear] = useState('');
 
+    const [AddressEmission, setAddressEmission] = useState('');
+
+    const [dataEmissions, setDataEmissions] = useState([]);
+
     const [emissoesEnergia, setEmissoesEnergia] = useState('');
     const [emissoesAgua, setEmissoesAgua] = useState('');
     const [emissoesResiduos, setEmissoesResiduos] = useState('');
@@ -156,6 +160,11 @@ export default function EditarConsumo() {
 
         const dataSearch = searchCpf
 
+        const dataEmissions = {
+            cpf: searchCpf,
+            endereco: AddressEmission
+        }
+
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
@@ -181,6 +190,29 @@ export default function EditarConsumo() {
         } catch (error) {
             console.error('Error creating post:', error);
         }
+        
+        try {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/listarPorCpfEEnderecoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataEmissions)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log('consumos:', data);
+                setDataEmissions(data);
+                setConsumoEnergia(data[2].consumo);
+                setResiduosKg(data[0].consumo);
+                setConsumoGas(data[1].consumo);
+                setConsumoAgua(data[3].consumo);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
 
         setTimeout(() => {
             setSearchBtnText('Buscar');
@@ -189,6 +221,14 @@ export default function EditarConsumo() {
 
     const submitForm = async () => {
         setBtnText('Cadastrando...');
+
+        
+        const emissionsEnergia = dataEmissions[2]?.id;
+        const emissionsGas = dataEmissions[1]?.id;
+        const emissionsAgua = dataEmissions[3]?.id;
+        const emissionsResiduos = dataEmissions[0]?.id;
+        
+        console.log(emissionsEnergia,emissionsGas,emissionsAgua,emissionsResiduos);
 
         const dataConsumoEnergia = {
             tipoEmissao: "energiaeletrica",
@@ -223,7 +263,7 @@ export default function EditarConsumo() {
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
-            tipoGas: selectedGas,
+            tipoEmissao: "gas",
             nome: name,
             cpf: cpf,
             endereco: address,
@@ -246,8 +286,8 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                method: 'POST',
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsEnergia}?login=terrazul&senha=1234567`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -257,8 +297,8 @@ export default function EditarConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                        method: 'POST',
+                    const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsAgua}?login=terrazul&senha=1234567`, {
+                        method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -268,8 +308,8 @@ export default function EditarConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
-                                method: 'POST',
+                            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsResiduos}?login=terrazul&senha=1234567`, {
+                                method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
@@ -279,8 +319,8 @@ export default function EditarConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
-                                        method: 'POST',
+                                    const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsGas}?login=terrazul&senha=1234567`, {
+                                        method: 'PUT',
                                         headers: {
                                             'Content-Type': 'application/json'
                                         },
@@ -401,6 +441,7 @@ export default function EditarConsumo() {
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
 
+                <input type="text" placeholder="Endereço" value={AddressEmission} onChange={(e) => setAddressEmission(e.target.value)} name="" id="" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                 <select value={selectedMonth} onChange={handleChangeMounth} className="bg-white  h-11 rounded-lg focus:outline-none border border-gray-700/45  text-black">
                     <option value="">Mês</option>
                     {Array.from({ length: 12 }, (_, i) => (
@@ -418,7 +459,7 @@ export default function EditarConsumo() {
                         </option>
                     ))}
                 </select>
-                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >{searchBtnText}</button>
+                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()}>{searchBtnText}</button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
 
