@@ -203,10 +203,10 @@ export default function EditarConsumo() {
                 const data = await response.json();
                 console.log('consumos:', data);
                 setDataEmissions(data);
-                setConsumoEnergia(data[2].consumo);
-                setResiduosKg(data[0].consumo);
-                setConsumoGas(data[1].consumo);
-                setConsumoAgua(data[3].consumo);
+                setConsumoEnergia(data.listaEnergiaEletrica[0].consumo);
+                setResiduosKg(data.listaResiduos[0].consumo);
+                setConsumoGas(data.listaGas[0].consumo);
+                setConsumoAgua(data.listaAgua[0].consumo);
             } else {
                 console.error('Failed to create post');
             }
@@ -222,13 +222,15 @@ export default function EditarConsumo() {
     const submitForm = async () => {
         setBtnText('Cadastrando...');
 
+        console.log(dataEmissions);
+        const emissions = dataEmissions;
         
-        const emissionsEnergia = dataEmissions[2]?.id;
-        const emissionsGas = dataEmissions[1]?.id;
-        const emissionsAgua = dataEmissions[3]?.id;
-        const emissionsResiduos = dataEmissions[0]?.id;
+        const emissionsEnergia = emissions.listaEnergiaEletrica[0]?.id;
+        const emissionsGas = emissions.listaGas[0]?.id;
+        const emissionsAgua = emissions.listaAgua[0]?.id;
+        const emissionsResiduos = emissions.listaResiduos[0]?.id;
         
-        console.log(emissionsEnergia,emissionsGas,emissionsAgua,emissionsResiduos);
+        // console.log(emissionsEnergia,emissionsGas,emissionsAgua,emissionsResiduos);
 
         const dataConsumoEnergia = {
             tipoEmissao: "energiaeletrica",
