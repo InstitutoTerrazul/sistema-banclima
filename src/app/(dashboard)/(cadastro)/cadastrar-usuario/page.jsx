@@ -2,12 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
 
 export default function CadastrarCadastrador() {
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+
+    const { userData } = useAuth();
+
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -84,9 +88,15 @@ export default function CadastrarCadastrador() {
                     <input type="password" placeholder="Senha" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <select value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
                         <option value="" disabled selected>Tipo de usuário</option>
-                        <option value="administradorGeral">Administrador Geral</option>
-                        <option value="cadastrador">Cadastrador</option>
-                        <option value="equipe">Equipe</option>
+                        {userData?.tipo === 'administradorGeral' ?
+                            <>
+                                <option value="administradorGeral">Administrador Geral</option>
+                                <option value="cadastrador">Cadastrador</option>
+                                <option value="equipe">Equipe</option>
+                            </>
+                            :
+                            <option value="equipe">Equipe</option>}
+
                     </select>
                 </div>
                 <div className="flex flex-row justify-end w-full gap-4">

@@ -26,11 +26,17 @@ import {
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+
 
 export default function SidebarMenu(props) {
   const pathname = usePathname()
 
   const roleName = props.roleName
+
+  const { userData } = useAuth();
+
+  console.log('tipo usuario: ', userData.tipoUsuario);
 
   const topNavigation = [
     {
@@ -38,14 +44,14 @@ export default function SidebarMenu(props) {
       href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
     {
       name: 'Consulta',
       href: '/consulta',
       icon: <MagnifyingGlass weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
   ]
 
@@ -55,7 +61,14 @@ export default function SidebarMenu(props) {
       href: '/inserir-consumo',
       icon: <Plus weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
+    },
+    {
+      name: 'Editar consumo',
+      href: '/editar-consumo',
+      icon: <NotePencil weight="thin" size={24} />,
+      // isActive: pathname === '/',
+      userType: userData?.tipoUsuario,
     },
   ]
   const fiffthOption = [
@@ -64,7 +77,7 @@ export default function SidebarMenu(props) {
       href: '/editar-consumo',
       icon: <NotePencil weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
   ]
   const thirdOption = [
@@ -73,7 +86,7 @@ export default function SidebarMenu(props) {
       href: '/criar-projeto',
       icon: <Plus weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
   ]
   const fourthOption = [
@@ -82,7 +95,7 @@ export default function SidebarMenu(props) {
       href: '/editar-calculo',
       icon: <ArrowsCounterClockwise weight="thin" size={24} />,
       // isActive: pathname === '/',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
   ]
 
@@ -92,7 +105,7 @@ export default function SidebarMenu(props) {
       href: '/cadastrar-usuario',
       icon: <UserList weight="thin" size={24} />,
       // isActive: pathname.includes('/cadastrar-revenda'),
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
     // {
     //   name: 'Cadastrar equipe',
@@ -106,15 +119,45 @@ export default function SidebarMenu(props) {
       href: '/cadastrar-cliente',
       icon: <UserPlus weight="thin" size={24} />,
       isActive: pathname === '/renovar-revenda',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
     {
       name: 'Editar cliente',
       href: '/editar-cliente',
       icon: <NotePencil weight="thin" size={24} />,
       // isActive: pathname === '/renovar-revenda',
-      hasPermission: ['Distributor'],
+      userType: userData?.tipoUsuario,
     },
+  ]
+  const firstLevelOther = [
+    {
+      name: 'Cadastrar Usuário',
+      href: '/cadastrar-usuario',
+      icon: <UserList weight="thin" size={24} />,
+      // isActive: pathname.includes('/cadastrar-revenda'),
+      userType: userData?.tipoUsuario,
+    },
+    // {
+    //   name: 'Cadastrar equipe',
+    //   href: '/cadastrar-equipe',
+    //   icon: <UsersFour weight="thin" size={24} />,
+    //   isActive: pathname === '/alterar-revenda',
+    //   hasPermission: ['Distributor'],
+    // },
+    // {
+    //   name: 'Cadastrar cliente',
+    //   href: '/cadastrar-cliente',
+    //   icon: <UserPlus weight="thin" size={24} />,
+    //   isActive: pathname === '/renovar-revenda',
+    //   userType: userData?.tipoUsuario,
+    // },
+    // {
+    //   name: 'Editar cliente',
+    //   href: '/editar-cliente',
+    //   icon: <NotePencil weight="thin" size={24} />,
+    //   // isActive: pathname === '/renovar-revenda',
+    //   userType: userData?.tipoUsuario,
+    // },
   ]
 
   const reportsOptions = [
@@ -123,43 +166,43 @@ export default function SidebarMenu(props) {
       href: '/listar-projetos',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor/adicionar',
-      hasPermission: ['Administrator'],
+      userType: userData?.tipoUsuario,
     },
     {
       name: 'Clientes cadastrados por projeto',
       href: '/clientes-cadastrados',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
-      hasPermission: ['Administrator'],
+      userType: userData?.tipoUsuario,
     },
     {
       name: 'Clientes cadastrados por mês',
       href: '/clientes-por-projeto-e-mes',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
-      hasPermission: ['Administrator'],
+      userType: userData?.tipoUsuario,
     },
-    {
-      name: '% de redução e beneficios recebidos',
-      href: '/distribuidor',
-      icon: <FileText weight="thin" size={24} />,
-      isActive: pathname === '/distribuidor',
-      hasPermission: ['Administrator'],
-    },
+    // {
+    //   name: '% de redução e beneficios recebidos',
+    //   href: '/distribuidor',
+    //   icon: <FileText weight="thin" size={24} />,
+    //   isActive: pathname === '/distribuidor',
+    //   userType: userData?.tipoUsuario,
+    // },
     {
       name: 'Total de emissões evitadas',
       href: '/emissoes-evitadas',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
-      hasPermission: ['Administrator'],
+      userType: userData?.tipoUsuario,
     },
-    {
-      name: 'Total de benefícios',
-      href: '/distribuidor',
-      icon: <FileText weight="thin" size={24} />,
-      isActive: pathname === '/distribuidor',
-      hasPermission: ['Administrator'],
-    },
+    // {
+    //   name: 'Total de benefícios',
+    //   href: '/distribuidor',
+    //   icon: <FileText weight="thin" size={24} />,
+    //   isActive: pathname === '/distribuidor',
+    //   userType: userData?.tipoUsuario,
+    // },
   ]
 
   // let firstlevelFiltered = firstLevel
@@ -226,41 +269,67 @@ export default function SidebarMenu(props) {
                 {item.name}
               </MenuItem>
             ))}
-            <SubMenu
-              label="Cadastro"
-              className="bg-primary"
-              defaultOpen={true}
-              icon={<ListBullets weight="thin" size={24} />}
-            >
-              {firstLevel.map((item, i) => (
-                <MenuItem
-                  key={i}
-                  component={<Link href={item.href} />}
-                  className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
-                    } `}
-                  icon={item.icon}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-            </SubMenu>
-            {/* <SubMenu
-              label="Consulta"
-              className="bg-primary"
-              icon={<ListMagnifyingGlass weight="thin" size={24} />}
-            >
-              {secondLevel.map((item, i) => (
-                <MenuItem
-                  key={i}
-                  component={<Link href={item.href} />}
-                  className="hover:text-yellow bg-primary/80"
-                  icon={item.icon}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-            </SubMenu> */}
-            {secondOption.map((item, i) => (
+            {userData.tipoUsuario === 'administradorgeral' && (
+              <SubMenu
+                label="Cadastro"
+                className="bg-primary"
+                defaultOpen={true}
+                icon={<ListBullets weight="thin" size={24} />}
+              >
+                {firstLevel.map((item, i) => (
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
+                      } `}
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+            )}
+            {userData.tipoUsuario === 'cadastrador' && (
+              <SubMenu
+                label="Cadastro"
+                className="bg-primary"
+                defaultOpen={true}
+                icon={<ListBullets weight="thin" size={24} />}
+              >
+                {firstLevelOther.map((item, i) => (
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
+                      } `}
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+            )}
+            {userData.tipoUsuario === 'administradorgeral' || userData.tipoUsuario === 'cadastrador' ? (
+              <SubMenu
+                label="Consumo"
+                className="bg-primary"
+                defaultOpen={false}
+                icon={<ListBullets weight="thin" size={24} />}
+              >
+                {secondOption.map((item, i) => (
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
+                      } `}
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+            ) : null}
+            {/* {secondOption.map((item, i) => (
               <MenuItem
                 key={i}
                 component={<Link href={item.href} />}
@@ -279,32 +348,45 @@ export default function SidebarMenu(props) {
               >
                 {item.name}
               </MenuItem>
-            ))}
+            ))} */}
             {thirdOption.map((item, i) => (
-              <MenuItem
-                key={i}
-                component={<Link href={item.href} />}
-                className="hover:text-yellow bg-primary"
-                icon={item.icon}
-              >
-                {item.name}
-              </MenuItem>
+              <>
+                {userData.tipoUsuario === 'administradorgeral' ?
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </MenuItem>
+                  : null}
+              </>
             ))}
+
             {fourthOption.map((item, i) => (
-              <MenuItem
-                key={i}
-                component={<Link href={item.href} />}
-                className="hover:text-yellow bg-primary"
-                icon={item.icon}
-              >
-                {item.name}
-              </MenuItem>
+              <>
+                {userData.tipoUsuario === 'administradorgeral' ?
+
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                  >
+
+                    {item.name}
+                  </MenuItem>
+                  : null
+                }
+              </>
             ))}
             <SubMenu
               label="Relatórios"
               className="bg-primary"
               icon={<FileText weight="thin" size={24} />}
             >
+
               {reportsOptions.map((item, i) => (
                 <MenuItem
                   key={i}
@@ -317,7 +399,7 @@ export default function SidebarMenu(props) {
               ))}
             </SubMenu>
           </Menu>
-          <Menu
+          {/* <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
                 // only apply styles on first level elements of the tree
@@ -338,7 +420,7 @@ export default function SidebarMenu(props) {
               },
             }}
           >
-          </Menu>
+          </Menu> */}
         </div>
       </Sidebar>
     </>
