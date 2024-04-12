@@ -13,10 +13,10 @@ import AvoidedEmission from "@/components/AvoidedEmission";
 export default function Home() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, selectedProject, setSelectedProject } = useAuth();
 
     // const [projectList, setProjectList] = useState([]);
-    const [selectedProject, setSelectedProject] = useState();
+    // const [selectedProject, setSelectedProject] = useState();
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -85,7 +85,7 @@ export default function Home() {
         <>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-8">
                 <Select options={options} defaultValue={options[0]} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
-                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button>
+                {/* <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button> */}
             </div>
 
             <section className="relative flex flex-row justify-start items-start w-full gap-8">

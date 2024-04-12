@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userData, setUserData] = useState({});
     const [projectList, setProjectList] = useState([]);
+    const [selectedProject, setSelectedProject] = useState({});
     const router = useRouter();
 
     useEffect(() => {
@@ -29,6 +30,11 @@ export const AuthProvider = ({ children }) => {
         getProjects();
     }, [userData]);
 
+    useEffect(() => {
+        setSelectedProject(projectList[0]?.nome);
+        console.log('projectList context', projectList[0]?.nome);
+    }, [projectList]);
+
     const getProjects = async () => {
         try {
             const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
@@ -42,6 +48,8 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json();
                 console.log('get projetos context:', data);
                 setProjectList(data);
+                setSelectedProject(data[0]?.nome);
+
             } else {
                 console.error('Failed to create post');
             }
@@ -90,7 +98,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated, projectList, setProjectList }}>
+        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated, projectList, setProjectList, selectedProject, setSelectedProject }}>
             {children}
         </AuthContext.Provider>
     );

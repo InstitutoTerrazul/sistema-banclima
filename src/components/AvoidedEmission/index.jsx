@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+
 
 export default function AvoidedEmission() {
     const [totalEmissionsAvoided, setTotalEmissionsAvoided] = useState([])
 
+    const { selectedProject, setSelectedProject } = useAuth();
+
+
     useEffect(() => {
         getAvoidedEmissions()
     }, [])
+
+    useEffect(() => {
+        getAvoidedEmissions();
+    }, [selectedProject])
 
     const emissions = [
         {
@@ -31,7 +40,7 @@ export default function AvoidedEmission() {
     ]
 
     const getAvoidedEmissions = async () => {
-        const data = "projeto 1"
+        const data = selectedProject
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=terrazul&senha=1234567', {

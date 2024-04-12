@@ -2,6 +2,7 @@
 // import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 // import { CategoryScale, Chart, LinearScale, Point, PointElement } from "chart.js";
@@ -9,6 +10,10 @@ import Chart from 'chart.js/auto';
 // Chart.register(CategoryScale,LinearScale, PointElement, Point );
 // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function HistoryGraph() {
+
+    const { selectedProject, setSelectedProject } = useAuth();
+
+
     const [graphData, setGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
@@ -18,6 +23,10 @@ export default function HistoryGraph() {
         setIsLoaded(true);
 
     }, [])
+
+    useEffect(() => {
+        getGraphData();
+    }, [selectedProject])
 
     useEffect(() => {
 
@@ -34,7 +43,7 @@ export default function HistoryGraph() {
     }, [graphData])
 
     const getGraphData = async () => {
-        const data = "projeto 1"
+        const data = selectedProject
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=terrazul&senha=1234567', {

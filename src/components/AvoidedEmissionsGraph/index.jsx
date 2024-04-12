@@ -2,10 +2,14 @@
 // import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function AvoidedEmissionsGraph() {
+    const { userData, projectList, setProjectList, selectedProject, setSelectedProject } = useAuth();
+
+
     const [emissionGraphData, setEmissionGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
 
@@ -14,6 +18,10 @@ export default function AvoidedEmissionsGraph() {
         getGraphData();
 
     }, [])
+
+    useEffect(() => {
+        getGraphData();
+    }, [selectedProject])
 
     useEffect(() => {
 
@@ -37,7 +45,7 @@ export default function AvoidedEmissionsGraph() {
     },[emissionGraphData])
 
     const getGraphData = async () => {
-        const data = "projeto 1"
+        const data = selectedProject
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=terrazul&senha=1234567', {

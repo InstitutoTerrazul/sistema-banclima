@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react"
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+
 
 export default function TotalBenefitsAndEmissionsAvoided() {
     const [benefits, setBenefits] = useState(0)
     const [emissionsAvoided, setEmissionsAvoided] = useState(0)
 
+    const { selectedProject, setSelectedProject } = useAuth();
+
+
     useEffect(() => {
         getCardsData()
     }, [])
 
+    useEffect(() => {
+        getCardsData();
+    }, [selectedProject])
+
     const getCardsData = async () => {
 
-        const data = "projeto 1"
+        const data = selectedProject
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/totalBeneficioPorProjeto?login=terrazul&senha=1234567', {
