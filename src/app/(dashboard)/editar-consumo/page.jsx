@@ -192,7 +192,7 @@ export default function EditarConsumo() {
         }
         
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/listarPorCpfEEnderecoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpfEEnderecoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -288,7 +288,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsEnergia}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsEnergia}?login=terrazul&senha=1234567`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -299,7 +299,7 @@ export default function EditarConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsAgua}?login=terrazul&senha=1234567`, {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsAgua}?login=terrazul&senha=1234567`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -310,7 +310,7 @@ export default function EditarConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsResiduos}?login=terrazul&senha=1234567`, {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsResiduos}?login=terrazul&senha=1234567`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -321,7 +321,7 @@ export default function EditarConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch(`http://191.252.38.35:8080/api/emissoes/${emissionsGas}?login=terrazul&senha=1234567`, {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsGas}?login=terrazul&senha=1234567`, {
                                         method: 'PUT',
                                         headers: {
                                             'Content-Type': 'application/json'

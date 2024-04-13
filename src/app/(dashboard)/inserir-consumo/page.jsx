@@ -234,7 +234,7 @@ export default function InserirConsumo() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -245,7 +245,7 @@ export default function InserirConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -256,7 +256,7 @@ export default function InserirConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvar?login=terrazul&senha=1234567', {
+                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -267,7 +267,7 @@ export default function InserirConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch('http://191.252.38.35:8080/api/emissoes/salvarGas?login=terrazul&senha=1234567', {
+                                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvarGas?login=terrazul&senha=1234567', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json'
