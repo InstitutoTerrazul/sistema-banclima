@@ -59,7 +59,7 @@ export default function Login() {
                     <span className="text-3xl font-normal text-white text-end z-40">Bem vindo ao <span className="font-bold">sistema Banclima</span> </span>
                     <span className="text-xl font-normal text-white text-end z-40">Entre e acesse as informações sobre o total de emissoes evitadas.</span>
                 </div>
-                <div className=" flex-1 flex flex-col items-center text-start gap-10 w-full py-10 px-10 lg:px-20">
+                <div className="flex-1 flex flex-col items-center text-start gap-10 w-full py-10 px-10 lg:px-20">
                     <img
                         className="w-[180px] h-[72px]"
                         src="/v2/assets/logo.png"
@@ -71,8 +71,8 @@ export default function Login() {
 
                     <div className="flex flex-col items-center justify-start gap-x-8 w-full lg:px-10 2xl:px-20">
                         <form onSubmit={handleSubmit(sendLead)} className="flex flex-col items-center justify-center w-full gap-6 2xl:px-8">
-                            <input type="text" placeholder="Usuário" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={username} onChange={e => setUsername(e.target.value)} />
-                            <input type="password" placeholder="Senha" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={e => setPassword(e.target.value)} />
+                            <input type="text" placeholder="Usuário" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={username} onChange={e => setUsername(e.target.value)} />
+                            <input type="password" placeholder="Senha" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={e => setPassword(e.target.value)} />
                             <button type="submit" className=" w-full bg-[#019BD6] hover:bg-blue-400 rounded-lg p-3 text-lg font-bold text-white">{btnText}</button>
                         </form>
                     </div>
