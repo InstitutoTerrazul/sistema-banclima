@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactInputMask from "react-input-mask";
 import DatePicker from 'react-datepicker';
+import ptBR from 'date-fns/locale/pt-BR';
 import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
@@ -411,6 +412,7 @@ export default function CadastrarCliente() {
                             dateFormat="dd/MM/yyyy"
                             maxDate={new Date()} // Set the maximum date to today
                             placeholderText="data"
+                            locale={ptBR}
                             className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                             required
                         />

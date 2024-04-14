@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import ReactDatePicker from "react-datepicker";
+import ptBR from 'date-fns/locale/pt-BR';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Select from 'react-select'
 
@@ -483,6 +484,7 @@ export default function EditarConsumo() {
                                 dateFormat="dd/MM/yyyy"
                                 maxDate={new Date()} // Set the maximum date to today
                                 placeholderText="data"
+                                locale={ptBR}
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                             />
                         </div>
@@ -498,7 +500,7 @@ export default function EditarConsumo() {
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" />
 
                         </div>
 
