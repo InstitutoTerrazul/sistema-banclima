@@ -67,6 +67,8 @@ export default function EditarConsumo() {
     const [daysOfMouth, setDaysOfMouth] = useState('');
     const [residuesPerPerson, setResiduesPerPerson] = useState('');
 
+    const [getDate, setGetDate] = useState('');
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -85,6 +87,14 @@ export default function EditarConsumo() {
         console.log(formattedDate);
 
         setDateFormatted(formattedDate);
+
+        if (formattedDate === '31/12/1969') {
+            setGetDate('');
+        } else {
+            setGetDate(formattedDate);
+        }
+
+        // setGetDate(formattedDate);
 
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
@@ -185,6 +195,8 @@ export default function EditarConsumo() {
                 setHabitantes(data[0].habitantes);
                 setAddress(data[0].endereco);
                 setSearchBtnText('Encontrado!');
+                setGetDate(data[0].data);
+
             } else {
                 console.error('Failed to create post');
             }
@@ -481,6 +493,7 @@ export default function EditarConsumo() {
                             <ReactDatePicker
                                 selected={selectedDate}
                                 onChange={handleDateChange}
+                                value={getDate}
                                 dateFormat="dd/MM/yyyy"
                                 maxDate={new Date()} // Set the maximum date to today
                                 placeholderText="data"

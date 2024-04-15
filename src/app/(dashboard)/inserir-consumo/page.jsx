@@ -59,6 +59,9 @@ export default function InserirConsumo() {
     const [daysOfMouth, setDaysOfMouth] = useState('');
     const [residuesPerPerson, setResiduesPerPerson] = useState('');
 
+    const [getDate, setGetDate] = useState('');
+
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -77,6 +80,14 @@ export default function InserirConsumo() {
         console.log(formattedDate);
 
         setDateFormatted(formattedDate);
+
+        if (formattedDate === '31/12/1969') {
+            setGetDate('');
+        } else {
+            setGetDate(formattedDate);
+        }
+
+        // setGetDate(formattedDate);
 
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
@@ -406,6 +417,7 @@ export default function InserirConsumo() {
                             <ReactDatePicker
                                 selected={selectedDate}
                                 onChange={handleDateChange}
+                                value={getDate}
                                 dateFormat="dd/MM/yyyy"
                                 maxDate={new Date()} // Set the maximum date to today
                                 placeholderText="data"

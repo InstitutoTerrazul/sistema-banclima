@@ -47,6 +47,8 @@ export default function EditarCliente() {
     const [searchBtnText, setSearchBtnText] = useState('Buscar CPF');
     const [btnDeleteCliqued, setBtnDeleteCliqued] = useState(false);
 
+    const [getDate, setGetDate] = useState('');
+    const [dateFormatted, setDateFormatted] = useState('');
 
     const [co2Emissions, setCo2Emissions] = useState('');
 
@@ -63,6 +65,35 @@ export default function EditarCliente() {
             router.push('/login');
         }
     }, []);
+
+    useEffect(() => {
+        const date = new Date(selectedDate);
+        const formattedDate = date.toLocaleDateString('en-GB');
+
+        console.log(formattedDate);
+
+        setDateFormatted(formattedDate);
+
+        if (formattedDate === '31/12/1969') {
+            setGetDate('');
+        } else {
+            setGetDate(formattedDate);
+        }
+
+        // setGetDate(formattedDate);
+
+        const dateStr = formattedDate;
+        const dateParts = dateStr.split("/");
+
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        console.log('mes:', month, 'ano:', year);
+
+        // setMounth(month);
+        // setYear(year);
+
+    }, [selectedDate]);
 
     const clearForm = () => {
         setName('');
@@ -114,6 +145,7 @@ export default function EditarCliente() {
                 setTitularEnergia(data[0].titularEnergiaCpf);
                 setCodGas(data[0].matriculaDeGas);
                 setTitularGas(data[0].titularGasCpf);
+                setGetDate(data[0].data);
                 setSearchBtnText('CPF encontrado!');
             } else {
                 console.error('Failed to create post');
@@ -138,7 +170,7 @@ export default function EditarCliente() {
             habitantes: habitantes,
             projeto: projeto,
             endereco: address,
-            data: date,
+            data: dateFormatted,
             matriculaDeEnergia: codEnergia,
             titularEnergiaCpf: titularEnergia,
             matriculaDeAgua: codAgua,
@@ -254,7 +286,7 @@ export default function EditarCliente() {
                                 placeholderText="data"
                                 locale={ptBR}
                                 dateFormat="dd/MM/yyyy"
-                                value={selectedDate}
+                                value={getDate}
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                             />
                         </div>
