@@ -36,8 +36,20 @@ export default function Consulta() {
             selector: row => row.endereco,
         },
         {
-            name: 'Projeto',
-            selector: row => row.projeto,
+            name: 'cpf',
+            selector: row => row.cpf,
+        },
+        {
+            name: 'Matricula Energia',
+            selector: row => row.matriculaDeEnergia,
+        },
+        {
+            name: 'Matricula água',
+            selector: row => row.matriculaDeAgua,
+        },
+        {
+            name: 'Matricula gás',
+            selector: row => row.matriculaDeGas,
         },
     ];
 
@@ -46,7 +58,11 @@ export default function Consulta() {
         email: row.email,
         telefone: row.telefone,
         endereco: row.endereco,
-        projeto: row.projeto
+        projeto: row.projeto,
+        cpf: row.cpf,
+        matriculaDeEnergia: row.matriculaDeEnergia,
+        matriculaDeAgua: row.matriculaDeAgua,
+        matriculaDeGas: row.matriculaDeGas
     }))
 
 
