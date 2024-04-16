@@ -345,7 +345,7 @@ export default function EditarConsumo() {
                                         const data = await response.json();
                                         setEmissoesGas(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/salvar?login=terrazul&senha=1234567', {
+                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=terrazul&senha=1234567', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
