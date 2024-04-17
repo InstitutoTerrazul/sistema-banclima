@@ -136,7 +136,7 @@ export default function InserirConsumo() {
         setConsumoAgua('');
         setConsumoGas('');
         setconsumoResiduos('');
-        setProjeto('');
+        // setProjeto('');
         setSelectedDate(null);
         setDateFormatted('');
         setEmissoesEnergia('');
@@ -244,6 +244,8 @@ export default function InserirConsumo() {
             taxaDeReducao: '0',
             beneficio: '0'
         }
+
+        // console.log(dataEmissoesMensal);
 
         try {
             const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
@@ -397,8 +399,8 @@ export default function InserirConsumo() {
         <div className="flex flex-col items-start justify-center w-full gap-8">
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onBlur={handleSearchBtn} value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
-                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >{searchBtnText}</button>
+                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={handleSearchBtn} >{searchBtnText}</button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
 
@@ -526,7 +528,8 @@ export default function InserirConsumo() {
                 </div>
                 <div className="flex flex-row justify-end items-center w-full gap-8">
                     {showClearBtn ? <button type="button" className="flex items-center justify-center bg-green-700 px-8 py-2 rounded-lg" onClick={clearForm}>Limpar dados</button> : ''}
-                    <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={submitForm}>Cadastrar</button>
+                    {/* <button type="button" className="flex items-center justify-center bg-green-700 px-8 py-2 rounded-lg" onClick={clearForm}>Limpar dados</button>  */}
+                    <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={submitForm}>{btnText}</button>
                 </div>
             </form>
         </div>
