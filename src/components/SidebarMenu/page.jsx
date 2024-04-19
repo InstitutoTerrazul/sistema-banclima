@@ -43,14 +43,12 @@ export default function SidebarMenu(props) {
       name: 'Dashboard',
       href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
     {
       name: 'Consulta',
       href: '/consulta',
       icon: <MagnifyingGlass weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
   ]
@@ -60,23 +58,20 @@ export default function SidebarMenu(props) {
       name: 'Inserir consumo',
       href: '/inserir-consumo',
       icon: <Plus weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
     {
       name: 'Editar consumo',
       href: '/editar-consumo',
       icon: <NotePencil weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
   ]
   const fiffthOption = [
     {
-      name: 'Editar consumo',
-      href: '/editar-consumo',
-      icon: <NotePencil weight="thin" size={24} />,
-      // isActive: pathname === '/',
+      name: 'Usuários cadastrados',
+      href: '/lista-usuarios',
+      icon: <ListBullets weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
   ]
@@ -85,7 +80,6 @@ export default function SidebarMenu(props) {
       name: 'Criar projeto',
       href: '/criar-projeto',
       icon: <Plus weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
   ]
@@ -94,7 +88,6 @@ export default function SidebarMenu(props) {
       name: 'Alterar Calculo de Emissões',
       href: '/editar-calculo',
       icon: <ArrowsCounterClockwise weight="thin" size={24} />,
-      // isActive: pathname === '/',
       userType: userData?.tipoUsuario,
     },
   ]
@@ -104,16 +97,8 @@ export default function SidebarMenu(props) {
       name: 'Cadastrar Usuário',
       href: '/cadastrar-usuario',
       icon: <UserList weight="thin" size={24} />,
-      // isActive: pathname.includes('/cadastrar-revenda'),
       userType: userData?.tipoUsuario,
     },
-    // {
-    //   name: 'Cadastrar equipe',
-    //   href: '/cadastrar-equipe',
-    //   icon: <UsersFour weight="thin" size={24} />,
-    //   isActive: pathname === '/alterar-revenda',
-    //   hasPermission: ['Distributor'],
-    // },
     {
       name: 'Cadastrar cliente',
       href: '/cadastrar-cliente',
@@ -125,7 +110,6 @@ export default function SidebarMenu(props) {
       name: 'Editar cliente',
       href: '/editar-cliente',
       icon: <NotePencil weight="thin" size={24} />,
-      // isActive: pathname === '/renovar-revenda',
       userType: userData?.tipoUsuario,
     },
   ]
@@ -134,30 +118,8 @@ export default function SidebarMenu(props) {
       name: 'Cadastrar Usuário',
       href: '/cadastrar-usuario',
       icon: <UserList weight="thin" size={24} />,
-      // isActive: pathname.includes('/cadastrar-revenda'),
       userType: userData?.tipoUsuario,
     },
-    // {
-    //   name: 'Cadastrar equipe',
-    //   href: '/cadastrar-equipe',
-    //   icon: <UsersFour weight="thin" size={24} />,
-    //   isActive: pathname === '/alterar-revenda',
-    //   hasPermission: ['Distributor'],
-    // },
-    // {
-    //   name: 'Cadastrar cliente',
-    //   href: '/cadastrar-cliente',
-    //   icon: <UserPlus weight="thin" size={24} />,
-    //   isActive: pathname === '/renovar-revenda',
-    //   userType: userData?.tipoUsuario,
-    // },
-    // {
-    //   name: 'Editar cliente',
-    //   href: '/editar-cliente',
-    //   icon: <NotePencil weight="thin" size={24} />,
-    //   // isActive: pathname === '/renovar-revenda',
-    //   userType: userData?.tipoUsuario,
-    // },
   ]
 
   const reportsOptions = [
@@ -204,19 +166,6 @@ export default function SidebarMenu(props) {
     //   userType: userData?.tipoUsuario,
     // },
   ]
-
-  // let firstlevelFiltered = firstLevel
-  // let secondlevelFiltered = secondLevel
-  // if (props.roleName !== 'Administrator') {
-  //   firstlevelFiltered = firstLevel.filter((item) =>
-  //     item.hasPermission.includes(props.roleName),
-  //   )
-  //   secondlevelFiltered = secondLevel.filter((item) =>
-  //     item.hasPermission.includes(props.roleName),
-  //   )
-  // }
-
-  // console.log('colapsed: ', collapsed);
 
   return (
     <>
@@ -338,7 +287,7 @@ export default function SidebarMenu(props) {
               >
                 {item.name}
               </MenuItem>
-            ))}
+            ))} */}
             {fiffthOption.map((item, i) => (
               <MenuItem
                 key={i}
@@ -348,7 +297,7 @@ export default function SidebarMenu(props) {
               >
                 {item.name}
               </MenuItem>
-            ))} */}
+            ))}
             {thirdOption.map((item, i) => (
               <>
                 {userData.tipoUsuario === 'administradorgeral' ?
@@ -399,28 +348,6 @@ export default function SidebarMenu(props) {
               ))}
             </SubMenu>
           </Menu>
-          {/* <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      color: '#FBB900',
-                    },
-                  }
-                if (level === 1)
-                  return {
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      color: '#FBB900',
-                    },
-                  }
-              },
-            }}
-          >
-          </Menu> */}
         </div>
       </Sidebar>
     </>

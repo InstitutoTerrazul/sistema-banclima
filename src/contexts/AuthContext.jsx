@@ -26,13 +26,11 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         // const userValue = localStorage.getItem('user')
         // setUserData(JSON.parse(userValue)); 
-        console.log('userData', userData);
         getProjects();
     }, [userData]);
 
     useEffect(() => {
         setSelectedProject(projectList[0]?.nome);
-        console.log('projectList context', projectList[0]?.nome);
     }, [projectList]);
 
     const getProjects = async () => {
@@ -46,7 +44,6 @@ export const AuthProvider = ({ children }) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('get projetos context:', data);
                 setProjectList(data);
                 setSelectedProject(data[0]?.nome);
 
@@ -59,7 +56,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     const signIn = async (userData) => {
-        console.log("CHEGUEI AQUI!!");
         // localStorage.setItem('user', JSON.stringify(userData));
         // Set user data in localStorage after successful authentication
         try {
@@ -72,7 +68,6 @@ export const AuthProvider = ({ children }) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Post created:', data);
                 setBtnText('logado com sucesso!')
                 localStorage.setItem('user', JSON.stringify(data));
                 setUserData(data);

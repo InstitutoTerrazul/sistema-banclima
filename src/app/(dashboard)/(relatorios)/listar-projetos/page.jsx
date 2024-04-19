@@ -9,10 +9,6 @@ export default function ListarProjetos() {
 
     const { userData, projectList, setProjectList } = useAuth();
 
-    useEffect(() => {
-        console.log('projetos', projectList);
-    }, [])
-
     const columns = [
         {
             name: 'Nome',

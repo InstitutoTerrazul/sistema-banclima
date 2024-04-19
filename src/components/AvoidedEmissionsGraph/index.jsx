@@ -27,8 +27,6 @@ export default function AvoidedEmissionsGraph() {
 
         const data = emissionGraphData;
 
-        console.log('dados crus:', data?.meses?.map(item => item.mes));
-
         const transformedData = {
             "mes": data?.meses?.map(item => item.mes),
             "agua": data?.meses?.map(item => item.emissaoAgua),
@@ -36,8 +34,6 @@ export default function AvoidedEmissionsGraph() {
             "energiaEletrica": data?.meses?.map(item => item.emissaoEnergiaEletrica),
             "residuos": data?.meses?.map(item => item.emissaoResiduos)
         }
-
-        console.log('dados transformados emissoes:', transformedData);
 
         setTransformedData(transformedData);
 
@@ -57,7 +53,6 @@ export default function AvoidedEmissionsGraph() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Grafico de historico:', data);
                 setEmissionGraphData(data);
             } else {
                 console.error('Failed to create post');
@@ -158,9 +153,6 @@ export default function AvoidedEmissionsGraph() {
             },
         ],
     }
-
-    console.log('meses', transformedData?.mes);
-
 
     return (
         <>

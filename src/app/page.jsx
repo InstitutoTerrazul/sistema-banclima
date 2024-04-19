@@ -48,8 +48,6 @@ export default function Login() {
       senha: password,
     }
 
-    console.log(data)
-
     try {
       const response = await fetch('http://191.252.38.35:8080/api/usuarios/login', {
         method: 'POST',
@@ -60,7 +58,6 @@ export default function Login() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('Post created:', data);
         setBtnText('logado com sucesso!')
         localStorage.setItem('user', JSON.stringify(data));
         setUserData(data);

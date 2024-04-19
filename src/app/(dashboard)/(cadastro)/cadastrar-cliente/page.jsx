@@ -82,7 +82,6 @@ export default function CadastrarCliente() {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('en-GB');
 
-        console.log(formattedDate);
 
         setDateFormatted(formattedDate);
 
@@ -91,8 +90,6 @@ export default function CadastrarCliente() {
 
         const month = dateParts[1];
         const year = dateParts[2];
-
-        console.log('mes:', month, 'ano:', year);
 
         setMounth(month);
         setYear(year);
