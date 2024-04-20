@@ -289,14 +289,18 @@ export default function SidebarMenu(props) {
               </MenuItem>
             ))} */}
             {fiffthOption.map((item, i) => (
-              <MenuItem
-                key={i}
-                component={<Link href={item.href} />}
-                className="hover:text-yellow bg-primary"
-                icon={item.icon}
-              >
-                {item.name}
-              </MenuItem>
+              <>
+                {userData.tipoUsuario === 'administradorgeral' ?
+                  <MenuItem
+                    key={i}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </MenuItem>
+                  : null}
+              </>
             ))}
             {thirdOption.map((item, i) => (
               <>

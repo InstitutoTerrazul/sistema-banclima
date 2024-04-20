@@ -5,18 +5,20 @@ import { useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ReactInputMask from "react-input-mask";
 import DataTable from 'react-data-table-component';
+import UserConsumption from "@/components/UserConsumption";
 
 
 export default function Consulta() {
     const router = useRouter();
 
-    const { userData } = useAuth();
+    const { userData, userConsumptionPopUp, setUserConsumptionPopUp } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
     const [searchCpf, setSearchCpf] = useState('');
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
     const [tableData, setTableData] = useState([]);
+    const [userSelectedId, setUserSelectedId] = useState();
 
     const columns = [
         {
@@ -51,6 +53,25 @@ export default function Consulta() {
             name: 'Matricula gás',
             selector: row => row.matriculaDeGas,
         },
+        {
+            name: 'Ação',
+            selector: row => row.cpf,
+            cell: (row) => {
+                return (
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <button
+                      title="Editar"
+                      type="button"
+                      rel="noreferrer"
+                      className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
+                      onClick={() => handleUserConsumption(row.cpf)}
+                    >
+                        Ver Consumo
+                    </button>
+                  </div>
+                )
+              },
+        },
     ];
 
     const data = tableData.map(row => ({
@@ -64,6 +85,12 @@ export default function Consulta() {
         matriculaDeAgua: row.matriculaDeAgua,
         matriculaDeGas: row.matriculaDeGas
     }))
+
+
+    const handleUserConsumption = (user) => {
+        setUserSelectedId(user);
+        setUserConsumptionPopUp(true);
+    }
 
 
     useEffect(() => {
@@ -168,7 +195,7 @@ export default function Consulta() {
                     <option value="Projeto 1" selected>Projeto 1</option>
                     <option value="Projeto 2">Projeto 2</option>
                 </select> */}
-                <Select placeholder="Buscar por projeto" options={options} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+                <Select placeholder="Buscar por projeto" options={options} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black" />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => getClientList()} >Buscar</button>
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()} >{searchBtnText}</button>
@@ -180,6 +207,8 @@ export default function Consulta() {
                     data={data}
                 />
             </div>
+            {userConsumptionPopUp && <UserConsumption id={userSelectedId} />}
+            {/* <UserConsumption id={userSelectedId} /> */}
         </>
     )
 }

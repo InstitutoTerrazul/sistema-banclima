@@ -106,11 +106,12 @@ export default function EditarCliente() {
         setDate('');
         setCodEnergia('');
         setTitularEnergia('');
+        setGetDate('')
         setCodAgua('');
         setTitularAgua('');
         setCodGas('');
         setTitularGas('');
-
+        setSearchCpf('');
     }
 
     const handleSearchBtn = async () => {
@@ -233,11 +234,15 @@ export default function EditarCliente() {
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            clearForm();
+            setSearchBtnText('Editar');
+            setBtnDeleteCliqued(false);
         }
 
         setTimeout(() => {
-            setSearchBtnText('Editar');
-
+            clearForm();
+            setBtnText('Editar');
+            setBtnDeleteCliqued(false);
         }, 2000);
     }
 

@@ -2,13 +2,15 @@
 import { useEffect, useState } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import DataTable from 'react-data-table-component';
+import EditUser from "@/components/EditUser";
 
 export default function ListarProjetos() {
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp } = useAuth();
 
     const [usersList, setUsersList] = useState([]);
     const [user, setUser] = useState({});
+    const [editUserId, setEditUserId] = useState('');
 
     useEffect(() => {
         getUsers();
@@ -40,6 +42,11 @@ export default function ListarProjetos() {
         }
     }
 
+    const handleEditUser = (user) => {
+        setEditUserId(user);
+        setEditUserPopUp(true);
+    }
+
     const columns = [
         {
             name: 'Nome',
@@ -63,14 +70,15 @@ export default function ListarProjetos() {
             cell: (row) => {
                 return (
                   <div className="flex flex-col md:flex-row gap-4">
-                    <a
+                    <button
                       title="Editar"
-                      href={`/v2/usuario/editar/${row.id}`}
+                      type="button"
                       rel="noreferrer"
                       className="flex justify-center items-center gap-2 text-white px-4 h-10 bg-primary rounded-lg"
+                      onClick={() => handleEditUser(row.id)}
                     >
                         Editar
-                    </a>
+                    </button>
                   </div>
                 )
               },
@@ -95,6 +103,8 @@ export default function ListarProjetos() {
                     data={data}
                 />
             </div>
+            {editUserPopUp && <EditUser id={editUserId} />}
+            {/* <EditUser /> */}
         </>
     )
 }

@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
     const [userData, setUserData] = useState({});
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState({});
+    const [editUserPopUp, setEditUserPopUp] = useState(false);
+    const [userConsumptionPopUp, setUserConsumptionPopUp] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -93,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated, projectList, setProjectList, selectedProject, setSelectedProject }}>
+        <AuthContext.Provider value={{ user, userData, setUserData, signIn, signOut, isAuthenticated, setIsAuthenticated, projectList, setProjectList, selectedProject, setSelectedProject, editUserPopUp, setEditUserPopUp, userConsumptionPopUp, setUserConsumptionPopUp }}>
             {children}
         </AuthContext.Provider>
     );
