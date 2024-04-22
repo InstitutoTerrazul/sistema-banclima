@@ -9,6 +9,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Select from 'react-select'
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function CadastrarCliente() {
@@ -289,42 +292,55 @@ export default function CadastrarCliente() {
                                                         // setEmissoesMensal(data)
                                                         setBtnText('Cadastrado!');
                                                         setShowClearBtn(true);
+                                                        toast.success('Cadastrado com sucesso!');
                                                         console.log('emissoes mensal:', data);
                                                     } else {
                                                         console.error('Failed to save mensal');
+                                                        toast.error('ops! algo deu errado ao criar emissão mensal');
                                                     }
                                                 } catch (error) {
                                                     console.error('Error to save mensal emissions:', error);
+                                                    toast.error('ops! algo deu errado ao criar emissão mensal');
                                                 }
                                             } else {
                                                 console.error('Failed to save residuos');
+                                                toast.error('ops! algo deu errado ao cadastrar o gás');
                                             }
                                         } catch (error) {
                                             console.error('Error creating post:', error);
+                                            toast.error('ops! algo deu errado ao cadastrar o gás');
                                         }
                                     } else {
                                         console.error('Failed to create post');
+                                        toast.error('ops! algo deu errado ao cadastrar o residuo');
                                     }
                                 } catch (error) {
                                     console.error('Error creating post:', error);
+                                    toast.error('ops! algo deu errado ao cadastrar o residuo');
                                 }
                             } else {
                                 console.error('Failed to save agua');
+                                toast.error('ops! algo deu errado ao cadastrar a agua');
                             }
                         } catch (error) {
                             console.error('Error creating post:', error);
+                            toast.error('ops! algo deu errado ao cadastrar a agua');
                         }
                     } else {
                         console.error('Failed to save energy');
+                        toast.error('ops! algo deu errado ao cadastrar energia');
                     }
                 } catch (error) {
                     console.error('Error creating post:', error);
+                    toast.error('ops! algo deu errado ao cadastrar energia');
                 }
             } else {
                 console.error('Failed to save client');
+                toast.error('ops! algo deu errado ao cadastrar o cliente');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado ao cadastrar o cliente');
         }
     }
 
@@ -389,6 +405,7 @@ export default function CadastrarCliente() {
 
     return (
         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-start justify-center w-full gap-8">
+            <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Cadastrar Cliente</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8">
                 <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">

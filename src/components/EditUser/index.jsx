@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function EditUser(props) {
@@ -81,12 +84,14 @@ export default function EditUser(props) {
             if (response.ok) {
                 const data = await response.json();
                 setBtnText('Editado!');
-                // console.log('Post created:', data);
+                toast.success('Editado com sucesso!');
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
 
         setTimeout(() => {
@@ -100,6 +105,7 @@ export default function EditUser(props) {
 
         <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 w-full h-screen gap-8 bg-black/20 rounded-xl">
             <div className="flex flex-col justify-start items-start p-10 w-full gap-8 bg-white rounded-xl">
+                <ToastContainer theme="colored"/>
 
                 <h1 className="text-3xl font-bold text-gray-800">Editar Usuário</h1>
 

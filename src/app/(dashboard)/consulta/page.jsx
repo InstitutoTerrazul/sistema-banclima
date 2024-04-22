@@ -6,6 +6,9 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ReactInputMask from "react-input-mask";
 import DataTable from 'react-data-table-component';
 import UserConsumption from "@/components/UserConsumption";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Consulta() {
@@ -122,9 +125,11 @@ export default function Consulta() {
                 setProjectList(data);
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
     }
 
@@ -141,11 +146,14 @@ export default function Consulta() {
                 const data = await response.json();
                 console.log('lista de clientes:', data);
                 setTableData(data);
+                toast.success('Busca concluída!');
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
     }
 
@@ -167,7 +175,8 @@ export default function Consulta() {
                 const data = await response.json();
                 console.log('Data searched:', data);
                 setTableData(data);
-                setSearchBtnText('CPF encontrado!');
+                toast.success('CPF encontrado!');
+                setSearchBtnText('Buscar');
             } else {
                 console.error('Failed to create post');
             }
@@ -188,6 +197,7 @@ export default function Consulta() {
 
     return (
         <>
+            <ToastContainer theme="colored"/>
             <h1 className="text-2xl font-bold text-gray-800 text-start">Consulta</h1>
 
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">

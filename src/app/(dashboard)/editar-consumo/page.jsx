@@ -10,6 +10,9 @@ import ReactDatePicker from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Select from 'react-select'
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function EditarConsumo() {
@@ -196,14 +199,17 @@ export default function EditarConsumo() {
                 setAddress(data[0].endereco);
                 setSearchBtnText('Encontrado!');
                 setGetDate(data[0].data);
+                toast.success('Busca concluída!');
 
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
-        
+
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpfEEnderecoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
                 method: 'POST',
@@ -220,11 +226,14 @@ export default function EditarConsumo() {
                 setResiduosKg(data.listaResiduos[0].consumo);
                 setConsumoGas(data.listaGas[0].consumo);
                 setConsumoAgua(data.listaAgua[0].consumo);
+                toast.success('Busca concluída!');
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
 
         setTimeout(() => {
@@ -237,12 +246,12 @@ export default function EditarConsumo() {
 
         console.log(dataEmissions);
         const emissions = dataEmissions;
-        
+
         const emissionsEnergia = emissions.listaEnergiaEletrica[0]?.id;
         const emissionsGas = emissions.listaGas[0]?.id;
         const emissionsAgua = emissions.listaAgua[0]?.id;
         const emissionsResiduos = emissions.listaResiduos[0]?.id;
-        
+
         // console.log(emissionsEnergia,emissionsGas,emissionsAgua,emissionsResiduos);
 
         const dataConsumoEnergia = {
@@ -358,35 +367,46 @@ export default function EditarConsumo() {
                                                 setBtnText('Cadastrado!');
                                                 setShowClearBtn(true);
                                                 console.log('emissoes mensal:', data);
+                                                toast.success('Cadastrado com sucesso!');
                                             } else {
                                                 console.error('Failed to save mensal');
+                                                toast.error('ops! algo deu errado!');
                                             }
                                         } catch (error) {
                                             console.error('Error to save mensal emissions:', error);
+                                            toast.error('ops! algo deu errado!');
                                         }
                                     } else {
                                         console.error('Failed to create post');
+                                        toast.error('ops! algo deu errado ao editar gas!');
                                     }
                                 } catch (error) {
                                     console.error('Error creating post:', error);
+                                    toast.error('ops! algo deu errado ao editar gas!');
                                 }
                             } else {
                                 console.error('Failed to create post');
+                                toast.error('ops! algo deu errado ao editar residuos!');
                             }
                         } catch (error) {
                             console.error('Error creating post:', error);
+                            toast.error('ops! algo deu errado ao editar residuos!');
                         }
                     } else {
                         console.error('Failed to create post');
+                        toast.error('ops! algo deu errado ao editar energia!');
                     }
                 } catch (error) {
                     console.error('Error creating post:', error);
+                    toast.error('ops! algo deu errado ao editar energia!');
                 }
             } else {
                 console.error('Failed to create post');
+                toast.error('ops! algo deu errado ao editar energia!');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado ao editar energia!');
         }
 
 
@@ -452,6 +472,7 @@ export default function EditarConsumo() {
 
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
+            <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />

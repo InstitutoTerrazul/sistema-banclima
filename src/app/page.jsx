@@ -25,6 +25,9 @@ import { useState } from "react"
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/contexts/AuthContext";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Login() {
@@ -59,19 +62,27 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         setBtnText('logado com sucesso!')
+        toast.success('Login efetuado com sucesso!');
         localStorage.setItem('user', JSON.stringify(data));
         setUserData(data);
         router.push('/dashboard');
       } else {
         console.error('Failed to create post');
+        toast.error('Erro ao efetuar login');
+        setBtnText('Erro ao efetuar login');
       }
     } catch (error) {
       console.error('Error creating post:', error);
     }
+
+    setTimeout(() => {
+      setBtnText('Entrar')
+    }, 3000)
   }
 
   return (
     <section className="flex items-center justify-center relative w-full shadow-lg isolate bg-[#fefefd]">
+      <ToastContainer theme="colored"/>
       <div className="flex flex-col lg:flex-row items-center justify-between w-full">
         <div className='flex flex-col items-end justify-center py-40 px-10 relative lg:w-[55%] h-screen bg-[url(/v2/login-bg.jpg)] bg-cover bg-no-repeat after:absolute after:bg-primary/[.20] after:top-0 after:bottom-0 after:right-0 after:left-0 after:z-20'>
           <span className="text-3xl font-normal text-white text-end z-40">Bem vindo ao <span className="font-bold">sistema Banclima</span> </span>

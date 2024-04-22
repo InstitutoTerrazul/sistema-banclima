@@ -9,6 +9,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { subDays } from 'date-fns';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Select from 'react-select'
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function EditarCliente() {
@@ -194,15 +197,18 @@ export default function EditarCliente() {
                 // console.log('Post created:', data);
                 const data = await response.json();
                 console.log('Post created:', data);
-                setBtnText('Editado!');
+                setBtnText('Editar');
                 clearForm();
+                toast.success('Editado com sucesso!');
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
+                toast.error('Erro ao efetuar login');
             }
         } catch (error) {
             console.error('Error creating post:', error);
+            toast.error('ops! algo deu errado');
         }
 
         setTimeout(() => {
@@ -227,16 +233,19 @@ export default function EditarCliente() {
                 console.log('Post created:', data);
                 clearForm();
                 setBtnDeleteCliqued(false);
+                toast.success('Deletado com sucesso!');
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
             } else {
                 console.error('Failed to delete client');
+
             }
         } catch (error) {
             console.error('Error creating post:', error);
             clearForm();
             setSearchBtnText('Editar');
             setBtnDeleteCliqued(false);
+            toast.success('Deletado com sucesso!');
         }
 
         setTimeout(() => {
@@ -264,6 +273,8 @@ export default function EditarCliente() {
     return (
         <>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-start justify-center w-full gap-8">
+                <ToastContainer theme="colored" />
+
                 <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Cliente</h1>
 
                 <div className="flex flex-row justify-center items-center w-full gap-8 my-4">

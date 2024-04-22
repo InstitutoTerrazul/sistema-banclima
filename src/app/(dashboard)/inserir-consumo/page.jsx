@@ -10,6 +10,9 @@ import ReactDatePicker from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Select from 'react-select'
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function InserirConsumo() {
@@ -174,7 +177,8 @@ export default function InserirConsumo() {
                 setPhone(data[0].telefone);
                 setHabitantes(data[0].habitantes);
                 setAddress(data[0].endereco);
-                setSearchBtnText('CPF encontrado!');
+                setSearchBtnText('Buscar CPF');
+                toast.success('Busca concluída!');
             } else {
                 console.error('Failed to create post');
             }
@@ -397,6 +401,7 @@ export default function InserirConsumo() {
 
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
+            <ToastContainer theme="colored"/>
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
