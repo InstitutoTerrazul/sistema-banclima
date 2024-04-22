@@ -63,15 +63,15 @@ export default function RegisteredAndBenefitedCustomers() {
     }
 
     return (
-        <div className="flex flex-row w-[calc(100%/2)] gap-4">
-            <article className="flex flex-col items-start justify-center w-[calc(100%/2)] pb-2 gap-4 bg-white rounded-xl">
+        <div className="flex flex-row w-full lg:w-[calc(100%/2-12px)] gap-2">
+            <article className="flex flex-col items-start justify-center w-full lg:w-[calc(100%/2-10px)] pb-2 gap-4 bg-white rounded-xl">
                 <div className="bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
                 <div className="flex flex-col items-start py-2 px-8 justify-center gap-4">
                     <span className="text-base font-normal text-black">Total de clientes cadastrados</span>
                     <span className="text-2xl font-medium text-black">{registeredClient} Clientes</span>
                 </div>
             </article>
-            <article className="flex flex-col items-start justify-center w-[calc(100%/2)] pb-2 gap-4 bg-white rounded-xl">
+            <article className="flex flex-col items-start justify-center w-full lg:w-[calc(100%/2-10px)] pb-2 gap-4 bg-white rounded-xl">
                 <div className="bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
                 <div className="flex flex-col items-start py-2 px-8 justify-center gap-4">
                     <span className="text-base font-normal text-black">Total de clientes beneficiados</span>

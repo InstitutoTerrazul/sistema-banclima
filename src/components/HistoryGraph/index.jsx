@@ -145,7 +145,7 @@ export default function HistoryGraph() {
                 datasetIdKey='id'
                 data={opt}
                 options={options2}
-                className="w-full h-96"
+                className="w-full lg:w-[calc(100%/2-20px)] h-96"
             />
         </>
     )

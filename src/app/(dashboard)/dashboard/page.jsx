@@ -88,16 +88,16 @@ export default function Home() {
                 {/* <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button> */}
             </div>
 
-            <section className="relative flex flex-row justify-start items-start w-full gap-8">
-                <article className="relative flex flex-row justify-center p-4 bg-white rounded-xl items-start w-[calc(100%/2-10px)] gap-8">
+            <section className="relative flex flex-row flex-wrap justify-start items-start w-full gap-8 lg:gap-6">
+                <article className="relative flex flex-row justify-center p-4 bg-white rounded-xl items-start w-full lg:w-[calc(100%/2-12px)] lg:gap-0">
                     <HistoryGraph />
                 </article>
-                <article className="relative flex flex-row justify-center p-4 bg-white rounded-xl items-start w-[calc(100%/2-10px)] gap-8">
+                <article className="relative flex flex-row justify-center p-4 bg-white rounded-xl items-start w-full lg:w-[calc(100%/2-12px)] lg:gap-0">
                     <AvoidedEmissionsGraph />
                 </article>
             </section>
 
-            <section className="relative flex flex-row xl:flex-row justify-start items-start w-full gap-8">
+            <section className="relative flex flex-row flex-wrap xl:flex-row justify-start items-start w-full gap-6">
                 <RegisteredAndBenefitedCustomers />
                 <AvoidedEmission />
             </section>

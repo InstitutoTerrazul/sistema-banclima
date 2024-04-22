@@ -63,9 +63,9 @@ export default function AvoidedEmission() {
     }
 
     return (
-        <div className="flex flex-row w-[calc(100%/2-20px)] gap-4">
+        <div className="flex flex-row flex-wrap w-full lg:w-[calc(100%/2-12px)] gap-2">
             {emissions.map((emission, i) => (
-                <article key={i} className="relative flex flex-col items-start justify-center w-[calc(100%/4-10px)] pb-2 gap-4 bg-white rounded-xl">
+                <article key={i} className="relative flex flex-row lg:flex-col items-start justify-center w-[calc(100%/2-10px)] lg:w-[calc(100%/4-8px)] pb-2 gap-4 bg-white rounded-xl">
                     <div className={`absolute top-0 ${emission.color} w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
                     <div className="relative flex flex-col items-start pt-6 px-4 justify-center gap-4">
                         <span className="text-sm font-normal text-black">{emission.title}</span>

@@ -60,15 +60,15 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         }
     }
     return (
-        <section className="relative flex flex-row xl:flex-row justify-start items-start w-full gap-8">
-            <article className="flex flex-col items-center justify-center pb-4 gap-4 w-[calc(100%/2)] bg-white rounded-xl">
+        <section className="relative flex flex-row flex-wrap xl:flex-row justify-start items-start w-full gap-6">
+            <article className="flex flex-col items-center justify-center pb-4 gap-4 w-full lg:w-[calc(100%/2-12px)] bg-white rounded-xl">
                 <div className="bg-red-500 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
                 <div className="flex flex-col items-center py-2 px-10 justify-center gap-4">
                     <span className="text-2xl font-normal text-black">Total de Benefícios (R$)</span>
                     <span className="text-3xl font-medium text-black">R$ {benefits}</span>
                 </div>
             </article>
-            <article className="flex flex-col items-center justify-center pb-4 gap-4 w-[calc(100%/2-20px)] bg-white rounded-xl">
+            <article className="flex flex-col items-center justify-center pb-4 gap-4 w-full lg:w-[calc(100%/2-12px)] bg-white rounded-xl">
                 <div className="bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
                 <div className="flex flex-col items-center py-2 px-10 justify-center gap-4">
                     <span className="text-2xl font-normal text-black">Total de emissões evitadas</span>
