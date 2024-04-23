@@ -474,10 +474,10 @@ export default function EditarConsumo() {
         <div className="flex flex-col items-start justify-center w-full gap-8">
             <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Consumo</h1>
-            <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+            <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8 my-4">
+                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
 
-                <input type="text" placeholder="Endereço" value={AddressEmission} onChange={(e) => setAddressEmission(e.target.value)} name="" id="" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                <input type="text" placeholder="Endereço" value={AddressEmission} onChange={(e) => setAddressEmission(e.target.value)} name="" id="" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                 <select value={selectedMonth} onChange={handleChangeMounth} className="bg-white  h-11 rounded-lg focus:outline-none border border-gray-700/45  text-black">
                     <option value="">Mês</option>
                     {Array.from({ length: 12 }, (_, i) => (
@@ -558,7 +558,7 @@ export default function EditarConsumo() {
 
                 </div> */}
                 </div>
-                <div className="flex flex-row justify-center items-center w-full gap-8">
+                <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                     <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                         <div className={`absolute top-0 left-0 bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 

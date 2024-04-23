@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import '@/app/globals.css'
 import SidebarContainer from '@/components/SidebarContainer'
 import Header from '@/components/Header'
+import HeaderMobile from '@/components/HeaderMobile'
 // import { SessionProviders } from '@/providers/session-provider'
 // import Header from '@/components/Header'
 // import { getServerSession } from 'next-auth'
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }) {
 
           <div className="flex-1 transition duration-700 bg-bgContent pb-6 w-full lg:w-[1000px]">
             <Header />
+            <HeaderMobile />
             <div className="flex flex-col gap-6 px-2 xl:px-6 pb-6 ml-0 lg:ml-24 xl:ml-0 z-10">
               {children}
             </div>

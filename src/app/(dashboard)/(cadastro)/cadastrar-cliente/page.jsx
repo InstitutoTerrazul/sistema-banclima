@@ -407,7 +407,7 @@ export default function CadastrarCliente() {
         <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-start justify-center w-full gap-8">
             <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Cadastrar Cliente</h1>
-            <div className="flex flex-row justify-center items-center w-full gap-8">
+            <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                 <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                     <div className={`absolute top-0 left-0 bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 
@@ -466,7 +466,7 @@ export default function CadastrarCliente() {
 
                 </div>
             </div>
-            <div className="flex flex-row justify-center items-center w-full gap-8">
+            <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                 <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                     <div className={`absolute top-0 left-0 bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 

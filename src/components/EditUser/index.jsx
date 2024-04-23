@@ -103,18 +103,18 @@ export default function EditUser(props) {
     return (
 
 
-        <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 w-full h-screen gap-8 bg-black/20 rounded-xl">
+        <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-4 lg:p-10 lg:pl-72 w-full h-screen gap-8 bg-black/20 rounded-xl">
             <div className="flex flex-col justify-start items-start p-10 w-full gap-8 bg-white rounded-xl">
                 <ToastContainer theme="colored"/>
 
                 <h1 className="text-3xl font-bold text-gray-800">Editar Usuário</h1>
 
-                <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
-                    <div className="flex flex-row w-full gap-4">
+                <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 lg:px-8">
+                    <div className="flex flex-col lg:flex-row w-full gap-4">
                         <input type="text" placeholder="Nome" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
                         <input type="text" placeholder="E-mail" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
-                    <div className="flex flex-row w-full gap-4">
+                    <div className="flex flex-col lg:flex-row w-full gap-4">
                         <input type="text" placeholder="Usuário" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={login} onChange={(e) => setLogin(e.target.value)} />
                         <input type="password" placeholder="Senha" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <select value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">

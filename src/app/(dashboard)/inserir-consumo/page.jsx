@@ -404,7 +404,7 @@ export default function InserirConsumo() {
             <ToastContainer theme="colored"/>
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-1/2 lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={handleSearchBtn} >{searchBtnText}</button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
@@ -467,7 +467,7 @@ export default function InserirConsumo() {
 
                 </div> */}
                 </div>
-                <div className="flex flex-row justify-center items-center w-full gap-8">
+                <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                     <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                         <div className={`absolute top-0 left-0 bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 

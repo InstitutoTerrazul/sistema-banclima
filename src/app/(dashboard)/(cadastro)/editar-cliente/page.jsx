@@ -278,11 +278,11 @@ export default function EditarCliente() {
                 <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Cliente</h1>
 
                 <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                    <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onBlur={handleSearchBtn} value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+                    <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-1/2 lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" onBlur={handleSearchBtn} value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
                     <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >{searchBtnText}</button>
                 </div>
 
-                <div className="flex flex-row justify-center items-center w-full gap-8">
+                <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                     <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
                         <div className={`absolute top-0 left-0 bg-blue-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 
@@ -372,7 +372,7 @@ export default function EditarCliente() {
                 </div>
             </form>
             {btnDeleteCliqued ?
-                <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 pl-80 p-40">
+                <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/50 lg:pl-80 lg:p-40 p-4">
                     <article className="flex flex-col justify-start items-start p-10 w-full gap-8 bg-white rounded-xl">
                         <span className="text-3xl font-bold text-gray-800">Tem certeza que deseja excluir este cliente?</span>
                         <span className="text-xl font-bold text-gray-800">Esta ação não pode ser desfeita.</span>

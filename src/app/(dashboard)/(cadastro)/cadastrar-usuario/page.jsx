@@ -87,12 +87,12 @@ export default function CadastrarCadastrador() {
 
             <h1 className="text-3xl font-bold text-gray-800">Cadastrar Usuário</h1>
 
-            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
+            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 lg:px-8">
                 <div className="flex flex-row w-full gap-4">
                     <input type="text" placeholder="Nome" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
                     <input type="text" placeholder="E-mail" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="flex flex-row w-full gap-4">
+                <div className="flex flex-col lg:flex-row w-full gap-4">
                     <input type="text" placeholder="Usuário" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={login} onChange={(e) => setLogin(e.target.value)} />
                     <input type="password" placeholder="Senha" name="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <select value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)} className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
