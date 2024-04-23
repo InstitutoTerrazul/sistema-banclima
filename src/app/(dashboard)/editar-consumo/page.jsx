@@ -84,22 +84,22 @@ export default function EditarConsumo() {
     }, []);
 
     useEffect(() => {
-        const date = new Date(selectedDate);
+        const date = new Date(getDate);
         const formattedDate = date.toLocaleDateString('en-GB');
 
         console.log(formattedDate);
 
-        setDateFormatted(formattedDate);
+        // setDateFormatted(formattedDate);
 
-        if (formattedDate === '31/12/1969') {
-            setGetDate('');
-        } else {
-            setGetDate(formattedDate);
-        }
+        // if (formattedDate === '31/12/1969') {
+        //     setGetDate('');
+        // } else {
+        //     setGetDate(formattedDate);
+        // }
 
         // setGetDate(formattedDate);
 
-        const dateStr = formattedDate;
+        const dateStr = getDate;
         const dateParts = dateStr.split("/");
 
         const month = dateParts[1];
@@ -110,7 +110,7 @@ export default function EditarConsumo() {
         setMounth(month);
         setYear(year);
 
-    }, [selectedDate]);
+    }, [getDate]);
 
     const handleChangeMounth = (event) => {
         setSelectedMonth(event.target.value);
@@ -174,10 +174,7 @@ export default function EditarConsumo() {
 
         const dataSearch = searchCpf
 
-        const dataEmissions = {
-            cpf: searchCpf,
-            endereco: AddressEmission
-        }
+        const dataEmissions = searchCpf
 
 
         try {
@@ -211,7 +208,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpfEEnderecoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/retornaUltimoConsumo?login=terrazul&senha=1234567`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -226,6 +223,7 @@ export default function EditarConsumo() {
                 setResiduosKg(data.listaResiduos[0].consumo);
                 setConsumoGas(data.listaGas[0].consumo);
                 setConsumoAgua(data.listaAgua[0].consumo);
+                setGetDate(data.listaAgua[0].data);
                 toast.success('Busca concluída!');
             } else {
                 console.error('Failed to create post');
@@ -259,7 +257,7 @@ export default function EditarConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: getDate,
             consumo: consumoEnergia,
             emissao: "0",
             taxaDeReducao: "0"
@@ -270,7 +268,7 @@ export default function EditarConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: getDate,
             consumo: consumoAgua,
             emissao: "0",
             taxaDeReducao: "0"
@@ -281,17 +279,17 @@ export default function EditarConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: getDate,
             consumo: residuosKg,
             emissao: "0",
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
-            tipoEmissao: "gas",
+            tipoGas: selectedGas,
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: getDate,
             consumo: consumoGas,
             emissao: "0",
             taxaDeReducao: "0"
@@ -343,7 +341,7 @@ export default function EditarConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsGas}?login=terrazul&senha=1234567`, {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsGas}/gas?login=terrazul&senha=1234567`, {
                                         method: 'PUT',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -442,13 +440,13 @@ export default function EditarConsumo() {
         const plastico = 21 / 100
         const organico = 45 / 100
 
-        const calculoResiduos = residuesPerPerson * daysOfMouth * habitantes
+        const residuosKg = residuesPerPerson * daysOfMouth * habitantes
 
-        const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
+        const calcOrganico = residuosKg * 0.14 * organico * 1.33 * 28
 
-        const residuosPapel = calculoResiduos * papel
+        const residuosPapel = residuosKg * papel
 
-        const residuosPlastico = calculoResiduos * plastico
+        const residuosPlastico = residuosKg * plastico
 
         const calcPapel = 0.414 * residuosPapel * 3.67
 
@@ -456,9 +454,9 @@ export default function EditarConsumo() {
 
         const calctotal = calcOrganico + calcPapel + calcPlastico
 
-        setResiduosKg(calculoResiduos)
+        // setResiduosKg(calculoResiduos)
 
-        console.log(calculoResiduos);
+        // console.log(calculoResiduos);
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 
@@ -477,7 +475,7 @@ export default function EditarConsumo() {
             <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
 
-                <input type="text" placeholder="Endereço" value={AddressEmission} onChange={(e) => setAddressEmission(e.target.value)} name="" id="" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                {/* <input type="text" placeholder="Endereço" value={AddressEmission} onChange={(e) => setAddressEmission(e.target.value)} name="" id="" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                 <select value={selectedMonth} onChange={handleChangeMounth} className="bg-white  h-11 rounded-lg focus:outline-none border border-gray-700/45  text-black">
                     <option value="">Mês</option>
                     {Array.from({ length: 12 }, (_, i) => (
@@ -494,7 +492,7 @@ export default function EditarConsumo() {
                             {year}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()}>{searchBtnText}</button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
@@ -511,7 +509,7 @@ export default function EditarConsumo() {
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="text" placeholder="Endereço" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
-                            <ReactDatePicker
+                            {/* <ReactDatePicker
                                 selected={selectedDate}
                                 onChange={handleDateChange}
                                 value={getDate}
@@ -520,7 +518,8 @@ export default function EditarConsumo() {
                                 placeholderText="data"
                                 locale={ptBR}
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
-                            />
+                            /> */}
+                            <input type="text" placeholder="Data" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={getDate} />
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="email" placeholder="Email" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -534,7 +533,7 @@ export default function EditarConsumo() {
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" />
+                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" required/>
 
                         </div>
 
@@ -569,8 +568,8 @@ export default function EditarConsumo() {
                             <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
-                            <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} />
+                            {/* <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
+                            <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} /> */}
                             <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                         </div>
                         <div className="flex flex-col">
