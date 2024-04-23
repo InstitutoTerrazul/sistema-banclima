@@ -440,6 +440,16 @@ export default function EditarConsumo() {
         const plastico = 21 / 100
         const organico = 45 / 100
 
+        const days = 31
+
+        if(mounth === '04' || mounth === '06' || mounth === '09' || mounth === '11'){
+            setDaysOfMouth(30)
+        } else if(mounth === '02'){
+            setDaysOfMouth(28)
+        }else {
+            setDaysOfMouth(31)
+        }
+
         const residuosKg = residuesPerPerson * daysOfMouth * habitantes
 
         const calcOrganico = residuosKg * 0.14 * organico * 1.33 * 28
