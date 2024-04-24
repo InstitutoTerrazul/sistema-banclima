@@ -166,7 +166,7 @@ export default function ClientesCadastrados() {
 
     return (
         <>
-            <div className="flex flex-row items-center justify-between w-full">
+            <div className="flex flex-row items-center justify-between w-full mt-10">
                 <h1 className="text-2xl font-bold text-gray-800 text-start">Clientes cadastrados por projeto ou CPF</h1>
                 <button onClick={handlePrint} className="flex items-center justify-center bg-white rounded-lg px-4 py-2"><Printer size={24} color="#93C5FD" /></button>
             </div>
