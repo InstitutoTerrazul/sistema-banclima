@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ReactInputMask from "react-input-mask";
 import DataTable from 'react-data-table-component';
+import { Printer } from "@phosphor-icons/react";
 
 
 export default function ClientesCadastrados() {
@@ -159,9 +160,16 @@ export default function ClientesCadastrados() {
         label: project.nome
     }))
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     return (
         <>
-            <h1 className="text-2xl font-bold text-gray-800 text-start">Clientes cadastrados por projeto ou CPF</h1>
+            <div className="flex flex-row items-center justify-between w-full">
+                <h1 className="text-2xl font-bold text-gray-800 text-start">Clientes cadastrados por projeto ou CPF</h1>
+                <button onClick={handlePrint} className="flex items-center justify-center bg-white rounded-lg px-4 py-2"><Printer size={24} color="#93C5FD" /></button>
+            </div>
 
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 {/* <select id="mySelect" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 px-2 text-black">

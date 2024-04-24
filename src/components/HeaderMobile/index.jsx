@@ -22,7 +22,7 @@ export default function HeaderMobile() {
 
     return (
         <header className="relative inset-x-0 top-0 z-50 bg-transparent flex lg:hidden">
-            <div className='flex flex-row items-center justify-center w-full shadow-lg shadow-black/5'>
+            <div className='flex flex-row items-center justify-center w-full'>
                 <nav className="lg:max-w-screen-xl 2xl:max-w-screen-2xl flex items-center justify-between p-6 lg:px-8 w-full z-50 relative" aria-label="Global">
                     <div className="flex lg:flex-1">
                         <a href="/" className="-m-1.5 p-1.5">
