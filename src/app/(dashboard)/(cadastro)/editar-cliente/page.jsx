@@ -219,6 +219,11 @@ export default function EditarCliente() {
     }
 
     const deleteClient = async () => {
+        const deleteData = {
+            cpf: cpf,
+            endereco: address,
+        }
+
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
                 method: 'DELETE',
@@ -233,19 +238,101 @@ export default function EditarCliente() {
                 console.log('Post created:', data);
                 clearForm();
                 setBtnDeleteCliqued(false);
-                toast.success('Deletado com sucesso!');
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
+                try {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(deleteData)
+                    });
+                    if (response.status === 200) {
+                        // console.log('Post created:', data);
+                        const data = await response.json();
+                        console.log('Post created:', data);
+                        try {
+                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(deleteData)
+                            });
+                            if (response.status === 200) {
+                                // console.log('Post created:', data);
+                                const data = await response.json();
+                                console.log('Post created:', data);
+                                toast.success('Deletado com sucesso!');
+                            } else {
+                                console.error('Failed to delete client');
+                                toast.error('Algo deu errado ao deletar emissão mensal');
+                            }
+                        } catch (error) {
+                            console.error('Error creating post:', error);
+                        }
+
+                    } else {
+                        console.error('Failed to delete client');
+                        toast.error('Algo deu errado ao deletar o consumo');
+                    }
+                } catch (error) {
+                    console.error('Error creating post:', error);
+                }
             } else {
                 console.error('Failed to delete client');
 
             }
         } catch (error) {
             console.error('Error creating post:', error);
-            clearForm();
-            setSearchBtnText('Editar');
-            setBtnDeleteCliqued(false);
-            toast.success('Deletado com sucesso!');
+
+            try {
+                const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(deleteData)
+                });
+                if (response.status === 200) {
+                    // console.log('Post created:', data);
+                    const data = await response.json();
+                    console.log('Post created:', data);
+
+                    try {
+                        const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(deleteData)
+                        });
+                        if (response.status === 200) {
+                            // console.log('Post created:', data);
+                            const data = await response.json();
+                            console.log('Post created:', data);
+                            toast.success('Deletado com sucesso!');
+                            clearForm();
+                            setSearchBtnText('Editar');
+                            setBtnDeleteCliqued(false);
+        
+                        } else {
+                            console.error('Failed to delete client');
+                            toast.error('Algo deu errado ao deletar emissão mensal');
+                        }
+                    } catch (error) {
+                        console.error('Error creating post:', error);
+                    }
+
+                } else {
+                    console.error('Failed to delete client');
+                    toast.error('Algo deu errado ao deletar o consumo');
+                }
+            } catch (error) {
+                console.error('Error creating post:', error);
+            }
+            // toast.success('Deletado com sucesso!');
         }
 
         setTimeout(() => {

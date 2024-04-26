@@ -19,22 +19,22 @@ export default function AvoidedEmission() {
     const emissions = [
         {
             title: 'Emissões de água Evitadas',
-            value: totalEmissionsAvoided[0]?.emissoesEvitadas,
+            value: totalEmissionsAvoided[0]?.emissoesEvitadas.toFixed(2),
             color: 'bg-red-500'
         },
         {
             title: 'Emissões de energia Evitadas',
-            value: totalEmissionsAvoided[1]?.emissoesEvitadas,
+            value: totalEmissionsAvoided[1]?.emissoesEvitadas.toFixed(2),
             color: 'bg-blue-400'
         },
         {
             title: 'Emissões de resíduos Evitadas',
-            value: totalEmissionsAvoided[2]?.emissoesEvitadas,
+            value: totalEmissionsAvoided[2]?.emissoesEvitadas.toFixed(2),
             color: 'bg-green-500'
         },
         {
             title: 'Emissões de gás Evitadas',
-            value: totalEmissionsAvoided[3]?.emissoesEvitadas,
+            value: totalEmissionsAvoided[3]?.emissoesEvitadas.toFixed(2),
             color: 'bg-gray-500'
         },
     ]

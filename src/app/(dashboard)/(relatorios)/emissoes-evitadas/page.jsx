@@ -65,8 +65,8 @@ export default function EmissoesEvitadas() {
         projeto: row.projeto,
         mes: row.mes,
         ano: row.ano,
-        emissao: row.emissao,
-        taxaDeReducao: row.taxaDeReducao,
+        emissao: parseFloat(row.emissao).toFixed(2),
+        taxaDeReducao: parseFloat(row.taxaDeReducao).toFixed(2),
         beneficio: row.beneficio
     }))
 

@@ -93,7 +93,7 @@ export default function EditarCalculo() {
 
     return (
         <>
-            <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Calculos de Emissão</h1>
+            <h1 className="text-2xl font-bold text-gray-800 text-start">Editar Fatores de Emissão</h1>
 
             <div className="flex flex-col items-end justify-center gap-4 bg-white rounded-xl p-10">
 

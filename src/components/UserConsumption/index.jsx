@@ -155,12 +155,13 @@ export default function UserConsumption(props) {
                         </thead>
                         <tbody>
                             {valuesAgua?.map((user, i) => (
-
-                                <tr key={i}>
-                                    <td className="border border-slate-600 px-4">{user.data}</td>
-                                    <td className="border border-slate-600 px-4">{user.consumo} m³</td>
-                                    <td className="border border-slate-600 px-4">{user.emissao} kg CO2e </td>
-                                </tr>
+                                <>
+                                    <tr key={i}>
+                                        <td className="border border-slate-600 px-4">{user.data}</td>
+                                        <td className="border border-slate-600 px-4">{user.consumo} m³</td>
+                                        <td className="border border-slate-600 px-4">{parseFloat(user.emissao).toFixed(2)} kg CO2e </td>
+                                    </tr>
+                                </>
                             ))}
                         </tbody>
                     </table>
@@ -180,7 +181,7 @@ export default function UserConsumption(props) {
                                 <tr key={i}>
                                     <td className="border border-slate-600 px-4">{user.data}</td>
                                     <td className="border border-slate-600 px-4">{user.consumo} Kwh</td>
-                                    <td className="border border-slate-600 px-4">{user.emissao} kg CO2e </td>
+                                    <td className="border border-slate-600 px-4">{parseFloat(user.emissao).toFixed(2)} kg CO2e </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -201,7 +202,7 @@ export default function UserConsumption(props) {
                                 <tr key={i}>
                                     <td className="border border-slate-600 px-4">{user.data}</td>
                                     <td className="border border-slate-600 px-4">{user.consumo} m³</td>
-                                    <td className="border border-slate-600 px-4">{user.emissao} kg CO2e </td>
+                                    <td className="border border-slate-600 px-4">{parseFloat(user.emissao).toFixed(2)} kg CO2e </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -222,7 +223,7 @@ export default function UserConsumption(props) {
                                 <tr key={i}>
                                     <td className="border border-slate-600 px-4">{user.data}</td>
                                     <td className="border border-slate-600 px-4">{user.consumo} kg</td>
-                                    <td className="border border-slate-600 px-4">{user.emissao} kg CO2e </td>
+                                    <td className="border border-slate-600 px-4">{parseFloat(user.emissao).toFixed(2)} kg CO2e </td>
                                 </tr>
                             ))}
                         </tbody>

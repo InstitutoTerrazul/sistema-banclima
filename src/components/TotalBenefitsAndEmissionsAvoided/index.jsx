@@ -72,7 +72,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
                 <div className="bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl"></div>
                 <div className="flex flex-col items-center py-2 px-10 justify-center gap-4">
                     <span className="text-2xl font-normal text-black">Total de emissões evitadas</span>
-                    <span className="text-3xl font-medium text-black">{emissionsAvoided} kg CO2 e</span>
+                    <span className="text-3xl font-medium text-black">{emissionsAvoided.toFixed(2)} kg CO2 e</span>
                 </div>
             </article>
         </section>

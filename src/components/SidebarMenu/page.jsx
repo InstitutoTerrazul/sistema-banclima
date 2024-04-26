@@ -85,7 +85,7 @@ export default function SidebarMenu(props) {
   ]
   const fourthOption = [
     {
-      name: 'Alterar Calculo de Emissões',
+      name: 'Alterar Fatores de Emissão',
       href: '/editar-calculo',
       icon: <ArrowsCounterClockwise weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
