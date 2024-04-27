@@ -6,14 +6,14 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
 const navigation = [
-    { name: 'Dashboard', href: '#home' },
-    { name: 'Consulta', href: '#mission' },
-    { name: 'Cadastrar usuário', href: '#plans' },
-    { name: 'Cadastrar cliente', href: '#projects' },
-    { name: 'Editar cliente', href: '#projects' },
-    { name: 'Inserir consumo', href: '#projects' },
-    { name: 'Editar consumo', href: '#projects' },
-    { name: 'Usuários cadastrados', href: '#projects' },
+    { name: 'Dashboard', href: '/v2/dashboard' },
+    { name: 'Consulta', href: '/v2/consulta' },
+    { name: 'Cadastrar usuário', href: '/v2/cadastrar-usuario' },
+    { name: 'Cadastrar cliente', href: '/v2/cadastrar-cliente' },
+    { name: 'Editar cliente', href: '/v2/editar-cliente' },
+    { name: 'Inserir consumo', href: '/v2/inserir-consumo' },
+    { name: 'Editar consumo', href: '/v2/editar-consumo' },
+    { name: 'Usuários cadastrados', href: '/v2/lista-usuarios' },
     
 ]
 
@@ -25,7 +25,7 @@ export default function HeaderMobile() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <nav className="lg:max-w-screen-xl 2xl:max-w-screen-2xl flex items-center justify-between p-6 lg:px-8 w-full z-50 relative" aria-label="Global">
                     <div className="flex lg:flex-1">
-                        <a href="/" className="-m-1.5 p-1.5">
+                        <a href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
                             <span className="sr-only">Your Company</span>
                             <img
                                 className="h-10 w-auto"

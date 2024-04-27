@@ -26,27 +26,7 @@ export default function UserConsumption(props) {
     }, [])
 
     useEffect(() => {
-        // const array = [];
 
-        // const dataAgua = usersList.listaAgua?.map(row => ({
-        //     agua: row.consumo
-        // }))
-
-        // const dataEnergia = usersList.listaEnergiaEletrica?.map(row => ({
-        //     energia: row.consumo
-        // }))
-
-        // const dataGas = usersList.listaGas?.map(row => ({
-        //     gas: row.consumo
-        // }))
-
-        // const dataResiduos = usersList.listaResiduos?.map(row => ({
-        //     residuos: row.consumo
-        // }))
-
-        // array.push(dataAgua, dataEnergia, dataGas, dataResiduos)
-
-        // setValues(array)
         setValuesAgua(usersList?.listaAgua)
         setValuesEnergia(usersList?.listaEnergiaEletrica)
         setValuesGas(usersList?.listaGas)
@@ -54,26 +34,6 @@ export default function UserConsumption(props) {
 
         console.log('data:', usersList.listaAgua)
     }, [usersList])
-
-    // useEffect(() => {
-    //     const dataAgua = values.map(row => ({
-    //         agua: row?.map(row2 => row2.agua)
-    //     }))
-    //     const dataEnergia = values.map(row => ({
-    //         energia: row?.map(row2 => row2.energia)
-    //     }))
-    //     const dataGas = values.map(row => ({
-    //         gas: row?.map(row2 => row2.gas)
-    //     }))
-    //     const dataResiduos = values.map(row => ({
-    //         residuos: row?.map(row2 => row2.residuos)
-    //     }))
-
-    //     const arrayFormated = [dataAgua, dataEnergia, dataGas, dataResiduos]
-
-    //     console.log('data:', arrayFormated);
-    //     const transformedValues = values;
-    // }, [values])
 
     const getUsers = async () => {
 
@@ -133,15 +93,11 @@ export default function UserConsumption(props) {
 
     return (
         <>
-            <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 w-full h-screen gap-8 bg-black/20 rounded-xl">
+            <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 2 2xl:pr-32 w-full h-screen gap-8 bg-black/20 rounded-xl z-40">
 
                 <div className="relative w-full p-8 bg-white rounded-lg">
                     <span className="absolute top-4 right-4 cursor-pointer text-black text-xl" onClick={() => setUserConsumptionPopUp(false)}>X</span>
                     <h1 className="text-2xl font-bold text-gray-800 text-start my-4">Consumo</h1>
-                    {/* <DataTable
-                        columns={columns}
-                        data={data}
-                    /> */}
 
                     <span className="text-2xl font-bold text-gray-800 my-4">Água</span>
 
@@ -233,62 +189,3 @@ export default function UserConsumption(props) {
         </>
     )
 }
-
-
-
-[
-    {
-        "listaAgua": [
-            {
-                "id": "8fbbc79d-20f1-4549-894c-30379a5640d4",
-                "tipoEmissao": "agua",
-                "nome": "teste alisson",
-                "cpf": "877.625.524-54",
-                "endereco": "rua teste, 50",
-                "data": "16/04/2024",
-                "consumo": "5",
-                "emissao": "3.25",
-                "taxaDeReducao": "0"
-            }
-        ],
-        "listaEnergiaEletrica": [
-            {
-                "id": "771698e9-5720-4865-9348-d0a55b9dd821",
-                "tipoEmissao": "energiaeletrica",
-                "nome": "teste alisson",
-                "cpf": "877.625.524-54",
-                "endereco": "rua teste, 50",
-                "data": "16/04/2024",
-                "consumo": "700",
-                "emissao": "15.120001",
-                "taxaDeReducao": "0"
-            }
-        ],
-        "listaResiduos": [
-            {
-                "id": "25f0d7e3-9f74-40e8-9171-9db91d38fc83",
-                "tipoEmissao": "residuos",
-                "nome": "teste alisson",
-                "cpf": "877.625.524-54",
-                "endereco": "rua teste, 50",
-                "data": "16/04/2024",
-                "consumo": "180",
-                "emissao": "509.4",
-                "taxaDeReducao": "0"
-            }
-        ],
-        "listaGas": [
-            {
-                "id": "83c769c5-7758-46f4-a791-7aa4fb45cf15",
-                "tipoEmissao": "gas",
-                "nome": "teste alisson",
-                "cpf": "877.625.524-54",
-                "endereco": "rua teste, 50",
-                "data": "16/04/2024",
-                "consumo": "1",
-                "emissao": "25.09",
-                "taxaDeReducao": "0"
-            }
-        ]
-    }
-]

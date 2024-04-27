@@ -120,6 +120,7 @@ export default function HistoryGraph() {
                 id: 1,
                 label: 'Emissões',
                 data: transformedData?.emissao,
+                fill: true
             },
         ],
         title: {

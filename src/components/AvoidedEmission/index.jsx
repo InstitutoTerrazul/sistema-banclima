@@ -20,12 +20,12 @@ export default function AvoidedEmission() {
         {
             title: 'Emissões de água Evitadas',
             value: totalEmissionsAvoided[0]?.emissoesEvitadas.toFixed(2),
-            color: 'bg-red-500'
+            color: 'bg-blue-400'
         },
         {
             title: 'Emissões de energia Evitadas',
             value: totalEmissionsAvoided[1]?.emissoesEvitadas.toFixed(2),
-            color: 'bg-blue-400'
+            color: 'bg-red-500'
         },
         {
             title: 'Emissões de resíduos Evitadas',

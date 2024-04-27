@@ -135,21 +135,25 @@ export default function AvoidedEmissionsGraph() {
                 id: 1,
                 label: 'Água',
                 data: transformedData?.agua,
+                backgroundColor: "#60A5FA",
             },
             {
                 id: 2,
                 label: 'Energia',
                 data: transformedData?.energiaEletrica,
+                backgroundColor: '#EF4444',
             },
             {
                 id: 3,
                 label: 'Resíduos',
                 data: transformedData?.residuos,
+                backgroundColor: '#22C55E',
             },
             {
                 id: 4,
                 label: 'Gás',
                 data: transformedData?.gas,
+                backgroundColor: '#6B7280',
             },
         ],
     }
