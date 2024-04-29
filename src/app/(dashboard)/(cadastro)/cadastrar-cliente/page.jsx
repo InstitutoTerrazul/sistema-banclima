@@ -79,6 +79,8 @@ export default function CadastrarCliente() {
         if (!user) {
             router.push('/login');
         }
+
+        getEmissions();
     }, []);
 
     useEffect(() => {
@@ -146,6 +148,47 @@ export default function CadastrarCliente() {
         setBtnText('Cadastrar');
         setShowClearBtn(false);
 
+    }
+
+    const getEmissions = async () => {
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // setBtnText('Inserido residuo!');
+                console.log('result:', data);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+
+        // try {
+        //     const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         // body: JSON.stringify()
+        //     });
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         // setBtnText('Inserido residuo!');
+        //         console.log('result:', data);
+        //     } else {
+        //         console.error('Failed to create post');
+        //     }
+        // } catch (error) {
+        //     console.error('Error creating post:', error);
+        // }
     }
 
     const submitForm = async () => {
