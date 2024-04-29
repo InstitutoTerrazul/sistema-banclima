@@ -55,6 +55,9 @@ export default function EditarCliente() {
 
     const [co2Emissions, setCo2Emissions] = useState('');
 
+    const [residuesFactors, setResiduesFactors] = useState('');
+    const [energyFactors, setEnergyFactors] = useState('');
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -67,6 +70,8 @@ export default function EditarCliente() {
         if (!user) {
             router.push('/login');
         }
+
+        getEmissions();
     }, []);
 
     useEffect(() => {
@@ -97,6 +102,49 @@ export default function EditarCliente() {
         // setYear(year);
 
     }, [selectedDate]);
+
+    const getEmissions = async () => {
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // setBtnText('Inserido residuo!');
+                setEnergyFactors(data[1]?.valor);
+                console.log('result:', data);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // setBtnText('Inserido residuo!');
+                setResiduesFactors(data);
+                console.log('result ultimo residuo:', data[0].plastico);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    }
 
     const clearForm = () => {
         setName('');
@@ -316,7 +364,7 @@ export default function EditarCliente() {
                             clearForm();
                             setSearchBtnText('Editar');
                             setBtnDeleteCliqued(false);
-        
+
                         } else {
                             console.error('Failed to delete client');
                             toast.error('Algo deu errado ao deletar emissão mensal');

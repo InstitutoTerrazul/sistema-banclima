@@ -72,6 +72,9 @@ export default function EditarConsumo() {
 
     const [getDate, setGetDate] = useState('');
 
+    const [residuesFactors, setResiduesFactors] = useState('');
+    const [energyFactors, setEnergyFactors] = useState('');
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -81,6 +84,8 @@ export default function EditarConsumo() {
         if (!user) {
             router.push('/login');
         }
+
+        getEmissions();
     }, []);
 
     useEffect(() => {
@@ -135,6 +140,49 @@ export default function EditarConsumo() {
     useEffect(() => {
         calculateResiduos();
     }, [residuosKg])
+
+    const getEmissions = async () => {
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // setBtnText('Inserido residuo!');
+                setEnergyFactors(data[1]?.valor);
+                console.log('result:', data);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+
+        try {
+            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // setBtnText('Inserido residuo!');
+                setResiduesFactors(data);
+                console.log('result ultimo residuo:', data[0].plastico);
+            } else {
+                console.error('Failed to create post');
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    }
 
     const clearForm = () => {
         setName('');
@@ -430,15 +478,20 @@ export default function EditarConsumo() {
     }
 
     const calculateEnergia = () => {
-        const calculoEnergia = consumoEnergia * 0.0340
+        // const calculoEnergia = consumoEnergia * 0.0340 antigo com valor fixo
+        const calculoEnergia = consumoEnergia * energyFactors
         const formatted = calculoEnergia.toFixed(2).replace(".", ",")
         setEmissoesEnergia(formatted)
     }
 
     const calculateResiduos = () => {
-        const papel = 10 / 100
-        const plastico = 21 / 100
-        const organico = 45 / 100
+        // const papel = 10 / 100
+        // const plastico = 21 / 100
+        // const organico = 45 / 100
+
+        const papel = residuesFactors[0]?.papel
+        const plastico = residuesFactors[0]?.plastico
+        const organico = residuesFactors[0]?.organico
 
         const days = 31
 
