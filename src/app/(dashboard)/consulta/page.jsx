@@ -56,25 +56,25 @@ export default function Consulta() {
             name: 'Matricula gás',
             selector: row => row.matriculaDeGas,
         },
-        {
-            name: 'Ação',
-            selector: row => row.cpf,
-            cell: (row) => {
-                return (
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <button
-                      title="Editar"
-                      type="button"
-                      rel="noreferrer"
-                      className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
-                      onClick={() => handleUserConsumption(row.cpf)}
-                    >
-                        Ver Consumo
-                    </button>
-                  </div>
-                )
-              },
-        },
+        // {
+        //     name: 'Ação',
+        //     selector: row => row.cpf,
+        //     cell: (row) => {
+        //         return (
+        //             <div className="flex flex-col md:flex-row gap-4">
+        //                 <button
+        //                     title="Editar"
+        //                     type="button"
+        //                     rel="noreferrer"
+        //                     className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
+        //                     onClick={() => handleUserConsumption(row.cpf)}
+        //                 >
+        //                     Ver Consumo
+        //                 </button>
+        //             </div>
+        //         )
+        //     },
+        // },
     ];
 
     const data = tableData.map(row => ({
@@ -86,7 +86,11 @@ export default function Consulta() {
         cpf: row.cpf,
         matriculaDeEnergia: row.matriculaDeEnergia,
         matriculaDeAgua: row.matriculaDeAgua,
-        matriculaDeGas: row.matriculaDeGas
+        matriculaDeGas: row.matriculaDeGas,
+        beneficioTotal: row.beneficioTotal,
+        emissaoTotal: row.emissaoTotal,
+        emissoesEvitadas: row.emissoesEvitadas,
+        taxaDeReducaoTotal: row.taxaDeReducaoTotal
     }))
 
 
@@ -195,9 +199,52 @@ export default function Consulta() {
         label: project.nome
     }))
 
+    const ExpandedComponent = ({ data }) => {
+        return (
+            <div className="flex flex-col w-full gap-4 p-4 border-b border-[#e0e0e0]">
+                {/* <span>Projeto: {data.projeto}</span> */}
+                <div className="flex flex-col text-sm gap-1">
+                    <span><b>nome:</b> {data.nome}</span>
+                    <span><b>email:</b> {data.email}</span>
+                    <span><b>telefone:</b> {data.telefone}</span>
+                    <span><b>cpf:</b> {data.cpf}</span>
+                </div>
+                <div className="flex flex-row w-full items-center justify-around gap-4">
+                    <div className="flex flex-col gap-2">
+                        <span><b>Benefício Total:</b></span>
+                        <span>{parseFloat(data.beneficioTotal).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Emissão Total:</b></span>
+                        <span>{parseFloat(data.emissaoTotal).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Emissões Evitadas:</b></span>
+                        <span>{parseFloat(data.emissoesEvitadas).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Taxa de Redução Total:</b></span>
+                        <span>{parseFloat(data.taxaDeReducaoTotal).toFixed(2)}</span>
+                    </div>
+                </div>
+                <div className="flex flex-col md:flex-row gap-4">
+                    <button
+                        title="Editar"
+                        type="button"
+                        rel="noreferrer"
+                        className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
+                        onClick={() => handleUserConsumption(data.cpf)}
+                    >
+                        Ver Consumo
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <>
-            <ToastContainer theme="colored"/>
+            <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Consulta</h1>
 
             <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8 my-4">
@@ -215,6 +262,8 @@ export default function Consulta() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                 />
             </div>
             {userConsumptionPopUp && <UserConsumption id={userSelectedId} />}
