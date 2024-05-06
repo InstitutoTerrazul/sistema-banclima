@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { useForm } from "react-hook-form";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import ptBR from 'date-fns/locale/pt-BR';
 
 
 
@@ -13,6 +16,11 @@ export default function EditarCalculo() {
     const [plastico, setPlastico] = useState('');
     const [organico, setOrganico] = useState('');
     const [btnText, setBtnText] = useState('Inserir');
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [dateFormatted, setDateFormatted] = useState('');
+    const [mounth, setMounth] = useState('');
+    const [year, setYear] = useState('');
+
 
     const { userData } = useAuth();
 
@@ -80,19 +88,19 @@ export default function EditarCalculo() {
     const submitForm = async () => {
         setBtnText('Inserindo...');
 
-        const currentDate = new Date();
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        const year = currentDate.getFullYear();
+        // const currentDate = new Date();
+        // const day = String(currentDate.getDate()).padStart(2, '0');
+        // const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        // const year = currentDate.getFullYear();
 
         // const formattedDate = `${month}/${year}`;
-        const formattedDate = `03/${year}`;
+        const formattedDate = `${mounth}/${year}`
         console.log(formattedDate); // Output: e.g. "01/12/2022"
 
         const dataEnergia = {
             data: formattedDate,
             tipoEmissao: 'energiaeletrica',
-            valor:energia
+            valor: energia
         }
 
         const dataResiduos = {
@@ -168,6 +176,28 @@ export default function EditarCalculo() {
         tipoEmissao: row.tipoEmissao,
     }))
 
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
+    useEffect(() => {
+        const date = new Date(selectedDate);
+        const formattedDate = date.toLocaleDateString('en-GB');
+
+
+        setDateFormatted(formattedDate);
+
+        const dateStr = formattedDate;
+        const dateParts = dateStr.split("/");
+
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        setMounth(month);
+        setYear(year);
+
+    }, [selectedDate]);
+
     // const data = [
     //     {
     //         TipoEmissao: 'Agua',
@@ -203,6 +233,16 @@ export default function EditarCalculo() {
                 </div> */}
                 <div className="flex flex-row justify-center items-center w-full gap-8">
                     <input type="text" placeholder="Energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={energia} onChange={(e) => setEnergia(e.target.value)} />
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        dateFormat="MM/yyyy"
+                        maxDate={new Date()} // Set the maximum date to today
+                        placeholderText="data"
+                        locale={ptBR}
+                        className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                        required
+                    />
                     <div className="flex flex-row justify-center items-center w-full gap-8">
                         <input type="text" placeholder="% Papel" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={papel} onChange={(e) => setPapel(e.target.value)} />
                         <input type="text" placeholder="% Plastico" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={plastico} onChange={(e) => setPlastico(e.target.value)} />
