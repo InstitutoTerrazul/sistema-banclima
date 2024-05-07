@@ -55,15 +55,15 @@ export default function ClientesCadastrados() {
     ];
 
     const data = tableData.map(row => ({
-        nome: row.nome,
-        email: row.email,
-        telefone: row.telefone,
-        endereco: row.endereco,
-        projeto: row.projeto,
-        cpf: row.cpf,
-        matriculaDeEnergia: row.matriculaDeEnergia,
-        matriculaDeAgua: row.matriculaDeAgua,
-        matriculaDeGas: row.matriculaDeGas
+        nome: row.cliente.nome,
+        email: row.cliente.email,
+        telefone: row.cliente.telefone,
+        endereco: row.cliente.endereco,
+        projeto: row.cliente.projeto,
+        cpf: row.cliente.cpf,
+        matriculaDeEnergia: row.cliente.matriculaDeEnergia,
+        matriculaDeAgua: row.cliente.matriculaDeAgua,
+        matriculaDeGas: row.cliente.matriculaDeGas
     }))
 
 

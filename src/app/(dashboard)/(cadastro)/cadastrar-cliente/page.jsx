@@ -65,6 +65,7 @@ export default function CadastrarCliente() {
 
     const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
+    const [factors, setFactors] = useState([]);
 
     const handleGasChange = (event) => {
         setSelectedGas(event.target.value);
@@ -103,6 +104,14 @@ export default function CadastrarCliente() {
 
         setMounth(month);
         setYear(year);
+
+        const factorsDate = factors
+
+        const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
+
+        console.log(filteredDate[0]?.valor);
+
+        setEnergyFactors(filteredDate[0]?.valor);
 
     }, [selectedDate]);
 
@@ -158,17 +167,18 @@ export default function CadastrarCliente() {
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
+                body: JSON.stringify(userData)
             });
             if (response.ok) {
                 const data = await response.json();
                 // setBtnText('Inserido residuo!');
-                setEnergyFactors(data[1]?.valor);
+                // setEnergyFactors(data[1]?.valor);
+                setFactors(data);
                 console.log('result:', data);
             } else {
                 console.error('Failed to create post');

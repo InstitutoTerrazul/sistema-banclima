@@ -66,6 +66,7 @@ export default function InserirConsumo() {
 
     const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
+    const [factors, setFactors] = useState([]);
 
     const [papel, setPapel] = useState('');
     const [organico, setOrganico] = useState('');
@@ -113,6 +114,15 @@ export default function InserirConsumo() {
         setMounth(month);
         setYear(year);
 
+        // const energyDate = `${year}-${month}-01`;
+        const factorsDate = factors
+
+        const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
+
+        console.log(filteredDate[0].valor);
+
+        setEnergyFactors(filteredDate[0].valor);
+
     }, [selectedDate]);
 
     useEffect(() => {
@@ -134,17 +144,18 @@ export default function InserirConsumo() {
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
+                body: JSON.stringify(userData)
             });
             if (response.ok) {
                 const data = await response.json();
                 // setBtnText('Inserido residuo!');
-                setEnergyFactors(data[1]?.valor);
+                // setEnergyFactors(data[1]?.valor);
+                setFactors(data);
                 console.log('result:', data);
             } else {
                 console.error('Failed to create post');
@@ -227,12 +238,12 @@ export default function InserirConsumo() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data searched:', data[0]);
-                setName(data[0].nome);
-                setCpf(data[0].cpf);
-                setEmail(data[0].email);
-                setPhone(data[0].telefone);
-                setHabitantes(data[0].habitantes);
-                setAddress(data[0].endereco);
+                setName(data[0].cliente.nome);
+                setCpf(data[0].cliente.cpf);
+                setEmail(data[0].cliente.email);
+                setPhone(data[0].cliente.telefone);
+                setHabitantes(data[0].cliente.habitantes);
+                setAddress(data[0].cliente.endereco);
                 setResiduesPerPerson(data[0].marcoZero[3].consumo)
                 setSearchBtnText('Buscar CPF');
                 toast.success('Busca concluída!');
@@ -435,7 +446,7 @@ export default function InserirConsumo() {
 
         console.log('papel:', papel, 'plastico:', plastico, 'organico:', organico);
 
-        const calculoResiduos = residuesPerPerson - consumptionOfMouth 
+        const calculoResiduos = residuesPerPerson - consumptionOfMouth
 
         const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
 
@@ -465,7 +476,7 @@ export default function InserirConsumo() {
 
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
-            <ToastContainer theme="colored"/>
+            <ToastContainer theme="colored" />
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-1/2 lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
@@ -494,6 +505,7 @@ export default function InserirConsumo() {
                                 placeholderText="data"
                                 locale={ptBR}
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                required
                             />
                         </div>
                         <div className="flex flex-row w-full gap-4">
@@ -508,7 +520,7 @@ export default function InserirConsumo() {
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" />
+                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" required />
                         </div>
 
                     </div>
@@ -538,13 +550,13 @@ export default function InserirConsumo() {
                         <h1 className="text-2xl font-bold text-gray-800">Dados de consumo</h1>
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
-                            <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => { setConsumoAgua(e.target.value) }} />
+                            <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} required />
+                            <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => { setConsumoAgua(e.target.value) }} required />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={residuesPerPerson} onChange={(e) => {setResiduesPerPerson(e.target.value),calculateResiduos()}} />
-                            <input type="number" placeholder="Consumo do mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumptionOfMouth} onChange={(e) => {setConsumptionOfMouth(e.target.value), calculateResiduos()}} />
-                            <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg}  />
+                            <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
+                            <input type="number" placeholder="Consumo do mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumptionOfMouth} onChange={(e) => { setConsumptionOfMouth(e.target.value), calculateResiduos() }} required />
+                            <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                         </div>
                         <div className="flex flex-col">
                             <label className="font-normal mb-2 text-black" htmlFor="gas">
