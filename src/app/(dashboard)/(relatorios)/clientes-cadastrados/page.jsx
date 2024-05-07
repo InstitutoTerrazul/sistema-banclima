@@ -11,7 +11,7 @@ import { Printer } from "@phosphor-icons/react";
 export default function ClientesCadastrados() {
     const router = useRouter();
 
-    const { userData } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
@@ -77,6 +77,8 @@ export default function ClientesCadastrados() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getProjects();
     }, []);

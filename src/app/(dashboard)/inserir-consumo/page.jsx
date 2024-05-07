@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function InserirConsumo() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
@@ -59,13 +59,17 @@ export default function InserirConsumo() {
     const [showClearBtn, setShowClearBtn] = useState(false);
 
     const [residuosKg, setResiduosKg] = useState('');
-    const [daysOfMouth, setDaysOfMouth] = useState('');
+    const [consumptionOfMouth, setConsumptionOfMouth] = useState('');
     const [residuesPerPerson, setResiduesPerPerson] = useState('');
 
     const [getDate, setGetDate] = useState('');
 
     const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
+
+    const [papel, setPapel] = useState('');
+    const [organico, setOrganico] = useState('');
+    const [plastico, setPlastico] = useState('');
 
 
     const handleDateChange = (date) => {
@@ -77,6 +81,9 @@ export default function InserirConsumo() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
+        getEmissions();
     }, []);
 
     useEffect(() => {
@@ -158,6 +165,9 @@ export default function InserirConsumo() {
                 const data = await response.json();
                 // setBtnText('Inserido residuo!');
                 setResiduesFactors(data);
+                setPapel(data[0].papel);
+                setOrganico(data[0].organico);
+                setPlastico(data[0].plastico);
                 console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
@@ -223,6 +233,7 @@ export default function InserirConsumo() {
                 setPhone(data[0].telefone);
                 setHabitantes(data[0].habitantes);
                 setAddress(data[0].endereco);
+                setResiduesPerPerson(data[0].marcoZero[3].consumo)
                 setSearchBtnText('Buscar CPF');
                 toast.success('Busca concluída!');
             } else {
@@ -418,11 +429,13 @@ export default function InserirConsumo() {
         // const plastico = 21 /100
         // const organico = 45/100
 
-        const papel = residuesFactors[0]?.papel
-        const plastico = residuesFactors[0]?.plastico
-        const organico = residuesFactors[0]?.organico
+        // const papel = residuesFactors[0]?.papel
+        // const plastico = residuesFactors[0]?.plastico
+        // const organico = residuesFactors[0]?.organico
 
-        const calculoResiduos = residuesPerPerson * daysOfMouth * habitantes
+        console.log('papel:', papel, 'plastico:', plastico, 'organico:', organico);
+
+        const calculoResiduos = residuesPerPerson - consumptionOfMouth 
 
         const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
 
@@ -438,7 +451,7 @@ export default function InserirConsumo() {
 
         setResiduosKg(calculoResiduos)
 
-        console.log(calculoResiduos);
+        console.log('total residuos:', calctotal);
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 
@@ -529,8 +542,8 @@ export default function InserirConsumo() {
                             <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => { setConsumoAgua(e.target.value) }} />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => {setResiduesPerPerson(e.target.value),calculateResiduos()}} />
-                            <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => {setDaysOfMouth(e.target.value), calculateResiduos()}} />
+                            <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={residuesPerPerson} onChange={(e) => {setResiduesPerPerson(e.target.value),calculateResiduos()}} />
+                            <input type="number" placeholder="Consumo do mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumptionOfMouth} onChange={(e) => {setConsumptionOfMouth(e.target.value), calculateResiduos()}} />
                             <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg}  />
                         </div>
                         <div className="flex flex-col">

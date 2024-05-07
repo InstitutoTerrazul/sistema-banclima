@@ -8,7 +8,7 @@ import { Printer } from "@phosphor-icons/react";
 
 export default function ListarProjetos() {
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
     const columns = [
         {
@@ -35,6 +35,11 @@ export default function ListarProjetos() {
         rua: row.rua,
         numero: row.numero,
     }))
+
+    useEffect(() => {
+        setIsLoading(false)
+
+    }, []);
 
     const handlePrint = () => {
         window.print();

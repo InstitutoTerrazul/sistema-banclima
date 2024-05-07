@@ -2,9 +2,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+
 
 export default function CadastrarCadastrador() {
     const router = useRouter();
+
+    const { setIsLoading } = useAuth();
+
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
@@ -21,6 +26,8 @@ export default function CadastrarCadastrador() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false);
     }, []);
 
     const clearForm = () => {
@@ -84,6 +91,11 @@ export default function CadastrarCadastrador() {
                     <input type="text" placeholder="Rua" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={street} onChange={(e) => setStreet(e.target.value)} />
                     <input type="text" placeholder="Número" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={number} onChange={(e) => setNumber(e.target.value)} />
                 </div>
+                {/* <div className="flex flex-row w-full gap-4">
+                    <input type="text" placeholder="%inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)} />
+                    <input type="text" placeholder="%final" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={street} onChange={(e) => setStreet(e.target.value)} />
+                    <input type="text" placeholder="Taxa de beneficio" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={number} onChange={(e) => setNumber(e.target.value)} />
+                </div> */}
                 <div className="flex flex-row justify-end w-full gap-4">
                     <button type="submit" className="flex items-center justify-center bg-primary px-8 py-2 rounded-lg">{btnText}</button>
                 </div>

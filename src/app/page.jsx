@@ -36,7 +36,7 @@ export default function Login() {
   const [btnText, setBtnText] = useState('Entrar')
   const router = useRouter();
 
-  const { setUserData } = useAuth();
+  const { setUserData, setIsLoading } = useAuth();
 
 
 
@@ -63,6 +63,7 @@ export default function Login() {
         const data = await response.json();
         setBtnText('logado com sucesso!')
         toast.success('Login efetuado com sucesso!');
+        setIsLoading(true)
         localStorage.setItem('user', JSON.stringify(data));
         setUserData(data);
         router.push('/dashboard');

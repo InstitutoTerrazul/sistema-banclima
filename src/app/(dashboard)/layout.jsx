@@ -7,6 +7,7 @@ import '@/app/globals.css'
 import SidebarContainer from '@/components/SidebarContainer'
 import Header from '@/components/Header'
 import HeaderMobile from '@/components/HeaderMobile'
+import Loading from '@/components/Loading'
 // import { SessionProviders } from '@/providers/session-provider'
 // import Header from '@/components/Header'
 // import { getServerSession } from 'next-auth'
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }) {
 
             </footer>
           </div>
+          <Loading />
         </main>
       </body>
     </html>

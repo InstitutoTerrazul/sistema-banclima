@@ -34,7 +34,7 @@ export default function SidebarMenu(props) {
 
   const roleName = props.roleName
 
-  const { userData } = useAuth();
+  const { userData, isLoading, setIsLoading } = useAuth();
 
   console.log('tipo usuario: ', userData.tipoUsuario);
 
@@ -214,6 +214,7 @@ export default function SidebarMenu(props) {
                 component={<Link href={item.href} />}
                 className="hover:text-yellow bg-primary"
                 icon={item.icon}
+                onClick={() => setIsLoading(true)}
               >
                 {item.name}
               </MenuItem>
@@ -232,6 +233,7 @@ export default function SidebarMenu(props) {
                     className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                       } `}
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
                     {item.name}
                   </MenuItem>
@@ -252,6 +254,7 @@ export default function SidebarMenu(props) {
                     className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                       } `}
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
                     {item.name}
                   </MenuItem>
@@ -272,6 +275,7 @@ export default function SidebarMenu(props) {
                     className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                       } `}
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
                     {item.name}
                   </MenuItem>
@@ -296,6 +300,7 @@ export default function SidebarMenu(props) {
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
                     {item.name}
                   </MenuItem>
@@ -310,6 +315,7 @@ export default function SidebarMenu(props) {
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
                     {item.name}
                   </MenuItem>
@@ -326,6 +332,7 @@ export default function SidebarMenu(props) {
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
+                    onClick={() => setIsLoading(true)}
                   >
 
                     {item.name}
@@ -346,6 +353,7 @@ export default function SidebarMenu(props) {
                   component={<Link href={item.href} />}
                   className="hover:text-yellow bg-primary/80"
                   icon={item.icon}
+                  onClick={() => setIsLoading(true)}
                 >
                   {item.name}
                 </MenuItem>

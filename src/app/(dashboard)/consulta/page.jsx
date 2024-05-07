@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Consulta() {
     const router = useRouter();
 
-    const { userData, userConsumptionPopUp, setUserConsumptionPopUp } = useAuth();
+    const { userData, userConsumptionPopUp, setUserConsumptionPopUp, setIsLoading } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
@@ -110,6 +110,8 @@ export default function Consulta() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getProjects();
     }, []);

@@ -11,7 +11,7 @@ import { Printer } from "@phosphor-icons/react";
 export default function EmissoesEvitadas() {
     const router = useRouter();
 
-    const { userData } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
@@ -81,6 +81,8 @@ export default function EmissoesEvitadas() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getProjects();
     }, []);

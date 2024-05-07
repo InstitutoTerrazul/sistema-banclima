@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function EditarCliente() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -70,6 +70,8 @@ export default function EditarCliente() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getEmissions();
     }, []);

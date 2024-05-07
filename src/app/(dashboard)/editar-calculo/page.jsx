@@ -22,12 +22,13 @@ export default function EditarCalculo() {
     const [year, setYear] = useState('');
 
 
-    const { userData } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
     useEffect(() => {
         searchValues()
+        setIsLoading(false)
     }, [])
 
     const searchValues = async () => {

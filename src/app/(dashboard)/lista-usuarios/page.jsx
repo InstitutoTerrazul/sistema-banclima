@@ -6,7 +6,7 @@ import EditUser from "@/components/EditUser";
 
 export default function ListarProjetos() {
 
-    const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp } = useAuth();
+    const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp, setIsLoading } = useAuth();
 
     const [usersList, setUsersList] = useState([]);
     const [user, setUser] = useState({});
@@ -14,6 +14,7 @@ export default function ListarProjetos() {
 
     useEffect(() => {
         getUsers();
+        setIsLoading(false)
     }, [])
 
     const getUsers = async () => {

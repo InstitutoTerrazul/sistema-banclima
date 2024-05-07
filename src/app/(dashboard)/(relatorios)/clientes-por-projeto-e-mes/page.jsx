@@ -11,7 +11,7 @@ import { Printer } from "@phosphor-icons/react";
 export default function ClientesPorProjetoEMes() {
     const router = useRouter();
 
-    const { userData, setProjectList, projectList } = useAuth();
+    const { userData, setProjectList, projectList, setIsLoading } = useAuth();
 
     // const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
@@ -80,6 +80,8 @@ export default function ClientesPorProjetoEMes() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         // getProjects();
     }, []);

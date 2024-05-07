@@ -19,7 +19,7 @@ export default function CadastrarCliente() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
     const [selectedProject, setSelectedProject] = useState();
 
@@ -82,6 +82,8 @@ export default function CadastrarCliente() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getEmissions();
     }, []);

@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function EditarConsumo() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList } = useAuth();
+    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
@@ -84,6 +84,8 @@ export default function EditarConsumo() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         getEmissions();
     }, []);

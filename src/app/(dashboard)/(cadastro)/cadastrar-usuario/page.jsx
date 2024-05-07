@@ -13,7 +13,7 @@ export default function CadastrarCadastrador() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
-    const { userData } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
 
     const [name, setName] = useState('');
@@ -29,7 +29,9 @@ export default function CadastrarCadastrador() {
             router.push('/login');
         }
 
-        console.log('userData', userData.tipoUsuario);
+        setIsLoading(false)
+
+        // console.log('userData', userData.tipoUsuario);
     }, []);
 
     const clearForm = () => {

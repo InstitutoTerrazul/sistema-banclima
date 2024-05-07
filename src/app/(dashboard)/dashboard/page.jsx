@@ -13,7 +13,7 @@ import AvoidedEmission from "@/components/AvoidedEmission";
 export default function Home() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList, selectedProject, setSelectedProject } = useAuth();
+    const { userData, projectList, setProjectList, selectedProject, setSelectedProject, setIsLoading } = useAuth();
 
     // const [projectList, setProjectList] = useState([]);
     // const [selectedProject, setSelectedProject] = useState();
@@ -23,6 +23,8 @@ export default function Home() {
         if (!user) {
             router.push('/login');
         }
+
+        setIsLoading(false)
 
         // getProjects();
     }, []);
