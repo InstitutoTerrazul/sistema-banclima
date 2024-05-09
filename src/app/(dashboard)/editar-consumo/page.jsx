@@ -107,7 +107,7 @@ export default function EditarConsumo() {
         // setGetDate(formattedDate);
 
         const dateStr = getDate;
-        const dateParts = dateStr.split("/");
+        const dateParts = dateStr?.split("/");
 
         const month = dateParts[1];
         const year = dateParts[2];

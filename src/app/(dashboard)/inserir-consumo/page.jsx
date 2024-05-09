@@ -119,9 +119,9 @@ export default function InserirConsumo() {
 
         const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
 
-        console.log(filteredDate[0].valor);
+        console.log(filteredDate[0]?.valor);
 
-        setEnergyFactors(filteredDate[0].valor);
+        setEnergyFactors(filteredDate[0]?.valor);
 
     }, [selectedDate]);
 
