@@ -92,22 +92,23 @@ export default function EditarConsumo() {
 
     useEffect(() => {
         const date = new Date(getDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+        // const formattedDate = date.toLocaleDateString('en-GB');
+        const formattedDate = getDate;
 
         console.log(formattedDate);
 
-        // setDateFormatted(formattedDate);
+        setDateFormatted(formattedDate);
 
-        // if (formattedDate === '31/12/1969') {
-        //     setGetDate('');
-        // } else {
-        //     setGetDate(formattedDate);
-        // }
+        if (formattedDate === '31/12/1969') {
+            setGetDate('');
+        } else {
+            setGetDate(formattedDate);
+        }
 
-        // setGetDate(formattedDate);
+        setGetDate(formattedDate);
 
-        const dateStr = getDate;
-        const dateParts = dateStr?.split("/");
+        const dateStr = formattedDate;
+        const dateParts = dateStr.split("/");
 
         const month = dateParts[1];
         const year = dateParts[2];
@@ -118,6 +119,34 @@ export default function EditarConsumo() {
         setYear(year);
 
     }, [getDate]);
+
+    // const formatDate = async () => {
+    //     const date = new Date(getDate);
+    //     const formattedDate = date.toLocaleDateString('en-GB');
+
+    //     console.log(formattedDate);
+
+    //     // setDateFormatted(formattedDate);
+
+    //     // if (formattedDate === '31/12/1969') {
+    //     //     setGetDate('');
+    //     // } else {
+    //     //     setGetDate(formattedDate);
+    //     // }
+
+    //     // setGetDate(formattedDate);
+
+    //     const dateStr = date;
+    //     const dateParts = dateStr?.split("/");
+
+    //     const month = dateParts[1];
+    //     const year = dateParts[2];
+
+    //     console.log('mes:', month, 'ano:', year);
+
+    //     setMounth(month);
+    //     setYear(year);
+    // }
 
     const handleChangeMounth = (event) => {
         setSelectedMonth(event.target.value);
@@ -238,14 +267,14 @@ export default function EditarConsumo() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data searched:', data[0]);
-                setName(data[0].nome);
-                setCpf(data[0].cpf);
-                setEmail(data[0].email);
-                setPhone(data[0].telefone);
-                setHabitantes(data[0].habitantes);
-                setAddress(data[0].endereco);
+                setName(data[0].cliente.nome);
+                setCpf(data[0].cliente.cpf);
+                setEmail(data[0].cliente.email);
+                setPhone(data[0].cliente.telefone);
+                setHabitantes(data[0].cliente.habitantes);
+                setAddress(data[0].cliente.endereco);
                 setSearchBtnText('Encontrado!');
-                setGetDate(data[0].data);
+                setGetDate(data[0].cliente.data);
                 toast.success('Busca concluída!');
 
             } else {

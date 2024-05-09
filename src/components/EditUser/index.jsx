@@ -121,7 +121,7 @@ export default function EditUser(props) {
                             <option value="" disabled selected>Tipo de usuário</option>
                             {userData?.tipoUsuario === 'administradorgeral' ?
                                 <>
-                                    <option value="administradorGeral">Administrador Geral</option>
+                                    <option value="administradorgeral">Administrador Geral</option>
                                     <option value="cadastrador">Cadastrador</option>
                                     <option value="equipe">Equipe</option>
                                 </>

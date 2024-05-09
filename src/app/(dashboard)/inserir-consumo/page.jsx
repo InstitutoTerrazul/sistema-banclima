@@ -554,7 +554,7 @@ export default function InserirConsumo() {
                             <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => { setConsumoAgua(e.target.value) }} required />
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
+                            <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={parseFloat(residuesPerPerson).toFixed(2)} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
                             <input type="number" placeholder="Consumo do mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumptionOfMouth} onChange={(e) => { setConsumptionOfMouth(e.target.value), calculateResiduos() }} required />
                             <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                         </div>
