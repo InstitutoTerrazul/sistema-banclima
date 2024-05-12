@@ -219,7 +219,7 @@ export default function SidebarMenu(props) {
                 {item.name}
               </MenuItem>
             ))}
-            {userData.tipoUsuario === 'administradorgeral' && (
+            {userData.tipoUsuario === 'administradorgeral' || userData.tipoUsuario === 'cadastrador' && (
               <SubMenu
                 label="Cadastro"
                 className="bg-primary"
@@ -240,7 +240,7 @@ export default function SidebarMenu(props) {
                 ))}
               </SubMenu>
             )}
-            {userData.tipoUsuario === 'cadastrador' && (
+            {/* {userData.tipoUsuario === 'cadastrador' && (
               <SubMenu
                 label="Cadastro"
                 className="bg-primary"
@@ -260,7 +260,7 @@ export default function SidebarMenu(props) {
                   </MenuItem>
                 ))}
               </SubMenu>
-            )}
+            )} */}
             {userData.tipoUsuario === 'administradorgeral' || userData.tipoUsuario === 'cadastrador' ? (
               <SubMenu
                 label="Consumo"
