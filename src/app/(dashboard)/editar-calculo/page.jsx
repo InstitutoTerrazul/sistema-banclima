@@ -31,6 +31,19 @@ export default function EditarCalculo() {
         setIsLoading(false)
     }, [])
 
+    const filterArray = (obj) => {
+        // const obj = {
+        //     array1: [1, 2, 3],
+        //     array2: [4, 5, 6]
+        // };
+
+        const uniqueArray = obj.listaEnergia.concat(obj.listaResiduos);
+
+        setTableData(uniqueArray)
+
+        console.log('dados:', uniqueArray);
+    }
+
     const searchValues = async () => {
         // setSearchBtnText('Buscando...');
         console.log('User data:', userData);
@@ -39,7 +52,7 @@ export default function EditarCalculo() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
+            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,7 +62,8 @@ export default function EditarCalculo() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Data searched:', data);
-                setTableData(data);
+                filterArray(data);
+                // setTableData(data);
                 // setTableData(data);
                 // setSearchBtnText('CPF encontrado!');
             } else {
@@ -59,26 +73,26 @@ export default function EditarCalculo() {
             console.error('Error creating post:', error);
         }
 
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/listar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Data residuos:', data);
-                // setTableData(data);
-                // setTableData(data);
-                // setSearchBtnText('CPF encontrado!');
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
+        // try {
+        //     const response = await fetch('http://191.252.38.35:8080/api/residuos/listar', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(userData)
+        //     });
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         console.log('Data residuos:', data);
+        //         // setTableData(data);
+        //         // setTableData(data);
+        //         // setSearchBtnText('CPF encontrado!');
+        //     } else {
+        //         console.error('Failed to create post');
+        //     }
+        // } catch (error) {
+        //     console.error('Error creating post:', error);
+        // }
 
         setTimeout(() => {
             // setSearchBtnText('Buscar');
@@ -100,19 +114,21 @@ export default function EditarCalculo() {
 
         const dataEnergia = {
             data: formattedDate,
-            tipoEmissao: 'energiaeletrica',
-            valor: energia
-        }
-
-        const dataResiduos = {
-            data: formattedDate,
+            energia,
             papel,
             plastico,
             organico
         }
 
+        // const dataResiduos = {
+        //     data: formattedDate,
+        //     papel,
+        //     plastico,
+        //     organico
+        // }
+
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/salvar?login=terrazul&senha=1234567', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -130,24 +146,24 @@ export default function EditarCalculo() {
             console.error('Error creating post:', error);
         }
 
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/salvar?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataResiduos)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setBtnText('Inserido residuo!');
-                console.log('Post created:', data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
+        // try {
+        //     const response = await fetch('http://191.252.38.35:8080/api/residuos/salvar?login=terrazul&senha=1234567', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(dataResiduos)
+        //     });
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         setBtnText('Inserido residuo!');
+        //         console.log('Post created:', data);
+        //     } else {
+        //         console.error('Failed to create post');
+        //     }
+        // } catch (error) {
+        //     console.error('Error creating post:', error);
+        // }
 
         setTimeout(() => {
             setBtnText('Inserir');
@@ -157,13 +173,25 @@ export default function EditarCalculo() {
     }
 
     const columns = [
+        // {
+        //     name: 'Tipo de Emissão',
+        //     selector: row => row.tipoEmissao,
+        // },
+        // {
+        //     name: 'Valor',
+        //     selector: row => row.valor,
+        // },
         {
-            name: 'Tipo de Emissão',
-            selector: row => row.tipoEmissao,
+            name: 'papel',
+            selector: row => row.papel,
         },
         {
-            name: 'Valor',
-            selector: row => row.valor,
+            name: 'plastico',
+            selector: row => row.plastico,
+        },
+        {
+            name: 'organico',
+            selector: row => row.organico,
         },
         {
             name: 'Mês/Ano',
@@ -171,10 +199,13 @@ export default function EditarCalculo() {
         },
     ];
 
-    const data = tableData.map(row => ({
+    const data = tableData?.map(row => ({
         valor: row.valor,
         data: row.data,
         tipoEmissao: row.tipoEmissao,
+        papel: row.papel,
+        plastico: row.plastico,
+        organico: row.organico
     }))
 
     const handleDateChange = (date) => {

@@ -93,9 +93,9 @@ export default function UserConsumption(props) {
 
     return (
         <>
-            <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 2 2xl:pr-32 w-full h-screen gap-8 bg-black/20 rounded-xl z-40">
+            <div className="fixed top-0 left-0 flex flex-col justify-center items-center p-10 lg:pl-72 2 2xl:pr-32 w-full h-screen gap-8 bg-black/20 rounded-xl z-40 ">
 
-                <div className="relative w-full p-8 bg-white rounded-lg">
+                <div className="relative w-full p-8 bg-white rounded-lg max-h-[900px] overflow-auto">
                     <span className="absolute top-4 right-4 cursor-pointer text-black text-xl" onClick={() => setUserConsumptionPopUp(false)}>X</span>
                     <h1 className="text-2xl font-bold text-gray-800 text-start my-4">Consumo</h1>
 

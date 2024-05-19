@@ -427,35 +427,59 @@ export default function EditarCliente() {
 
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Nome completo" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
-                            <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Nome completo</label>
+                                <input type="text" placeholder="Nome completo" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">CPF</label>
+                                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
+                            </div>
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Endereço" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} required />
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={handleDateChange}
-                                maxDate={new Date()} // Set the maximum date to today
-                                placeholderText="data"
-                                locale={ptBR}
-                                dateFormat="dd/MM/yyyy"
-                                value={getDate}
-                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
-                            />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Endereço</label>
+                                <input type="text" placeholder="Endereço" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Data</label>
+                                <DatePicker
+                                    selected={selectedDate}
+                                    onChange={handleDateChange}
+                                    maxDate={new Date()} // Set the maximum date to today
+                                    placeholderText="data"
+                                    locale={ptBR}
+                                    dateFormat="dd/MM/yyyy"
+                                    value={getDate}
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                />
+                            </div>
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Email" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                            <ReactInputMask required mask="(99)99999-9999" maskChar="" placeholder='Telefone' type="text" {...register('phone', {
-                                pattern: {
-                                    value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
-                                    message: "Insira um telefone válido"
-                                },
-                                required: true
-                            })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Email</label>
+                                <input type="text" placeholder="Email" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Telefone</label>
+                                <ReactInputMask required mask="(99)99999-9999" maskChar="" placeholder='Telefone' type="text" {...register('phone', {
+                                    pattern: {
+                                        value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
+                                        message: "Insira um telefone válido"
+                                    },
+                                    required: true
+                                })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
+                            </div>
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} required />
-                            <Select options={options} Value={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Nº de Habitantes</label>
+                                <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Projeto</label>
+                                <Select options={options} Value={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" />
+                            </div>
                         </div>
                     </div>
 
@@ -465,15 +489,35 @@ export default function EditarCliente() {
                         <h1 className="text-2xl font-bold text-gray-800">Dados contas de consumo</h1>
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Código do cliente / energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codEnergia} onChange={(e) => setCodEnergia(e.target.value)} required />
-                            <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularEnergia} onChange={e => setTitularEnergia(e.target.value)} />
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">Código do cliente / Energia</label>
+                                <input type="number" placeholder="Código do cliente / energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codEnergia} onChange={(e) => setCodEnergia(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">CPF titular</label>
+                                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularEnergia} onChange={e => setTitularEnergia(e.target.value)} />
+                            </div>
                         </div>
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Código do cliente / água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codAgua} onChange={(e) => setCodAgua(e.target.value)} required />
-                            <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularAgua} onChange={e => setTitularAgua(e.target.value)} />
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">Código do cliente / Agua</label>
+                                <input type="number" placeholder="Código do cliente / água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codAgua} onChange={(e) => setCodAgua(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">CPF titular</label>
+                                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularAgua} onChange={e => setTitularAgua(e.target.value)} />
+                            </div>
                         </div>
-                        <input type="number" placeholder="Código do cliente / gas" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codGas} onChange={(e) => setCodGas(e.target.value)} required />
-                        <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularGas} onChange={e => setTitularGas(e.target.value)} />
+                        <div className="flex flex-row w-full gap-4">
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">Código do cliente / Gas</label>
+                                <input type="number" placeholder="Código do cliente / gas" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={codGas} onChange={(e) => setCodGas(e.target.value)} required />
+                            </div>
+                            <div className="flex flex-col w-full gap-6 text-black text-sm ">
+                                <label htmlFor="name">CPF titular</label>
+                                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='cpf do titular' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={titularGas} onChange={e => setTitularGas(e.target.value)} />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {/* <div className="flex flex-row justify-center items-center w-full gap-8">

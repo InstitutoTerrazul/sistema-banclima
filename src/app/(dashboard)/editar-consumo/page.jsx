@@ -242,6 +242,7 @@ export default function EditarConsumo() {
         setEmissoesGas('');
         setSelectedGas('');
         setSearchCpf('');
+        setResiduosKg('');
 
         setBtnText('Cadastrar');
         setShowClearBtn(false);
@@ -275,6 +276,7 @@ export default function EditarConsumo() {
                 setAddress(data[0].cliente.endereco);
                 setSearchBtnText('Encontrado!');
                 setGetDate(data[0].cliente.data);
+                setProjeto(data[0].cliente.projeto);
                 toast.success('Busca concluída!');
 
             } else {
@@ -431,7 +433,7 @@ export default function EditarConsumo() {
                                         const data = await response.json();
                                         setEmissoesGas(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=terrazul&senha=1234567', {
+                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/atualizaUltimaEmissaoMensal?login=terrazul&senha=1234567', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -447,7 +449,7 @@ export default function EditarConsumo() {
                                                 toast.success('Cadastrado com sucesso!');
                                             } else {
                                                 console.error('Failed to save mensal');
-                                                toast.error('ops! algo deu errado!');
+                                                toast.error('ops! algo deu errado ao atualizar emissões!');
                                             }
                                         } catch (error) {
                                             console.error('Error to save mensal emissions:', error);
@@ -526,11 +528,11 @@ export default function EditarConsumo() {
 
         const days = 31
 
-        if(mounth === '04' || mounth === '06' || mounth === '09' || mounth === '11'){
+        if (mounth === '04' || mounth === '06' || mounth === '09' || mounth === '11') {
             setDaysOfMouth(30)
-        } else if(mounth === '02'){
+        } else if (mounth === '02') {
             setDaysOfMouth(28)
-        }else {
+        } else {
             setDaysOfMouth(31)
         }
 
@@ -598,37 +600,51 @@ export default function EditarConsumo() {
                         <h1 className="text-2xl font-bold text-gray-800">Dados cadastrais</h1>
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Nome completo" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
-                            <ReactInputMask required mask="999.999.999-99" disabled maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
-                        </div>
-                        <div className="flex flex-row w-full gap-4">
-                            <input type="text" placeholder="Endereço" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
-                            {/* <ReactDatePicker
-                                selected={selectedDate}
-                                onChange={handleDateChange}
-                                value={getDate}
-                                dateFormat="dd/MM/yyyy"
-                                maxDate={new Date()} // Set the maximum date to today
-                                placeholderText="data"
-                                locale={ptBR}
-                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
-                            /> */}
-                            <input type="text" placeholder="Data" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={getDate} />
-                        </div>
-                        <div className="flex flex-row w-full gap-4">
-                            <input type="email" placeholder="Email" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
-                            <ReactInputMask required mask="(99)99999-9999" disabled maskChar="" placeholder='Telefone' type="text" {...register('phone', {
-                                pattern: {
-                                    value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
-                                    message: "Insira um telefone válido"
-                                },
-                                required: true
-                            })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
-                        </div>
-                        <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
-                            <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-1/2 h-11 text-black" required/>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Nome completo</label>
+                                <input type="text" placeholder="Nome completo" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
+                            </div>
 
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">CPF</label>
+                                <ReactInputMask required mask="999.999.999-99" disabled maskChar="" placeholder='cpf' type="text" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={cpf} onChange={e => setCpf(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="flex flex-row w-full gap-4">
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Endereço</label>
+                                <input type="text" placeholder="Endereço" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={address} onChange={(e) => setAddress(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Data</label>
+                                <input type="text" placeholder="Data" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={getDate} />
+                            </div>
+                        </div>
+                        <div className="flex flex-row w-full gap-4">
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Email</label>
+                                <input type="email" placeholder="Email" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Telefone</label>
+                                <ReactInputMask required mask="(99)99999-9999" disabled maskChar="" placeholder='Telefone' type="text" {...register('phone', {
+                                    pattern: {
+                                        value: /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
+                                        message: "Insira um telefone válido"
+                                    },
+                                    required: true
+                                })} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={phone} onChange={e => setPhone(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="flex flex-row w-full gap-4">
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Nº de Habitantes</label>
+                                <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Projeto</label>
+                                <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" required />
+                            </div>
                         </div>
 
                     </div>
@@ -658,13 +674,22 @@ export default function EditarConsumo() {
                         <h1 className="text-2xl font-bold text-gray-800">Dados de consumo</h1>
 
                         <div className="flex flex-row w-full gap-4">
-                            <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
-                            <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Consumo de energia em kWh</label>
+                                <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} />
+                            </div>
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Consumo de água em m³</label>
+                                <input type="number" placeholder="Consumo de água em m³" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoAgua} onChange={(e) => setConsumoAgua(e.target.value)} />
+                            </div>
                         </div>
                         <div className="flex flex-row w-full gap-4">
                             {/* <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
                             <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} /> */}
-                            <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
+                            <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                                <label htmlFor="name">Geração de resíduos</label>
+                                <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
+                            </div>
                         </div>
                         <div className="flex flex-col">
                             <label className="font-normal mb-2 text-black" htmlFor="gas">
@@ -708,11 +733,22 @@ export default function EditarConsumo() {
 
                         <h1 className="text-2xl font-bold text-gray-800">Dados de emissões</h1>
 
-                        <input type="text" placeholder="Kg CO2e Energia" defaultValue={emissoesEnergia} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Kg CO2e Água" defaultValue={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Kg CO2e Resíduos" defaultValue={emissoesResiduos} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Kg CO2e Gás" defaultValue={emissoesGas} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-
+                        <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                            <label htmlFor="name">Energia</label>
+                            <input type="text" placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        </div>
+                        <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                            <label htmlFor="name">Agua</label>
+                            <input type="text" placeholder="Kg CO2e Água" disabled defaultValue={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        </div>
+                        <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                            <label htmlFor="name">Resíduos</label>
+                            <input type="text" placeholder="Kg CO2e Resíduos" disabled defaultValue={emissoesResiduos} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        </div>
+                        <div className="flex flex-col w-full gap-2 text-black text-sm ">
+                            <label htmlFor="name">Gás</label>
+                            <input type="text" placeholder="Kg CO2e Gás" disabled defaultValue={emissoesGas} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-row justify-end items-center w-full gap-8">

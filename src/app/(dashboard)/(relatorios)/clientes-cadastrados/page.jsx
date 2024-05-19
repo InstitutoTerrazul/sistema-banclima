@@ -54,6 +54,7 @@ export default function ClientesCadastrados() {
         },
     ];
 
+
     const data = tableData.map(row => ({
         nome: row.cliente.nome,
         email: row.cliente.email,
@@ -63,7 +64,11 @@ export default function ClientesCadastrados() {
         cpf: row.cliente.cpf,
         matriculaDeEnergia: row.cliente.matriculaDeEnergia,
         matriculaDeAgua: row.cliente.matriculaDeAgua,
-        matriculaDeGas: row.cliente.matriculaDeGas
+        matriculaDeGas: row.cliente.matriculaDeGas,
+        beneficioTotal: row.beneficioTotal,
+        emissaoTotal: row.emissaoTotal,
+        emissoesEvitadas: row.emissoesEvitadas,
+        taxaDeReducaoTotal: row.taxaDeReducaoTotal
     }))
 
 
@@ -166,6 +171,49 @@ export default function ClientesCadastrados() {
         window.print();
     };
 
+    const ExpandedComponent = ({ data }) => {
+        return (
+            <div className="flex flex-col w-full gap-4 p-4 border-b border-[#e0e0e0]">
+                {/* <span>Projeto: {data.projeto}</span> */}
+                <div className="flex flex-col text-sm gap-1">
+                    <span><b>nome:</b> {data.nome}</span>
+                    <span><b>email:</b> {data.email}</span>
+                    <span><b>telefone:</b> {data.telefone}</span>
+                    <span><b>cpf:</b> {data.cpf}</span>
+                </div>
+                <div className="flex flex-row w-full items-center justify-around gap-4">
+                    <div className="flex flex-col gap-2">
+                        <span><b>Benefício Total:</b></span>
+                        <span>{parseFloat(data.beneficioTotal).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Emissão Total:</b></span>
+                        <span>{parseFloat(data.emissaoTotal).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Emissões Evitadas:</b></span>
+                        <span>{parseFloat(data.emissoesEvitadas).toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <span><b>Taxa de Redução Total:</b></span>
+                        <span>{parseFloat(data.taxaDeReducaoTotal).toFixed(2)}</span>
+                    </div>
+                </div>
+                {/* <div className="flex flex-col md:flex-row gap-4">
+                    <button
+                        title="Editar"
+                        type="button"
+                        rel="noreferrer"
+                        className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
+                        onClick={() => handleUserConsumption(data.cpf)}
+                    >
+                        Ver Consumo
+                    </button>
+                </div> */}
+            </div>
+        );
+    };
+
     return (
         <>
             <div className="flex flex-row items-center justify-between w-full mt-10">
@@ -185,9 +233,11 @@ export default function ClientesCadastrados() {
             </div>
 
             <div className="w-full p-2 bg-white rounded-lg">
-                <DataTable
+            <DataTable
                     columns={columns}
                     data={data}
+                    expandableRows
+                    expandableRowsComponent={ExpandedComponent}
                 />
             </div>
         </>
