@@ -131,17 +131,6 @@ export default function HistoryGraph() {
 
     return (
         <>
-            {/* {window &&
-
-                <Chart
-                    options={options}
-                    series={options.series}
-                    type="area"
-                    width={"100%"}
-                    height={350}
-                    className="w-full h-96"
-                />
-            } */}
             <Line
                 datasetIdKey='id'
                 data={opt}

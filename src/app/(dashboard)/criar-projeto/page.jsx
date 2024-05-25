@@ -51,11 +51,9 @@ export default function CadastrarCadastrador() {
             cidade: city,
             porcentagem: porcentagem,
             valor: valor,
-            energiaEResiduos: {
-                papel: papel,
-                plastico: plastico,
-                organico: organico
-            }
+            papel: papel,
+            plastico: plastico,
+            organico: organico
         }
 
         try {
@@ -70,16 +68,18 @@ export default function CadastrarCadastrador() {
                 const data = await response.json();
                 setBtnText('Cadastrado!');
                 console.log('Post created:', data);
+
+                setTimeout(() => {
+                    clearForm();
+                }, 2000);
             } else {
+                setBtnText('Cadastrar')
                 console.error('Failed to create post');
             }
         } catch (error) {
+            setBtnText('Cadastrar')
             console.error('Error creating post:', error);
         }
-
-        setTimeout(() => {
-            clearForm();
-        }, 2000);
     }
 
 
@@ -108,7 +108,7 @@ export default function CadastrarCadastrador() {
                     <input type="text" placeholder="Número" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={number} onChange={(e) => setNumber(e.target.value)} title="Número" />
                 </div>
                 <div className="flex flex-row w-full gap-4">
-                    <input type="number" min="1" max="100" placeholder="(% Plano)"
+                    <input type="number" min="1" max="10" placeholder="(% Plano)"
                         className="bg-white w-28 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                         value={porcentagem} onChange={(e) => setPorcentagem(e.target.value)} title="Plano (%)" />
                     <input type="text" placeholder="Valor (R$)"

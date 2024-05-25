@@ -57,7 +57,6 @@ export default function EditarCalculo() {
     const submitForm = async () => {
         setBtnText('Inserindo...');
         const formattedDate = `${mounth}/${year}`
-        console.log(formattedDate);
 
         const dataEnergia = {
             data: formattedDate,
@@ -85,22 +84,17 @@ export default function EditarCalculo() {
 
         setTimeout(() => {
             setBtnText('Inserir');
+            setEnergia('');
+            setSelectedDate('')
+            searchValues()
         }, 2000);
 
     }
 
     const columns = [
         {
-            name: 'Papel',
-            selector: row => row.papel,
-        },
-        {
-            name: 'Plástico',
-            selector: row => row.plastico,
-        },
-        {
-            name: 'Orgânico',
-            selector: row => row.organico,
+            name: 'Energia',
+            selector: row => row.energia,
         },
         {
             name: 'Mês/Ano',
@@ -109,12 +103,8 @@ export default function EditarCalculo() {
     ];
 
     const data = tableData?.map(row => ({
-        valor: row.valor,
         data: row.data,
-        tipoEmissao: row.tipoEmissao,
-        papel: row.papel,
-        plastico: row.plastico,
-        organico: row.organico
+        energia: row.energia
     }));
 
     const handleDateChange = (date) => {

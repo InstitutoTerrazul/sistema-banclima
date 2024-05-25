@@ -21,16 +21,12 @@ export default function CadastrarCliente() {
 
     const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
-    const [selectedProject, setSelectedProject] = useState();
-
-
     const [name, setName] = useState('');
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [habitantes, setHabitantes] = useState('');
     const [address, setAddress] = useState('');
-    const [date, setDate] = useState('');
     const [codEnergia, setCodEnergia] = useState('');
     const [titularEnergia, setTitularEnergia] = useState('');
     const [codAgua, setCodAgua] = useState('');
@@ -40,7 +36,6 @@ export default function CadastrarCliente() {
     const [consumoEnergia, setConsumoEnergia] = useState('');
     const [consumoAgua, setConsumoAgua] = useState('');
     const [consumoGas, setConsumoGas] = useState('');
-    const [consumoResiduos, setconsumoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [dateFormatted, setDateFormatted] = useState('');
@@ -53,8 +48,6 @@ export default function CadastrarCliente() {
     const [emissoesResiduos, setEmissoesResiduos] = useState('');
     const [emissoesGas, setEmissoesGas] = useState('');
 
-    const [co2Emissions, setCo2Emissions] = useState('');
-
     const [selectedGas, setSelectedGas] = useState('');
 
     const [showClearBtn, setShowClearBtn] = useState(false);
@@ -66,10 +59,6 @@ export default function CadastrarCliente() {
     const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
     const [factors, setFactors] = useState([]);
-
-    const handleGasChange = (event) => {
-        setSelectedGas(event.target.value);
-    };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -138,7 +127,6 @@ export default function CadastrarCliente() {
         setPhone('');
         setHabitantes('');
         setAddress('');
-        setDate('');
         setCodEnergia('');
         setTitularEnergia('');
         setCodAgua('');
@@ -148,7 +136,6 @@ export default function CadastrarCliente() {
         setConsumoEnergia('');
         setConsumoAgua('');
         setConsumoGas('');
-        setconsumoResiduos('');
         setProjeto('');
         setSelectedDate(null);
         setDateFormatted('');
@@ -156,7 +143,6 @@ export default function CadastrarCliente() {
         setEmissoesAgua('');
         setEmissoesResiduos('');
         setEmissoesGas('');
-        setCo2Emissions('');
         setSelectedGas('');
 
         setBtnText('Cadastrar');
@@ -176,8 +162,6 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
-                // setEnergyFactors(data[1]?.valor);
                 setFactors(data);
                 console.log('result:', data);
             } else {
@@ -193,7 +177,6 @@ export default function CadastrarCliente() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
             });
             if (response.ok) {
                 const data = await response.json();
@@ -293,8 +276,6 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                const data = await response.json();
-                // console.log('Post created:', data);
                 try {
                     const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
                         method: 'POST',
@@ -413,7 +394,6 @@ export default function CadastrarCliente() {
             const calculoGas = consumoGas * 25.09
             const formatted = calculoGas.toFixed(2).replace(".", ",")
             setEmissoesGas(formatted)
-            // setConsumoGas(consumoGasEletrico);
         }
     }
 
@@ -425,17 +405,12 @@ export default function CadastrarCliente() {
 
     const calculateEnergia = () => {
         console.log(energyFactors);
-        // const calculoEnergia = consumoEnergia * 0.0340  com valor fixo
         const calculoEnergia = consumoEnergia * energyFactors
         const formatted = calculoEnergia.toFixed(2).replace(".", ",")
         setEmissoesEnergia(formatted)
     }
 
     const calculateResiduos = () => {
-        // const papel = 10 / 100
-        // const plastico = 21 / 100
-        // const organico = 45 / 100
-
         const papel = residuesFactors[0]?.papel
         const plastico = residuesFactors[0]?.plastico
         const organico = residuesFactors[0]?.organico
@@ -461,7 +436,6 @@ export default function CadastrarCliente() {
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 
-        setconsumoResiduos(toString(calctotal))
         setEmissoesResiduos(formatted)
     }
 
