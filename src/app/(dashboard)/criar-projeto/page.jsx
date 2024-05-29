@@ -57,7 +57,7 @@ export default function CadastrarCadastrador() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

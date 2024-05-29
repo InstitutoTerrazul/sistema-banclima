@@ -90,7 +90,7 @@ export default function ClientesCadastrados() {
 
     const getProjects = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ export default function ClientesCadastrados() {
 
     const getClientList = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -137,7 +137,7 @@ export default function ClientesCadastrados() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -233,7 +233,7 @@ export default function ClientesCadastrados() {
             </div>
 
             <div className="w-full p-2 bg-white rounded-lg">
-            <DataTable
+                <DataTable
                     columns={columns}
                     data={data}
                     expandableRows

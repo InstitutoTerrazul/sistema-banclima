@@ -172,7 +172,7 @@ export default function CadastrarCliente() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -268,7 +268,7 @@ export default function CadastrarCliente() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -277,7 +277,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 try {
-                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -288,7 +288,7 @@ export default function CadastrarCliente() {
                         const data = await response.json();
                         setEmissoesEnergia(data.emissao)
                         try {
-                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -299,7 +299,7 @@ export default function CadastrarCliente() {
                                 const data = await response.json();
                                 setEmissoesAgua(data.emissao)
                                 try {
-                                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -310,7 +310,7 @@ export default function CadastrarCliente() {
                                         const data = await response.json();
                                         setEmissoesResiduos(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvarGas?login=terrazul&senha=1234567', {
+                                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${userData.login}&senha=${userData.senha}`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -321,7 +321,7 @@ export default function CadastrarCliente() {
                                                 const data = await response.json();
                                                 setEmissoesGas(data.emissao)
                                                 try {
-                                                    const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=terrazul&senha=1234567', {
+                                                    const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${userData.login}&senha=${userData.senha}`, {
                                                         method: 'POST',
                                                         headers: {
                                                             'Content-Type': 'application/json'

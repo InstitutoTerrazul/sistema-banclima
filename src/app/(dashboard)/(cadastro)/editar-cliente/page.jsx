@@ -80,8 +80,6 @@ export default function EditarCliente() {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('en-GB');
 
-        console.log(formattedDate);
-
         setDateFormatted(formattedDate);
 
         if (formattedDate === '31/12/1969') {
@@ -89,8 +87,6 @@ export default function EditarCliente() {
         } else {
             setGetDate(formattedDate);
         }
-
-        // setGetDate(formattedDate);
 
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
@@ -100,20 +96,16 @@ export default function EditarCliente() {
 
         console.log('mes:', month, 'ano:', year);
 
-        // setMounth(month);
-        // setYear(year);
-
     }, [selectedDate]);
 
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
             });
             if (response.ok) {
                 const data = await response.json();
@@ -128,16 +120,14 @@ export default function EditarCliente() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setResiduesFactors(data);
                 console.log('result ultimo residuo:', data[0].plastico);
             } else {
@@ -174,7 +164,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -236,7 +226,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -275,7 +265,7 @@ export default function EditarCliente() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -291,7 +281,7 @@ export default function EditarCliente() {
                 // localStorage.setItem('user', JSON.stringify(data));
                 // router.push('/dashboard');
                 try {
-                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -303,7 +293,7 @@ export default function EditarCliente() {
                         const data = await response.json();
                         console.log('Post created:', data);
                         try {
-                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -338,7 +328,7 @@ export default function EditarCliente() {
             console.error('Error creating post:', error);
 
             try {
-                const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -351,7 +341,7 @@ export default function EditarCliente() {
                     console.log('Post created:', data);
 
                     try {
-                        const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                        const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

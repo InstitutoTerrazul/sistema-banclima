@@ -36,7 +36,7 @@ export default function EditUser(props) {
     const getUser = async () => {
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=terrazul&senha=1234567`);
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=${userData.login}&senha=${userData.senha}`);
             if (response.ok) {
                 const data = await response.json();
                 setName(data?.nome);
@@ -74,7 +74,7 @@ export default function EditUser(props) {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

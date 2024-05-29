@@ -27,8 +27,6 @@ export const AuthProvider = ({ children }) => {
     }, [router]);
 
     useEffect(() => {
-        // const userValue = localStorage.getItem('user')
-        // setUserData(JSON.parse(userValue)); 
         getProjects();
     }, [userData]);
 
@@ -38,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     const getProjects = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -59,8 +57,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     const signIn = async (userData) => {
-        // localStorage.setItem('user', JSON.stringify(userData));
-        // Set user data in localStorage after successful authentication
         try {
             const response = await fetch('https://calculadora.institutoterrazul.org/api/usuarios/login', {
                 method: 'POST',
@@ -81,15 +77,11 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Error creating post:', error);
         }
-
-        // setUser(userData);
-        // router.push('/dashboard');
     };
 
 
 
     const signOut = () => {
-        // Remove user data from localStorage on sign out
         localStorage.removeItem('user');
         setUser(null);
         router.push('/login');

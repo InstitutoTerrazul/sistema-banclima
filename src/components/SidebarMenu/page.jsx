@@ -40,12 +40,14 @@ export default function SidebarMenu(props) {
 
   const topNavigation = [
     {
+      id: 1,
       name: 'Dashboard',
       href: '/dashboard',
       icon: <HouseSimple weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
     {
+      id: 2,
       name: 'Consulta',
       href: '/consulta',
       icon: <MagnifyingGlass weight="thin" size={24} />,
@@ -55,12 +57,14 @@ export default function SidebarMenu(props) {
 
   const secondOption = [
     {
+      id: 3,
       name: 'Inserir consumo',
       href: '/inserir-consumo',
       icon: <Plus weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
     {
+      id: 4,
       name: 'Editar consumo',
       href: '/editar-consumo',
       icon: <NotePencil weight="thin" size={24} />,
@@ -69,6 +73,7 @@ export default function SidebarMenu(props) {
   ]
   const fiffthOption = [
     {
+      id: 5,
       name: 'Usuários cadastrados',
       href: '/lista-usuarios',
       icon: <ListBullets weight="thin" size={24} />,
@@ -77,6 +82,7 @@ export default function SidebarMenu(props) {
   ]
   const thirdOption = [
     {
+      id: 6,
       name: 'Criar projeto',
       href: '/criar-projeto',
       icon: <Plus weight="thin" size={24} />,
@@ -85,8 +91,9 @@ export default function SidebarMenu(props) {
   ]
   const fourthOption = [
     {
+      id: 7,
       name: 'Alterar Fatores de Emissão',
-      href: '/editar-calculo',
+      href:'/editar-calculo',
       icon: <ArrowsCounterClockwise weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
@@ -94,12 +101,14 @@ export default function SidebarMenu(props) {
 
   const firstLevel = [
     {
+      id: 8,
       name: 'Cadastrar Usuário',
       href: '/cadastrar-usuario',
       icon: <UserList weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
     {
+      id: 9,
       name: 'Cadastrar cliente',
       href: '/cadastrar-cliente',
       icon: <UserPlus weight="thin" size={24} />,
@@ -107,23 +116,17 @@ export default function SidebarMenu(props) {
       userType: userData?.tipoUsuario,
     },
     {
+      id: 10,
       name: 'Editar cliente',
       href: '/editar-cliente',
       icon: <NotePencil weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
   ]
-  const firstLevelOther = [
-    {
-      name: 'Cadastrar Usuário',
-      href: '/cadastrar-usuario',
-      icon: <UserList weight="thin" size={24} />,
-      userType: userData?.tipoUsuario,
-    },
-  ]
 
   const reportsOptions = [
     {
+      id: 11,
       name: 'Listar Projetos',
       href: '/listar-projetos',
       icon: <FileText weight="thin" size={24} />,
@@ -131,6 +134,7 @@ export default function SidebarMenu(props) {
       userType: userData?.tipoUsuario,
     },
     {
+      id: 12,
       name: 'Clientes cadastrados por projeto',
       href: '/clientes-cadastrados',
       icon: <FileText weight="thin" size={24} />,
@@ -138,33 +142,21 @@ export default function SidebarMenu(props) {
       userType: userData?.tipoUsuario,
     },
     {
+      id: 13,
       name: 'Clientes cadastrados por mês',
       href: '/clientes-por-projeto-e-mes',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
       userType: userData?.tipoUsuario,
     },
-    // {
-    //   name: '% de redução e beneficios recebidos',
-    //   href: '/distribuidor',
-    //   icon: <FileText weight="thin" size={24} />,
-    //   isActive: pathname === '/distribuidor',
-    //   userType: userData?.tipoUsuario,
-    // },
     {
+      id: 14,
       name: 'Total de emissões evitadas',
       href: '/emissoes-evitadas',
       icon: <FileText weight="thin" size={24} />,
       isActive: pathname === '/distribuidor',
       userType: userData?.tipoUsuario,
-    },
-    // {
-    //   name: 'Total de benefícios',
-    //   href: '/distribuidor',
-    //   icon: <FileText weight="thin" size={24} />,
-    //   isActive: pathname === '/distribuidor',
-    //   userType: userData?.tipoUsuario,
-    // },
+    }
   ]
 
   return (
@@ -208,9 +200,9 @@ export default function SidebarMenu(props) {
               },
             }}
           >
-            {topNavigation.map((item, i) => (
+            {topNavigation.map((item) => (
               <MenuItem
-                key={i}
+                key={item.id}
                 component={<Link href={item.href} />}
                 className="hover:text-yellow bg-primary"
                 icon={item.icon}
@@ -219,16 +211,16 @@ export default function SidebarMenu(props) {
                 {item.name}
               </MenuItem>
             ))}
-            {userData.tipoUsuario === 'administradorgeral' || userData.tipoUsuario === 'cadastrador' ? (
+            {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
               <SubMenu
                 label="Cadastro"
                 className="bg-primary"
                 defaultOpen={true}
                 icon={<ListBullets weight="thin" size={24} />}
               >
-                {firstLevel.map((item, i) => (
+                {firstLevel.map((item) => (
                   <MenuItem
-                    key={i}
+                    key={item.id}
                     component={<Link href={item.href} />}
                     className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                       } `}
@@ -240,37 +232,16 @@ export default function SidebarMenu(props) {
                 ))}
               </SubMenu>
             ) : null}
-            {/* {userData.tipoUsuario === 'cadastrador' && (
-              <SubMenu
-                label="Cadastro"
-                className="bg-primary"
-                defaultOpen={true}
-                icon={<ListBullets weight="thin" size={24} />}
-              >
-                {firstLevelOther.map((item, i) => (
-                  <MenuItem
-                    key={i}
-                    component={<Link href={item.href} />}
-                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
-                      } `}
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            )} */}
-            {userData.tipoUsuario === 'administradorgeral' || userData.tipoUsuario === 'cadastrador' ? (
+            {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
               <SubMenu
                 label="Consumo"
                 className="bg-primary"
                 defaultOpen={false}
                 icon={<ListBullets weight="thin" size={24} />}
               >
-                {secondOption.map((item, i) => (
+                {secondOption.map((item) => (
                   <MenuItem
-                    key={i}
+                    key={item.id}
                     component={<Link href={item.href} />}
                     className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                       } `}
@@ -282,21 +253,11 @@ export default function SidebarMenu(props) {
                 ))}
               </SubMenu>
             ) : null}
-            {/* {secondOption.map((item, i) => (
-              <MenuItem
-                key={i}
-                component={<Link href={item.href} />}
-                className="hover:text-yellow bg-primary"
-                icon={item.icon}
-              >
-                {item.name}
-              </MenuItem>
-            ))} */}
-            {fiffthOption.map((item, i) => (
+            {fiffthOption.map((item) => (
               <>
-                {userData.tipoUsuario === 'administradorgeral' ?
+                {userData?.tipoUsuario === 'administradorgeral' ?
                   <MenuItem
-                    key={i}
+                    key={item.id}
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
@@ -307,11 +268,11 @@ export default function SidebarMenu(props) {
                   : null}
               </>
             ))}
-            {thirdOption.map((item, i) => (
+            {thirdOption.map((item) => (
               <>
-                {userData.tipoUsuario === 'administradorgeral' ?
+                {userData?.tipoUsuario === 'administradorgeral' ?
                   <MenuItem
-                    key={i}
+                    key={item.id}
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
@@ -323,12 +284,11 @@ export default function SidebarMenu(props) {
               </>
             ))}
 
-            {fourthOption.map((item, i) => (
+            {fourthOption.map((item) => (
               <>
-                {userData.tipoUsuario === 'administradorgeral' ?
-
+                {userData?.tipoUsuario === 'administradorgeral' ?
                   <MenuItem
-                    key={i}
+                    key={item.id}
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary"
                     icon={item.icon}
@@ -347,9 +307,9 @@ export default function SidebarMenu(props) {
               icon={<FileText weight="thin" size={24} />}
             >
 
-              {reportsOptions.map((item, i) => (
+              {reportsOptions.map((item) => (
                 <MenuItem
-                  key={i}
+                  key={item.id}
                   component={<Link href={item.href} />}
                   className="hover:text-yellow bg-primary/80"
                   icon={item.icon}

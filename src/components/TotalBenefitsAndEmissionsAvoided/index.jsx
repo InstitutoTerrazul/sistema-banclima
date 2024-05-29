@@ -6,7 +6,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
     const [benefits, setBenefits] = useState(0)
     const [emissionsAvoided, setEmissionsAvoided] = useState(0)
 
-    const { selectedProject, setSelectedProject } = useAuth();
+    const { userData, selectedProject, setSelectedProject } = useAuth();
 
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         const data = selectedProject
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/totalBeneficioPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/totalBeneficioPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/totalEmissoesEvitadasPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/totalEmissoesEvitadasPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

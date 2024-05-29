@@ -153,8 +153,6 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
-                // setEnergyFactors(data[1]?.valor);
                 setFactors(data);
                 console.log('result:', data);
             } else {
@@ -165,21 +163,18 @@ export default function InserirConsumo() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setResiduesFactors(data);
                 setPapel(data[0].papel);
                 setOrganico(data[0].organico);
                 setPlastico(data[0].plastico);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -206,7 +201,6 @@ export default function InserirConsumo() {
         setConsumoAgua('');
         setConsumoGas('');
         setconsumoResiduos('');
-        // setProjeto('');
         setSelectedDate(null);
         setDateFormatted('');
         setEmissoesEnergia('');
@@ -228,7 +222,7 @@ export default function InserirConsumo() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -317,10 +311,8 @@ export default function InserirConsumo() {
             beneficio: '0'
         }
 
-        // console.log(dataEmissoesMensal);
-
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -331,7 +323,7 @@ export default function InserirConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -342,7 +334,7 @@ export default function InserirConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -353,7 +345,7 @@ export default function InserirConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvarGas?login=terrazul&senha=1234567', {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${userData.login}&senha=${userData.senha}`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -364,7 +356,7 @@ export default function InserirConsumo() {
                                         const data = await response.json();
                                         setEmissoesGas(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=terrazul&senha=1234567', {
+                                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${userData.login}&senha=${userData.senha}`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -418,7 +410,6 @@ export default function InserirConsumo() {
             const calculoGas = consumoGas * 25.09
             const formatted = calculoGas.toFixed(2).replace(".", ",")
             setEmissoesGas(formatted)
-            // setConsumoGas(consumoGasEletrico);
         }
     }
 
@@ -429,20 +420,12 @@ export default function InserirConsumo() {
     }
 
     const calculateEnergia = () => {
-        // const calculoEnergia = consumoEnergia * 0.0340 antigo com valor fixo
         const calculoEnergia = consumoEnergia * energyFactors
         const formatted = calculoEnergia.toFixed(2).replace(".", ",")
         setEmissoesEnergia(formatted)
     }
 
     const calculateResiduos = () => {
-        // const papel = 10 / 100
-        // const plastico = 21 /100
-        // const organico = 45/100
-
-        // const papel = residuesFactors[0]?.papel
-        // const plastico = residuesFactors[0]?.plastico
-        // const organico = residuesFactors[0]?.organico
 
         console.log('papel:', papel, 'plastico:', plastico, 'organico:', organico);
 
@@ -461,8 +444,6 @@ export default function InserirConsumo() {
         const calctotal = calcOrganico + calcPapel + calcPlastico
 
         setResiduosKg(calculoResiduos)
-
-        console.log('total residuos:', calctotal);
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 
@@ -549,24 +530,6 @@ export default function InserirConsumo() {
                         </div>
 
                     </div>
-
-                    {/* <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
-                    <div className={`absolute top-0 left-0 bg-green-600 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
-
-                    <h1 className="text-2xl font-bold text-gray-800">Dados contas de consumo</h1>
-
-                    <div className="flex flex-row w-full gap-4">
-                        <input type="text" placeholder="Código do cliente / energia" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Titular de energia do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    </div>
-                    <div className="flex flex-row w-full gap-4">
-                        <input type="text" placeholder="Código do cliente / água" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                        <input type="text" placeholder="Titular de água do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    </div>
-                    <input type="text" placeholder="Código do cliente / gas" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-                    <input type="text" placeholder="Titular de gás do cpf" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
-
-                </div> */}
                 </div>
                 <div className="flex flex-col lg:flex-row justify-center items-center w-full gap-8">
                     <div className="relative flex flex-col justify-start items-start p-10 w-full gap-4 bg-white rounded-xl">
@@ -663,7 +626,6 @@ export default function InserirConsumo() {
                 </div>
                 <div className="flex flex-row justify-end items-center w-full gap-8">
                     {showClearBtn ? <button type="button" className="flex items-center justify-center bg-green-700 px-8 py-2 rounded-lg" onClick={clearForm}>Limpar dados</button> : ''}
-                    {/* <button type="button" className="flex items-center justify-center bg-green-700 px-8 py-2 rounded-lg" onClick={clearForm}>Limpar dados</button>  */}
                     <button type="submit" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={submitForm}>{btnText}</button>
                 </div>
             </form>

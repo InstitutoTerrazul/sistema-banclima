@@ -7,9 +7,7 @@ import { UserList } from "@phosphor-icons/react";
 
 export default function UserConsumption(props) {
     const userId = props.id;
-
-    console.log('User id:', userId);
-
+    
     const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp, userConsumptionPopUp, setUserConsumptionPopUp } = useAuth();
 
     const [usersList, setUsersList] = useState([]);
@@ -31,8 +29,6 @@ export default function UserConsumption(props) {
         setValuesEnergia(usersList?.listaEnergiaEletrica)
         setValuesGas(usersList?.listaGas)
         setValuesResiduos(usersList?.listaResiduos)
-
-        console.log('data:', usersList.listaAgua)
     }, [usersList])
 
     const getUsers = async () => {
@@ -40,7 +36,7 @@ export default function UserConsumption(props) {
         const data = userData
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/consumos/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,7 +47,6 @@ export default function UserConsumption(props) {
                 const data = await response.json();
                 console.log('consumo do usuario:', data);
                 setUsersList(data);
-                // setSelectedProject(data[0]?.nome);
 
             } else {
                 console.error('Failed to create post');

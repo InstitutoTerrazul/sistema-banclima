@@ -64,7 +64,7 @@ export default function EditarCalculo() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

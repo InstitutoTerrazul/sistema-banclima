@@ -8,8 +8,7 @@ export default function RegisteredAndBenefitedCustomers() {
     const [registeredClient, setRegisteredClient] = useState(0)
     const [benefitedClient, setBenefitedClient] = useState(0)
 
-    const { selectedProject, setSelectedProject } = useAuth();
-
+    const { userData, selectedProject, setSelectedProject } = useAuth();
 
     useEffect(() => {
         getCardsData()
@@ -24,7 +23,7 @@ export default function RegisteredAndBenefitedCustomers() {
         const data = selectedProject
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/totalClientesBeneficiadosPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/totalClientesBeneficiadosPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -43,7 +42,7 @@ export default function RegisteredAndBenefitedCustomers() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/totalClientesCadastradosPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/totalClientesCadastradosPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

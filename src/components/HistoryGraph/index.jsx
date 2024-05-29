@@ -11,13 +11,13 @@ import Chart from 'chart.js/auto';
 // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 export default function HistoryGraph() {
 
-    const { selectedProject, setSelectedProject } = useAuth();
+    const { userData, selectedProject, setSelectedProject } = useAuth();
 
 
     const [graphData, setGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
-
+    
     useEffect(() => {
         getGraphData();
         setIsLoaded(true);
@@ -46,7 +46,7 @@ export default function HistoryGraph() {
         const data = selectedProject
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +55,6 @@ export default function HistoryGraph() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Grafico de historico:', data);
                 setGraphData(data);
             } else {
                 console.error('Failed to create post');
@@ -108,7 +107,7 @@ export default function HistoryGraph() {
                     top: 10,
                     bottom: 10
                 },
-                
+
             }
         }
     }

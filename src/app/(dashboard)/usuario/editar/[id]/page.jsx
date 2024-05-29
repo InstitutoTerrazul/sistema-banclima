@@ -9,8 +9,6 @@ export default function EditarUsuario({params}) {
     const userId = params.id;
     const router = useRouter();
 
-    console.log('userId', userId);
-
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
     const { userData } = useAuth();
@@ -29,14 +27,13 @@ export default function EditarUsuario({params}) {
             router.push('/login');
         }
 
-        console.log('userData', userData.tipoUsuario);
         getUser();
     }, []);
 
     const getUser = async () => {
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=terrazul&senha=1234567`);
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=${userData.login}&senha=${userData.senha}`);
             if (response.ok) {
                 const data = await response.json();
                 console.log('data fetch', data);
@@ -75,7 +72,7 @@ export default function EditarUsuario({params}) {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

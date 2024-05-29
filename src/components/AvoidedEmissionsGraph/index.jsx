@@ -13,10 +13,8 @@ export default function AvoidedEmissionsGraph() {
     const [emissionGraphData, setEmissionGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
 
-
     useEffect(() => {
         getGraphData();
-
     }, [])
 
     useEffect(() => {
@@ -24,7 +22,6 @@ export default function AvoidedEmissionsGraph() {
     }, [selectedProject])
 
     useEffect(() => {
-
         const data = emissionGraphData;
 
         const transformedData = {
@@ -37,14 +34,14 @@ export default function AvoidedEmissionsGraph() {
 
         setTransformedData(transformedData);
 
-        
-    },[emissionGraphData])
+
+    }, [emissionGraphData])
 
     const getGraphData = async () => {
         const data = selectedProject
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -121,14 +118,12 @@ export default function AvoidedEmissionsGraph() {
                     top: 10,
                     bottom: 10
                 },
-                
+
             }
         }
     }
 
     const opt = {
-        
-        // labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
         labels: transformedData?.mes,
         datasets: [
             {

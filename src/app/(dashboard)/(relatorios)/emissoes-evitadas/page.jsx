@@ -72,7 +72,6 @@ export default function EmissoesEvitadas() {
 
 
     useEffect(() => {
-        // setProjectList(projectList[0]?.nome);
         console.log(selectedProject);
     }, [selectedProject]);
 
@@ -89,7 +88,7 @@ export default function EmissoesEvitadas() {
 
     const getProjects = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,7 +109,7 @@ export default function EmissoesEvitadas() {
 
     const getClientList = async () => {
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -136,7 +135,7 @@ export default function EmissoesEvitadas() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
