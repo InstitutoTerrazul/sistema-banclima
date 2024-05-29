@@ -164,7 +164,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
