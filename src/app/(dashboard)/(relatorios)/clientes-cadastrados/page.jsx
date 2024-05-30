@@ -11,13 +11,14 @@ import { Printer } from "@phosphor-icons/react";
 export default function ClientesCadastrados() {
     const router = useRouter();
 
-    const { userData, setIsLoading } = useAuth();
+    const { setIsLoading } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
     const [searchCpf, setSearchCpf] = useState('');
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
     const [tableData, setTableData] = useState([]);
+    const [userData, setUserData] = useState();
 
     const columns = [
         {
@@ -75,11 +76,11 @@ export default function ClientesCadastrados() {
         const user = localStorage.getItem('user');
         if (!user) {
             router.push('/login');
+        } else {
+            setUserData(JSON.parse(user))
+            setIsLoading(false)
+            getProjects();
         }
-
-        setIsLoading(false)
-
-        getProjects();
     }, []);
 
     const getProjects = async () => {
@@ -190,17 +191,6 @@ export default function ClientesCadastrados() {
                         <span>{parseFloat(data.taxaDeReducaoTotal).toFixed(2)}</span>
                     </div>
                 </div>
-                {/* <div className="flex flex-col md:flex-row gap-4">
-                    <button
-                        title="Editar"
-                        type="button"
-                        rel="noreferrer"
-                        className="flex justify-center items-center gap-2 text-white px-2 h-10 bg-primary rounded-lg"
-                        onClick={() => handleUserConsumption(data.cpf)}
-                    >
-                        Ver Consumo
-                    </button>
-                </div> */}
             </div>
         );
     };

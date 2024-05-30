@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function InserirConsumo() {
     const router = useRouter();
 
-    const { projectList, setProjectList, setIsLoading } = useAuth();
+    const { setIsLoading } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
@@ -73,6 +73,15 @@ export default function InserirConsumo() {
     const [plastico, setPlastico] = useState('');
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
+    const [projectList, setProjectList] = useState([])
+
+    const [selectedDateConsumo, setSelectedDateConsumo] = useState(null)
+    const [getDateConsumo, setGetDateConsumo] = useState('');
+
+    const handleDateConsumoChange = (date) => {
+        setSelectedDateConsumo(date);
+    };
+
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -88,27 +97,41 @@ export default function InserirConsumo() {
         getEmissions(JSON.parse(userString));
     }, []);
 
-    useEffect(() => {
-        const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+    const formatDate = (selectedDate) => {
+        if (selectedDate) {
+            const [day, month, year] = selectedDate.split('/').map(part => parseInt(part, 10));
+            const date = new Date(year, month - 1, day);
 
-        setDateFormatted(formattedDate);
+            const formattedDate = date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
 
-        if (formattedDate === '31/12/1969') {
-            setGetDate('');
-        } else {
-            setGetDate(formattedDate);
+            setDateFormatted(formattedDate);
+
+            if (formattedDate === '31/12/1969') {
+                setGetDate('');
+                setGetDateConsumo('');
+            } else {
+                setGetDate(formattedDate);
+            }
+
+            const dateStr = formattedDate;
+            const dateParts = dateStr.split("/");
+
+            const monthPart = dateParts[1];
+            const yearPart = dateParts[2];
+
+            setMounth(monthPart);
+            setYear(yearPart);
         }
+    }
 
-        const dateStr = formattedDate;
-        const dateParts = dateStr.split("/");
 
-        const month = dateParts[1];
-        const year = dateParts[2];
-
-        setMounth(month);
-        setYear(year);
-
+    useEffect(() => {
+        formatDate(selectedDate)
+        formatDate(selectedDateConsumo)
         const factorsDate = factors
 
         const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
@@ -163,7 +186,6 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 setResiduesFactors(data);
                 setPapel(data[0].papel);
                 setOrganico(data[0].organico);
@@ -208,6 +230,15 @@ export default function InserirConsumo() {
 
     }
 
+    const addUniqueProject = (projectName) => {
+        setProjectList(prevState => {
+            if (!prevState.some(project => project.nome === projectName)) {
+                return [...prevState, { nome: projectName }];
+            }
+            return prevState;
+        });
+    };
+
     const handleSearchBtn = async () => {
         setSearchBtnText('Buscando...');
 
@@ -230,7 +261,13 @@ export default function InserirConsumo() {
                 setPhone(data[0].cliente.telefone);
                 setHabitantes(data[0].cliente.habitantes);
                 setAddress(data[0].cliente.endereco);
-                setResiduesPerPerson(data[0].marcoZero[3].consumo)
+                setResiduesPerPerson(data[0].marcoZero[3].consumo);
+
+                data.forEach(item => {
+                    addUniqueProject(item.cliente.projeto);
+                });
+
+                formatDate(data[0].cliente.data)
                 setSearchBtnText('Buscar CPF');
                 toast.success('Busca concluída!');
             } else {
@@ -356,8 +393,6 @@ export default function InserirConsumo() {
                                                 body: JSON.stringify(dataEmissoesMensal)
                                             });
                                             if (response.ok) {
-                                                const data = await response.json();
-                                                // setEmissoesMensal(data)
                                                 setBtnText('Cadastrado!');
                                                 setShowClearBtn(true);
                                             } else {
@@ -518,7 +553,14 @@ export default function InserirConsumo() {
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Projeto</label>
-                                <Select options={options} defaultValue={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" required />
+                                <Select
+                                    options={options}
+                                    defaultValue={projeto}
+                                    placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
+                                    onChange={(selectedOption) => setProjeto(selectedOption?.value)}
+                                    className="w-full h-11 text-black"
+                                    required
+                                />
                             </div>
                         </div>
 
@@ -553,6 +595,20 @@ export default function InserirConsumo() {
                                 <label htmlFor="name">Resíduos final</label>
                                 <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-2 text-black text-sm w-32"> 
+                            <label htmlFor="name">Data</label>
+                            <ReactDatePicker
+                                selected={selectedDateConsumo}
+                                onChange={handleDateConsumoChange}
+                                value={getDateConsumo}
+                                dateFormat="dd/MM/yyyy"
+                                maxDate={new Date()}
+                                placeholderText="data"
+                                locale={ptBR}
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-2 text-black"
+                                required
+                            />
                         </div>
                         <div className="flex flex-col">
                             <label className="font-normal mb-2 text-black" htmlFor="gas">
@@ -598,11 +654,11 @@ export default function InserirConsumo() {
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Energia</label>
-                            <input 
-                            type="text" 
-                            placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia} 
-                            name="" id="" 
-                            className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                            <input
+                                type="text"
+                                placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia}
+                                name="" id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">

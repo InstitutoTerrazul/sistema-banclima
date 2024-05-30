@@ -108,7 +108,7 @@ export default function EditarCalculo() {
 
     useEffect(() => {
         const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+        const formattedDate = date.toLocaleDateString('pt-BR');
 
         setDateFormatted(formattedDate);
 

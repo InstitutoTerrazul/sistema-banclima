@@ -17,14 +17,21 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function EditarCliente() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
+
+    const addUniqueProject = (projectName) => {
+        setProjectList(prevState => {
+            if (!prevState.some(project => project.nome === projectName)) {
+                return [...prevState, { nome: projectName }];
+            }
+            return prevState;
+        });
+    };
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
-    const [selectedProject, setSelectedProject] = useState();
-
-
+    const [projectList, setProjectList] = useState([]);
     const [name, setName] = useState('');
     const [clientId, setClientId] = useState('');
     const [cpf, setCpf] = useState('');
@@ -78,7 +85,7 @@ export default function EditarCliente() {
 
     useEffect(() => {
         const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+        const formattedDate = date.toLocaleDateString('pt-BR');
 
         setDateFormatted(formattedDate);
 
@@ -185,6 +192,9 @@ export default function EditarCliente() {
                 setTitularGas(data[0].cliente.titularGasCpf);
                 setGetDate(data[0].cliente.data);
                 setSearchBtnText('CPF encontrado!');
+                data.forEach(item => {
+                    addUniqueProject(item.cliente.projeto);
+                });
             } else {
                 console.error('Failed to create post');
             }
@@ -352,14 +362,6 @@ export default function EditarCliente() {
         }, 2000);
     }
 
-    const calculateEmissions = () => {
-        const energyConsumptionValue = parseFloat(consumoEnergia);
-        if (!isNaN(energyConsumptionValue)) {
-            const co2EmissionsValue = energyConsumptionValue * 0.817; // Assuming 0.88 kg CO2 per kWh
-            setCo2Emissions(co2EmissionsValue.toFixed(2));
-        }
-    };
-
     const options = projectList?.map((project) => ({
         value: project.nome,
         label: project.nome
@@ -438,7 +440,13 @@ export default function EditarCliente() {
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Projeto</label>
-                                <Select options={options} Value={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" />
+                                <Select 
+                                options={options} 
+                                Value={projeto} 
+                                onChange={(selectedOption) => setProjeto(selectedOption?.value)} 
+                                className=" w-full h-11 text-black" 
+                                placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
+                                />
                             </div>
                         </div>
                     </div>
