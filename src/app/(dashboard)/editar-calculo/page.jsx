@@ -27,12 +27,9 @@ export default function EditarCalculo() {
 
     const filterArray = (data) => {
         setTableData(data);
-        console.log('dados:', data);
     }
 
     const searchValues = async () => {
-        console.log('User data:', userData);
-
         try {
             const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
@@ -44,7 +41,6 @@ export default function EditarCalculo() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data);
                 filterArray(data);
             } else {
                 console.error('Failed to fetch data');
@@ -74,7 +70,6 @@ export default function EditarCalculo() {
             if (response.ok) {
                 const data = await response.json();
                 setBtnText('Inserido!');
-                console.log('Post created:', data);
             } else {
                 console.error('Failed to create post');
             }

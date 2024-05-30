@@ -37,7 +37,6 @@ export default function HistoryGraph() {
             "emissao": data.map(item => item.emissao)
         };
 
-        console.log('dados transformados:', transformedData);
         setTransformedData(transformedData);
 
     }, [graphData])

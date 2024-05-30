@@ -36,7 +36,6 @@ export default function EditarUsuario({params}) {
             const response = await fetch(`http://191.252.38.35:8080/api/usuarios/${userId}?login=${userData.login}&senha=${userData.senha}`);
             if (response.ok) {
                 const data = await response.json();
-                console.log('data fetch', data);
                 setName(data?.nome);
                 setEmail(data?.email);
                 setLogin(data?.login);
@@ -82,7 +81,6 @@ export default function EditarUsuario({params}) {
             if (response.ok) {
                 const data = await response.json();
                 setBtnText('Editado!');
-                // console.log('Post created:', data);
             } else {
                 console.error('Failed to create post');
             }

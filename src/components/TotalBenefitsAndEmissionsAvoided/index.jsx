@@ -31,7 +31,6 @@ export default function TotalBenefitsAndEmissionsAvoided() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('total de beneficios:', data);
                 setBenefits(data)
             } else {
                 console.error('Failed to create post');
@@ -50,7 +49,6 @@ export default function TotalBenefitsAndEmissionsAvoided() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('emissoes evitadas:', data);
                 setEmissionsAvoided(data)
             } else {
                 console.error('Failed to create post');

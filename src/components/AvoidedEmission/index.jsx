@@ -52,7 +52,6 @@ export default function AvoidedEmission() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('emissões evitadas:', data);
                 setTotalEmissionsAvoided(data);
             } else {
                 console.error('Failed to create post');

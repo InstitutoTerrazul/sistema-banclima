@@ -15,9 +15,6 @@ export default function Home() {
 
     const { userData, projectList, setProjectList, selectedProject, setSelectedProject, setIsLoading } = useAuth();
 
-    // const [projectList, setProjectList] = useState([]);
-    // const [selectedProject, setSelectedProject] = useState();
-
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -26,33 +23,7 @@ export default function Home() {
 
         setIsLoading(false)
         
-        // getProjects();
     }, []);
-
-    // useEffect(() => {
-    //     console.log(projectList[0]);
-    // }, [projectList]);
-
-    // const getProjects = async () => {
-    //     try {
-    //         const response = await fetch('http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(userData)
-    //         });
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             console.log('get projetos:', data);
-    //             setProjectList(data);
-    //         } else {
-    //             console.error('Failed to create post');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error creating post:', error);
-    //     }
-    // }
 
     const options = projectList?.map((project) => ({
         value: project.nome,

@@ -31,7 +31,6 @@ export default function ListarProjetos() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('usuarios cadastrados:', data);
                 setUsersList(data);
 
             } else {

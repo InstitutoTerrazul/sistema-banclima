@@ -31,7 +31,6 @@ export default function CadastrarCadastrador() {
 
         setIsLoading(false)
 
-        // console.log('userData', userData.tipoUsuario);
     }, []);
 
     const clearForm = () => {
@@ -67,7 +66,6 @@ export default function CadastrarCadastrador() {
                 const data = await response.json();
                 setBtnText('Cadastrado!');
                 toast.success('Cadastrado com sucesso!');
-                // console.log('Post created:', data);
             } else {
                 console.error('Failed to create post');
                 toast.error('ops! algo deu errado');

@@ -36,8 +36,6 @@ export default function SidebarMenu(props) {
 
   const { userData, isLoading, setIsLoading } = useAuth();
 
-  console.log('tipo usuario: ', userData.tipoUsuario);
-
   const topNavigation = [
     {
       id: 1,

@@ -32,7 +32,6 @@ export default function RegisteredAndBenefitedCustomers() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('beneficiados:', data);
                 setBenefitedClient(data)
             } else {
                 console.error('Failed to create post');
@@ -51,7 +50,6 @@ export default function RegisteredAndBenefitedCustomers() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('clientes cadastrados:', data);
                 setRegisteredClient(data)
             } else {
                 console.error('Failed to create post');

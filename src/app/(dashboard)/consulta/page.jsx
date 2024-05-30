@@ -80,12 +80,6 @@ export default function Consulta() {
         setUserConsumptionPopUp(true);
     }
 
-
-    useEffect(() => {
-        // setProjectList(projectList[0]?.nome);
-        console.log(selectedProject);
-    }, [selectedProject]);
-
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -108,7 +102,6 @@ export default function Consulta() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('get projetos:', data);
                 setProjectList(data);
             } else {
                 console.error('Failed to create post');
@@ -131,7 +124,6 @@ export default function Consulta() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('lista de clientes:', data);
                 setTableData(data);
                 toast.success('Busca concluída!');
             } else {
@@ -160,7 +152,6 @@ export default function Consulta() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data);
                 setTableData(data);
                 toast.success('CPF encontrado!');
                 setSearchBtnText('Buscar');

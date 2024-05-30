@@ -71,12 +71,6 @@ export default function ClientesCadastrados() {
         taxaDeReducaoTotal: row.taxaDeReducaoTotal
     }))
 
-
-    useEffect(() => {
-        // setProjectList(projectList[0]?.nome);
-        console.log(selectedProject);
-    }, [selectedProject]);
-
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -99,7 +93,6 @@ export default function ClientesCadastrados() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('get projetos:', data);
                 setProjectList(data);
             } else {
                 console.error('Failed to create post');
@@ -120,7 +113,6 @@ export default function ClientesCadastrados() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('lista de clientes:', data);
                 setTableData(data);
             } else {
                 console.error('Failed to create post');
@@ -146,7 +138,6 @@ export default function ClientesCadastrados() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data);
                 setTableData(data);
                 setSearchBtnText('CPF encontrado!');
             } else {

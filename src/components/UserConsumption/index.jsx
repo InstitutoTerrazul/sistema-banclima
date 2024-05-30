@@ -45,7 +45,6 @@ export default function UserConsumption(props) {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('consumo do usuario:', data);
                 setUsersList(data);
 
             } else {
@@ -74,17 +73,6 @@ export default function UserConsumption(props) {
             selector: row => row.residuos,
         },
     ];
-
-
-
-
-    const data = values?.map(row => ({
-        // console.log('row:', row)
-        // agua: row[0]?.agua,
-        // energia: row[0]?.energia,
-        // gas: row[0]?.gas,
-        // residuos: row[0]?.residuos,
-    }))
 
     return (
         <>

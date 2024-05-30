@@ -98,8 +98,6 @@ export default function CadastrarCliente() {
 
         const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
 
-        console.log(filteredDate[0]?.valor);
-
         setEnergyFactors(filteredDate[0]?.valor);
 
     }, [selectedDate]);
@@ -153,7 +151,7 @@ export default function CadastrarCliente() {
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
+            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -163,7 +161,6 @@ export default function CadastrarCliente() {
             if (response.ok) {
                 const data = await response.json();
                 setFactors(data);
-                console.log('result:', data);
             } else {
                 console.error('Failed to create post');
             }
@@ -182,7 +179,6 @@ export default function CadastrarCliente() {
                 const data = await response.json();
                 // setBtnText('Inserido residuo!');
                 setResiduesFactors(data);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -329,12 +325,9 @@ export default function CadastrarCliente() {
                                                         body: JSON.stringify(dataEmissoesMensal)
                                                     });
                                                     if (response.ok) {
-                                                        const data = await response.json();
-                                                        // setEmissoesMensal(data)
                                                         setBtnText('Cadastrado!');
                                                         setShowClearBtn(true);
                                                         toast.success('Cadastrado com sucesso!');
-                                                        console.log('emissoes mensal:', data);
                                                     } else {
                                                         console.error('Failed to save mensal');
                                                         toast.error('ops! algo deu errado ao criar emissão mensal');
@@ -404,7 +397,6 @@ export default function CadastrarCliente() {
     }
 
     const calculateEnergia = () => {
-        console.log(energyFactors);
         const calculoEnergia = consumoEnergia * energyFactors
         const formatted = calculoEnergia.toFixed(2).replace(".", ",")
         setEmissoesEnergia(formatted)
@@ -431,8 +423,6 @@ export default function CadastrarCliente() {
         const calctotal = calcOrganico + calcPapel + calcPlastico
 
         setResiduosKg(calculoResiduos)
-
-        console.log(calculoResiduos);
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 

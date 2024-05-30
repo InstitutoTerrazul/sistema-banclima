@@ -65,9 +65,7 @@ export default function CadastrarCadastrador() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                const data = await response.json();
                 setBtnText('Cadastrado!');
-                console.log('Post created:', data);
 
                 setTimeout(() => {
                     clearForm();

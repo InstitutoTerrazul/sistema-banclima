@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function InserirConsumo() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
+    const { projectList, setProjectList, setIsLoading } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
@@ -72,26 +72,23 @@ export default function InserirConsumo() {
     const [organico, setOrganico] = useState('');
     const [plastico, setPlastico] = useState('');
 
-
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
 
     useEffect(() => {
-        const user = localStorage.getItem('user');
-        if (!user) {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
             router.push('/login');
         }
 
-        setIsLoading(false)
-        getEmissions();
+        setIsLoading(false);
+        getEmissions(JSON.parse(userString));
     }, []);
 
     useEffect(() => {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('en-GB');
-
-        console.log(formattedDate);
 
         setDateFormatted(formattedDate);
 
@@ -101,25 +98,18 @@ export default function InserirConsumo() {
             setGetDate(formattedDate);
         }
 
-        // setGetDate(formattedDate);
-
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
 
         const month = dateParts[1];
         const year = dateParts[2];
 
-        console.log('mes:', month, 'ano:', year);
-
         setMounth(month);
         setYear(year);
 
-        // const energyDate = `${year}-${month}-01`;
         const factorsDate = factors
 
         const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
-
-        console.log(filteredDate[0]?.valor);
 
         setEnergyFactors(filteredDate[0]?.valor);
 
@@ -141,10 +131,10 @@ export default function InserirConsumo() {
         calculateResiduos();
     }, [residuosKg])
 
-    const getEmissions = async () => {
+    const getEmissions = async (userData) => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
+            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -154,7 +144,6 @@ export default function InserirConsumo() {
             if (response.ok) {
                 const data = await response.json();
                 setFactors(data);
-                console.log('result:', data);
             } else {
                 console.error('Failed to create post');
             }
@@ -163,7 +152,7 @@ export default function InserirConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -231,7 +220,6 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data[0]);
                 setName(data[0].cliente.nome);
                 setCpf(data[0].cliente.cpf);
                 setEmail(data[0].cliente.email);
@@ -368,7 +356,6 @@ export default function InserirConsumo() {
                                                 // setEmissoesMensal(data)
                                                 setBtnText('Cadastrado!');
                                                 setShowClearBtn(true);
-                                                console.log('emissoes mensal:', data);
                                             } else {
                                                 console.error('Failed to save mensal');
                                             }
@@ -426,9 +413,6 @@ export default function InserirConsumo() {
     }
 
     const calculateResiduos = () => {
-
-        console.log('papel:', papel, 'plastico:', plastico, 'organico:', organico);
-
         const calculoResiduos = residuesPerPerson - consumptionOfMouth
 
         const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
@@ -461,7 +445,12 @@ export default function InserirConsumo() {
             <h1 className="text-2xl font-bold text-gray-800 text-start">Inserir Consumo</h1>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-1/2 lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
-                <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={handleSearchBtn} >{searchBtnText}</button>
+                <button
+                    type="button"
+                    className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg"
+                    onClick={handleSearchBtn}
+                >{searchBtnText}
+                </button>
             </div>
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col items-center justify-center w-full gap-6 px-8">
 

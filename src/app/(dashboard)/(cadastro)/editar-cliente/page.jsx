@@ -94,14 +94,12 @@ export default function EditarCliente() {
         const month = dateParts[1];
         const year = dateParts[2];
 
-        console.log('mes:', month, 'ano:', year);
-
     }, [selectedDate]);
 
     const getEmissions = async () => {
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoCalculoDeEmissao?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,9 +107,7 @@ export default function EditarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setEnergyFactors(data[1]?.valor);
-                console.log('result:', data);
             } else {
                 console.error('Failed to create post');
             }
@@ -129,7 +125,6 @@ export default function EditarCliente() {
             if (response.ok) {
                 const data = await response.json();
                 setResiduesFactors(data);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -173,7 +168,6 @@ export default function EditarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searchedddd:', data[0].cliente.nome);
                 setClientId(data[0].cliente.id);
                 setName(data[0].cliente.nome);
                 setCpf(data[0].cliente.cpf);
@@ -234,14 +228,9 @@ export default function EditarCliente() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
-                const data = await response.json();
-                console.log('Post created:', data);
                 setBtnText('Editar');
                 clearForm();
                 toast.success('Editado com sucesso!');
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
                 toast.error('Erro ao efetuar login');
@@ -270,16 +259,10 @@ export default function EditarCliente() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify(data)
             });
             if (response.status === 200) {
-                // console.log('Post created:', data);
-                const data = await response.json();
-                console.log('Post created:', data);
                 clearForm();
                 setBtnDeleteCliqued(false);
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
                 try {
                     const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
@@ -289,9 +272,6 @@ export default function EditarCliente() {
                         body: JSON.stringify(deleteData)
                     });
                     if (response.status === 200) {
-                        // console.log('Post created:', data);
-                        const data = await response.json();
-                        console.log('Post created:', data);
                         try {
                             const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
@@ -301,9 +281,6 @@ export default function EditarCliente() {
                                 body: JSON.stringify(deleteData)
                             });
                             if (response.status === 200) {
-                                // console.log('Post created:', data);
-                                const data = await response.json();
-                                console.log('Post created:', data);
                                 toast.success('Deletado com sucesso!');
                             } else {
                                 console.error('Failed to delete client');
@@ -336,10 +313,6 @@ export default function EditarCliente() {
                     body: JSON.stringify(deleteData)
                 });
                 if (response.status === 200) {
-                    // console.log('Post created:', data);
-                    const data = await response.json();
-                    console.log('Post created:', data);
-
                     try {
                         const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                             method: 'POST',
@@ -349,9 +322,6 @@ export default function EditarCliente() {
                             body: JSON.stringify(deleteData)
                         });
                         if (response.status === 200) {
-                            // console.log('Post created:', data);
-                            const data = await response.json();
-                            console.log('Post created:', data);
                             toast.success('Deletado com sucesso!');
                             clearForm();
                             setSearchBtnText('Editar');
