@@ -71,6 +71,8 @@ export default function InserirConsumo() {
     const [papel, setPapel] = useState('');
     const [organico, setOrganico] = useState('');
     const [plastico, setPlastico] = useState('');
+    const [login, setLogin] = useState('');
+    const [senha, setSenha] = useState('');
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -132,7 +134,8 @@ export default function InserirConsumo() {
     }, [residuosKg])
 
     const getEmissions = async (userData) => {
-
+        setLogin(userData.login)
+        setSenha(userData.senha)
         try {
             const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
@@ -160,6 +163,7 @@ export default function InserirConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setResiduesFactors(data);
                 setPapel(data[0].papel);
                 setOrganico(data[0].organico);
@@ -211,7 +215,7 @@ export default function InserirConsumo() {
 
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${login}&senha=${senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -594,11 +598,15 @@ export default function InserirConsumo() {
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Energia</label>
-                            <input type="text" placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                            <input 
+                            type="text" 
+                            placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia} 
+                            name="" id="" 
+                            className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
-                            <label htmlFor="name">Agua</label>
+                            <label htmlFor="name">Água</label>
                             <input type="text" placeholder="Kg CO2e Água" disabled defaultValue={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
