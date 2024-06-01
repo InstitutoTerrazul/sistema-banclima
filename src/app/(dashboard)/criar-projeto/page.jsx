@@ -18,12 +18,15 @@ export default function CadastrarCadastrador() {
     const [papel, setPapel] = useState('');
     const [plastico, setPlastico] = useState('');
     const [organico, setOrganico] = useState('');
+    const [userData, setUserData] = useState('');
 
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
             router.push('/login');
         }
+
+        setUserData(JSON.parse(user))
     }, []);
 
     const clearForm = () => {
@@ -57,6 +60,7 @@ export default function CadastrarCadastrador() {
         }
 
         try {
+            console.log(userData)
             const response = await fetch(`http://191.252.38.35:8080/api/projetos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
