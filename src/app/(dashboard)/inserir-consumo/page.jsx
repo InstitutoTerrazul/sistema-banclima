@@ -46,8 +46,8 @@ export default function InserirConsumo() {
     const [searchCpf, setSearchCpf] = useState('');
     const [btnText, setBtnText] = useState('Cadastrar');
     const [searchBtnText, setSearchBtnText] = useState('Buscar CPF');
-    const [mounth, setMounth] = useState('');
     const [year, setYear] = useState('');
+    const [mounth, setMounth] = useState('');
 
     const [emissoesEnergia, setEmissoesEnergia] = useState('');
     const [emissoesAgua, setEmissoesAgua] = useState('');
@@ -127,18 +127,6 @@ export default function InserirConsumo() {
             setYear(yearPart);
         }
     }
-
-
-    useEffect(() => {
-        formatDate(selectedDate)
-        formatDate(selectedDateConsumo)
-        const factorsDate = factors
-
-        const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
-
-        setEnergyFactors(filteredDate[0]?.valor);
-
-    }, [selectedDate]);
 
     useEffect(() => {
         calculateAgua();
@@ -261,9 +249,19 @@ export default function InserirConsumo() {
                 setPhone(data[0].cliente.telefone);
                 setHabitantes(data[0].cliente.habitantes);
                 setAddress(data[0].cliente.endereco);
-                setResiduesPerPerson(data[0].marcoZero[3].consumo);
+
+                const arrayMarcoZero = data[0].marcoZero;
+                arrayMarcoZero.sort((a, b) => {
+                    const dateA = new Date(a.data.split('/').reverse().join('/'));
+                    const dateB = new Date(b.data.split('/').reverse().join('/'));
+                    return dateA - dateB;
+                });
+
+
+                setResiduesPerPerson(arrayMarcoZero[0].consumo);
 
                 data.forEach(item => {
+                    setProjeto(item.cliente.projeto)
                     addUniqueProject(item.cliente.projeto);
                 });
 
@@ -440,15 +438,27 @@ export default function InserirConsumo() {
     }
 
     const calculateAgua = () => {
-        const calculoAgua = consumoAgua * 0.72
+        console.log(consumoAgua)
+        const calculoAgua = parseFloat(consumoAgua) * 0.72
         const formatted = calculoAgua.toFixed(2).replace(".", ",")
         setEmissoesAgua(formatted)
     }
 
     const calculateEnergia = () => {
-        const calculoEnergia = consumoEnergia * energyFactors
-        const formatted = calculoEnergia.toFixed(2).replace(".", ",")
-        setEmissoesEnergia(formatted)
+        const sortedFactors = factors.sort((a, b) => {
+            const [monthA, yearA] = a.data.split('/');
+            const [monthB, yearB] = b.data.split('/');
+            const dateA = new Date(yearA, monthA - 1);
+            const dateB = new Date(yearB, monthB - 1);
+            return dateB - dateA;
+        });
+
+        if (sortedFactors.length > 0) {
+            const energia = parseFloat(sortedFactors[0].energia.replace(',', '.'));
+            const calculoEnergia = parseFloat(consumoEnergia) * energia
+            const formatted = calculoEnergia.toFixed(2).replace(".", ",")
+            setEmissoesEnergia(formatted)
+        }
     }
 
     const calculateResiduos = () => {
@@ -522,9 +532,10 @@ export default function InserirConsumo() {
                                     onChange={handleDateChange}
                                     value={getDate}
                                     dateFormat="dd/MM/yyyy"
-                                    maxDate={new Date()} // Set the maximum date to today
+                                    maxDate={new Date()}
                                     placeholderText="data"
                                     locale={ptBR}
+                                    disabled
                                     className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                                     required
                                 />
@@ -549,17 +560,27 @@ export default function InserirConsumo() {
                         <div className="flex flex-row w-full gap-4">
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Nº de Habitantes</label>
-                                <input type="number" placeholder="Nº de Habitantes na residência" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} />
+                                <input
+                                    type="number"
+                                    placeholder="Nº de Habitantes na residência"
+                                    disabled
+                                    name=""
+                                    id=""
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    value={habitantes}
+                                    onChange={(e) => setHabitantes(e.target.value)}
+                                />
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Projeto</label>
-                                <Select
-                                    options={options}
-                                    defaultValue={projeto}
+                                <input
+                                    type="text"
+                                    name=""
+                                    id=""
+                                    disabled
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                                     placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
-                                    onChange={(selectedOption) => setProjeto(selectedOption?.value)}
-                                    className="w-full h-11 text-black"
-                                    required
+                                    value={projeto}
                                 />
                             </div>
                         </div>
@@ -575,7 +596,16 @@ export default function InserirConsumo() {
                         <div className="flex flex-row w-full gap-4">
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Consumo de Energia</label>
-                                <input type="number" placeholder="Consumo de energia em kWh" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumoEnergia} onChange={(e) => setConsumoEnergia(e.target.value)} required />
+                                <input
+                                    type="number"
+                                    placeholder="Consumo de energia em kWh"
+                                    name=""
+                                    id=""
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    value={consumoEnergia}
+                                    onChange={(e) => setConsumoEnergia(e.target.value)}
+                                    required
+                                />
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Consumo de água</label>
@@ -585,7 +615,16 @@ export default function InserirConsumo() {
                         <div className="flex flex-row w-full gap-4">
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Resíduos inicial</label>
-                                <input type="number" placeholder="Geração de resíduos inicial" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" disabled value={parseFloat(residuesPerPerson).toFixed(2)} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} />
+                                <input
+                                    type="number"
+                                    placeholder="Geração de resíduos inicial"
+                                    name=""
+                                    id=""
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    disabled
+                                    value={parseFloat(residuesPerPerson).toFixed(2)}
+                                    onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }}
+                                />
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Consumo do mês</label>
@@ -596,7 +635,7 @@ export default function InserirConsumo() {
                                 <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2 text-black text-sm w-32"> 
+                        <div className="flex flex-col gap-2 text-black text-sm w-32">
                             <label htmlFor="name">Data</label>
                             <ReactDatePicker
                                 selected={selectedDateConsumo}

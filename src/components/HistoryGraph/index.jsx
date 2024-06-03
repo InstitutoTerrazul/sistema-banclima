@@ -63,45 +63,11 @@ export default function HistoryGraph() {
         }
     }
 
-
-    const options = {
-        chart: {
-            type: 'area',
-            zoom: {
-                enabled: false
-            },
-            toolbar: {
-                show: false
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        menu: {
-            enabled: false
-        },
-        series: [{
-            name: 'area',
-            data: transformedData?.emissao
-        }],
-        xaxis: {
-            categories: transformedData?.mes
-        },
-        title: {
-            text: 'Historico de Emissões semestrais',
-            align: 'left',
-            style: {
-                fontSize: '24px',
-                fontWeight: 'bold',
-            },
-        },
-    }
-
     const options2 = {
         plugins: {
             title: {
                 display: true,
-                text: 'Historico de Emissões semestrais',
+                text: 'Histórico de Emissões semestrais',
                 padding: {
                     top: 10,
                     bottom: 10
