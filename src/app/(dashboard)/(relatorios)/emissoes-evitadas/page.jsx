@@ -11,7 +11,7 @@ import { Printer } from "@phosphor-icons/react";
 export default function EmissoesEvitadas() {
     const router = useRouter();
 
-    const { userData, setIsLoading } = useAuth();
+    const { setIsLoading } = useAuth();
 
     const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
@@ -19,13 +19,23 @@ export default function EmissoesEvitadas() {
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
     const [tableData, setTableData] = useState([]);
 
+    const [userData, setUserData] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem('user'));
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+            return null;
+        }
+    });
+
+
     const columns = [
         {
             name: 'Nome',
             selector: row => row.nome,
         },
         {
-            name: 'cpf',
+            name: 'CPF',
             selector: row => row.cpf,
         },
         {
@@ -33,11 +43,11 @@ export default function EmissoesEvitadas() {
             selector: row => row.endereco,
         },
         {
-            name: 'projeto',
+            name: 'Projeto',
             selector: row => row.projeto,
         },
         {
-            name: 'Mes',
+            name: 'Mês',
             selector: row => row.mes,
         },
         {
@@ -49,7 +59,7 @@ export default function EmissoesEvitadas() {
             selector: row => row.emissao,
         },
         {
-            name: 'Taxa de redução',
+            name: 'Taxa de Redução',
             selector: row => row.taxaDeReducao,
         },
         {
@@ -59,15 +69,15 @@ export default function EmissoesEvitadas() {
     ];
 
     const data = tableData.map(row => ({
-        nome: row.nome,
-        cpf: row.cpf,
-        endereco: row.endereco,
-        projeto: row.projeto,
-        mes: row.mes,
-        ano: row.ano,
-        emissao: parseFloat(row.emissao).toFixed(2),
-        taxaDeReducao: parseFloat(row.taxaDeReducao).toFixed(2),
-        beneficio: row.beneficio
+        nome: row.cliente.nome,
+        cpf: row.cliente.cpf,
+        endereco: row.cliente.endereco,
+        projeto: row.cliente.projeto,
+        mes: row.emissaoMensal.mes,
+        ano: row.emissaoMensal.ano,
+        emissao: parseFloat(row.emissaoMensal.emissao).toFixed(2),
+        taxaDeReducao: parseFloat(row.emissaoMensal.taxaDeReducao).toFixed(2),
+        beneficio: row.emissaoMensal.beneficio
     }))
 
     useEffect(() => {
@@ -170,11 +180,13 @@ export default function EmissoesEvitadas() {
             </div>
 
             <div className="flex flex-row justify-center items-center w-full gap-8 my-4">
-                {/* <select id="mySelect" className="bg-white w-1/2 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 px-2 text-black">
-                    <option value="Projeto 1" selected>Projeto 1</option>
-                    <option value="Projeto 2">Projeto 2</option>
-                </select> */}
-                <Select placeholder="Buscar por projeto" options={options} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+                <Select
+                    placeholder={options.length > 0 ? "Selecione um projeto" : "Nenhum projeto encontrado"}
+                    options={options}
+                    onChange={(selectedOption) => setSelectedProject(selectedOption?.value)}
+                    className="w-1/2 h-11 text-black z-40"
+                    noOptionsMessage={() => "Nenhum projeto encontrado"}
+                />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => getClientList()} >Buscar</button>
                 <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()} >{searchBtnText}</button>
@@ -184,6 +196,7 @@ export default function EmissoesEvitadas() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    noDataComponent="Nenhuma informação encontrada"
                 />
             </div>
         </>

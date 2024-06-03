@@ -241,6 +241,7 @@ export default function ClientesCadastrados() {
                     data={data}
                     expandableRows
                     expandableRowsComponent={ExpandedComponent}
+                    noDataComponent="Nenhuma informação encontrada"
                 />
             </div>
         </>

@@ -85,46 +85,6 @@ export default function ClientesPorProjetoEMes() {
         setSelectedYear(event.target.value);
     };
 
-    const getProjects = async () => {
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setProjectList(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-    }
-
-    const getClientList = async () => {
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(selectedProject)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setTableData(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-    }
-
     const handleSearchBtn = async () => {
         setSearchBtnText('Buscando...');
 
@@ -199,6 +159,7 @@ export default function ClientesPorProjetoEMes() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    noDataComponent="Nenhuma informação encontrada"
                 />
             </div>
         </>
