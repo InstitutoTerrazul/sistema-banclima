@@ -30,30 +30,6 @@ export default function Home() {
         label: project.nome
     }))
 
-
-    const emissions = [
-        {
-            title: 'Emissões de energia Evitadas',
-            value: '10',
-            color: 'bg-red-500'
-        },
-        {
-            title: 'Emissões de água Evitadas',
-            value: '10',
-            color: 'bg-blue-400'
-        },
-        {
-            title: 'Emissões de resíduos Evitadas',
-            value: '10',
-            color: 'bg-green-500'
-        },
-        {
-            title: 'Emissões de gás Evitadas',
-            value: '10',
-            color: 'bg-gray-500'
-        },
-    ]
-
     return (
         <>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-8">

@@ -150,7 +150,11 @@ export default function ClientesCadastrados() {
             if (response.ok) {
                 const data = await response.json();
                 setTableData(data);
-                setSearchBtnText('CPF encontrado!');
+                if(data.length > 0) {
+                    setSearchBtnText('CPF encontrado!');
+                } else {
+                    setSearchBtnText('Nenhum CPF encontrado!');
+                }
             } else {
                 console.error('Failed to create post');
             }

@@ -5,7 +5,6 @@ import DataTable from 'react-data-table-component';
 import { Printer } from "@phosphor-icons/react";
 
 
-
 export default function ListarProjetos() {
 
     const { userData, projectList, setProjectList, setIsLoading } = useAuth();
@@ -27,6 +26,18 @@ export default function ListarProjetos() {
             name: 'Número',
             selector: row => row.numero,
         },
+        {
+            name: 'Plástico',
+            selector: row => row.plastico + '%',
+        },
+        {
+            name: 'Papel',
+            selector: row => row.papel + '%',
+        },
+        {
+            name: 'Orgânico',
+            selector: row => row.organico + '%',
+        },
     ];
 
     const data = projectList.map(row => ({
@@ -34,6 +45,9 @@ export default function ListarProjetos() {
         bairro: row.bairro,
         rua: row.rua,
         numero: row.numero,
+        plastico: row.plastico,
+        papel: row.papel,
+        organico: row.organico
     }))
 
     useEffect(() => {
@@ -43,6 +57,15 @@ export default function ListarProjetos() {
 
     const handlePrint = () => {
         window.print();
+    };
+
+    const customStyles = {
+        headCells: {
+            style: {
+                fontWeight: 'bold',
+                fontSize: 15
+            },
+        },
     };
 
     return (
@@ -56,6 +79,7 @@ export default function ListarProjetos() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    customStyles={customStyles}
                 />
             </div>
         </>

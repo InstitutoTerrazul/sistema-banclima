@@ -91,7 +91,7 @@ export default function SidebarMenu(props) {
     {
       id: 7,
       name: 'Alterar Fatores de Emissão',
-      href:'/editar-calculo',
+      href: '/editar-calculo',
       icon: <ArrowsCounterClockwise weight="thin" size={24} />,
       userType: userData?.tipoUsuario,
     },
@@ -173,151 +173,153 @@ export default function SidebarMenu(props) {
         />
 
         <div className="flex flex-col justify-between lg:h-[85%]  overflow-hidden">
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    backgroundColor: '#FFF',
-                    color: '#019BD6',
-                    '&:hover': {
-                      backgroundColor: '#019BD6',
-                      color: '#FFF',
-                    },
-                  }
-                if (level === 1)
-                  return {
-                    backgroundColor: '#FFF',
-                    color: '#019BD6',
-                    '&:hover': {
-                      backgroundColor: '#019BD6',
-                      color: '#FFF',
-                    },
-                  }
-              },
-            }}
-          >
-            {topNavigation.map((item) => (
-              <MenuItem
-                key={item.id}
-                component={<Link href={item.href} />}
-                className="hover:text-yellow bg-primary"
-                icon={item.icon}
-                onClick={() => setIsLoading(true)}
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-            {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
-              <SubMenu
-                label="Cadastro"
-                className="bg-primary"
-                defaultOpen={true}
-                icon={<ListBullets weight="thin" size={24} />}
-              >
-                {firstLevel.map((item) => (
-                  <MenuItem
-                    key={item.id}
-                    component={<Link href={item.href} />}
-                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
-                      } `}
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            ) : null}
-            {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
-              <SubMenu
-                label="Consumo"
-                className="bg-primary"
-                defaultOpen={false}
-                icon={<ListBullets weight="thin" size={24} />}
-              >
-                {secondOption.map((item) => (
-                  <MenuItem
-                    key={item.id}
-                    component={<Link href={item.href} />}
-                    className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
-                      } `}
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            ) : null}
-            {fiffthOption.map((item) => (
-              <>
-                {userData?.tipoUsuario === 'administradorgeral' ?
-                  <MenuItem
-                    key={item.id}
-                    component={<Link href={item.href} />}
-                    className="hover:text-yellow bg-primary"
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                  : null}
-              </>
-            ))}
-            {thirdOption.map((item) => (
-              <>
-                {userData?.tipoUsuario === 'administradorgeral' ?
-                  <MenuItem
-                    key={item.id}
-                    component={<Link href={item.href} />}
-                    className="hover:text-yellow bg-primary"
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                  : null}
-              </>
-            ))}
-
-            {fourthOption.map((item) => (
-              <>
-                {userData?.tipoUsuario === 'administradorgeral' ?
-                  <MenuItem
-                    key={item.id}
-                    component={<Link href={item.href} />}
-                    className="hover:text-yellow bg-primary"
-                    icon={item.icon}
-                    onClick={() => setIsLoading(true)}
-                  >
-
-                    {item.name}
-                  </MenuItem>
-                  : null
-                }
-              </>
-            ))}
-            <SubMenu
-              label="Relatórios"
-              className="bg-primary"
-              icon={<FileText weight="thin" size={24} />}
+          <div className="overflow-y-auto flex-grow">
+            <Menu
+              menuItemStyles={{
+                button: ({ level, active, disabled }) => {
+                  // only apply styles on first level elements of the tree
+                  if (level === 0)
+                    return {
+                      backgroundColor: '#FFF',
+                      color: '#019BD6',
+                      '&:hover': {
+                        backgroundColor: '#019BD6',
+                        color: '#FFF',
+                      },
+                    }
+                  if (level === 1)
+                    return {
+                      backgroundColor: '#FFF',
+                      color: '#019BD6',
+                      '&:hover': {
+                        backgroundColor: '#019BD6',
+                        color: '#FFF',
+                      },
+                    }
+                },
+              }}
             >
-
-              {reportsOptions.map((item) => (
+              {topNavigation.map((item) => (
                 <MenuItem
                   key={item.id}
                   component={<Link href={item.href} />}
-                  className="hover:text-yellow bg-primary/80"
+                  className="hover:text-yellow bg-primary"
                   icon={item.icon}
                   onClick={() => setIsLoading(true)}
                 >
                   {item.name}
                 </MenuItem>
               ))}
-            </SubMenu>
-          </Menu>
+              {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
+                <SubMenu
+                  label="Cadastro"
+                  className="bg-primary"
+                  defaultOpen={true}
+                  icon={<ListBullets weight="thin" size={24} />}
+                >
+                  {firstLevel.map((item) => (
+                    <MenuItem
+                      key={item.id}
+                      component={<Link href={item.href} />}
+                      className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
+                        } `}
+                      icon={item.icon}
+                      onClick={() => setIsLoading(true)}
+                    >
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </SubMenu>
+              ) : null}
+              {userData?.tipoUsuario === 'administradorgeral' || userData?.tipoUsuario === 'cadastrador' ? (
+                <SubMenu
+                  label="Consumo"
+                  className="bg-primary"
+                  defaultOpen={false}
+                  icon={<ListBullets weight="thin" size={24} />}
+                >
+                  {secondOption.map((item) => (
+                    <MenuItem
+                      key={item.id}
+                      component={<Link href={item.href} />}
+                      className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
+                        } `}
+                      icon={item.icon}
+                      onClick={() => setIsLoading(true)}
+                    >
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </SubMenu>
+              ) : null}
+              {fiffthOption.map((item) => (
+                <>
+                  {userData?.tipoUsuario === 'administradorgeral' ?
+                    <MenuItem
+                      key={item.id}
+                      component={<Link href={item.href} />}
+                      className="hover:text-yellow bg-primary"
+                      icon={item.icon}
+                      onClick={() => setIsLoading(true)}
+                    >
+                      {item.name}
+                    </MenuItem>
+                    : null}
+                </>
+              ))}
+              {thirdOption.map((item) => (
+                <>
+                  {userData?.tipoUsuario === 'administradorgeral' ?
+                    <MenuItem
+                      key={item.id}
+                      component={<Link href={item.href} />}
+                      className="hover:text-yellow bg-primary"
+                      icon={item.icon}
+                      onClick={() => setIsLoading(true)}
+                    >
+                      {item.name}
+                    </MenuItem>
+                    : null}
+                </>
+              ))}
+
+              {fourthOption.map((item) => (
+                <>
+                  {userData?.tipoUsuario === 'administradorgeral' ?
+                    <MenuItem
+                      key={item.id}
+                      component={<Link href={item.href} />}
+                      className="hover:text-yellow bg-primary"
+                      icon={item.icon}
+                      onClick={() => setIsLoading(true)}
+                    >
+
+                      {item.name}
+                    </MenuItem>
+                    : null
+                  }
+                </>
+              ))}
+              <SubMenu
+                label="Relatórios"
+                className="bg-primary"
+                icon={<FileText weight="thin" size={24} />}
+              >
+
+                {reportsOptions.map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary/80"
+                    icon={item.icon}
+                    onClick={() => setIsLoading(true)}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+            </Menu>
+          </div>
         </div>
       </Sidebar>
     </>

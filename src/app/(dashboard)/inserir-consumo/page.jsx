@@ -479,23 +479,30 @@ export default function InserirConsumo() {
         setEmissoesAgua(formatted)
     }
 
-    const calculateEnergia = () => {
-        const sortedFactors = factors.sort((a, b) => {
-            const [monthA, yearA] = a.data.split('/');
-            const [monthB, yearB] = b.data.split('/');
-            const dateA = new Date(yearA, monthA - 1);
-            const dateB = new Date(yearB, monthB - 1);
-            return dateB - dateA;
+    const calculateEnergia = () => {    
+        const selectedMonth = selectedDateConsumo.getMonth() + 1;
+        const selectedYear = selectedDateConsumo.getFullYear();
+    
+        const previousMonthFactor = factors.find(factor => {
+            const [month, year] = factor.data.split('/');
+            const factorMonth = parseInt(month, 10);
+            const factorYear = parseInt(year, 10);
+    
+            if (selectedMonth === 1) {
+                return factorMonth === 12 && factorYear === selectedYear - 1;
+            } else {
+                return factorMonth === selectedMonth - 1 && factorYear === selectedYear;
+            }
         });
-
-        if (sortedFactors.length > 0) {
-            const energia = parseFloat(sortedFactors[0].energia.replace(',', '.'));
-            const calculoEnergia = parseFloat(consumoEnergia) * energia
-            const formatted = calculoEnergia.toFixed(2).replace(".", ",")
-            setEmissoesEnergia(formatted)
+    
+        if (previousMonthFactor) {
+            const energia = parseFloat(previousMonthFactor.energia.replace(',', '.'));
+            const calculoEnergia = parseFloat(consumoEnergia) * energia;
+            const formatted = calculoEnergia.toFixed(2).replace(".", ",");
+            setEmissoesEnergia(formatted);
         }
-    }
-
+    };
+    
     const calculateResiduosFinal = async () => {
         setResiduosKg((residuesPerPerson - consumptionOfMouth).toFixed(2))
     }
@@ -633,7 +640,19 @@ export default function InserirConsumo() {
                         <div className={`absolute top-0 left-0 bg-orange-400 w-full h-4 rounded-tl-xl rounded-tr-xl`}></div>
 
                         <h1 className="text-2xl font-bold text-gray-800">Dados de consumo</h1>
-
+                        <div className="flex flex-col gap-2 text-black text-sm w-32">
+                            <label htmlFor="name">Data</label>
+                            <ReactDatePicker
+                                selected={selectedDateConsumo}
+                                onChange={handleDateConsumoChange}
+                                dateFormat="dd/MM/yyyy"
+                                maxDate={new Date()}
+                                placeholderText="data"
+                                locale={ptBR}
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-2 text-black"
+                                required
+                            />
+                        </div>
                         <div className="flex flex-row w-full gap-4">
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Consumo de Energia</label>
@@ -694,19 +713,6 @@ export default function InserirConsumo() {
                                     defaultValue={residuosKg}
                                 />
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-2 text-black text-sm w-32">
-                            <label htmlFor="name">Data</label>
-                            <ReactDatePicker
-                                selected={selectedDateConsumo}
-                                onChange={handleDateConsumoChange}
-                                dateFormat="dd/MM/yyyy"
-                                maxDate={new Date()}
-                                placeholderText="data"
-                                locale={ptBR}
-                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-2 text-black"
-                                required
-                            />
                         </div>
                         <div className="flex flex-col">
                             <label className="font-normal mb-2 text-black" htmlFor="gas">
