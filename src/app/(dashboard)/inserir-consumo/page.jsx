@@ -438,7 +438,9 @@ export default function InserirConsumo() {
     }
 
     const calculateAgua = () => {
-        console.log(consumoAgua)
+        if(!consumoAgua) {
+            return;
+        }
         const calculoAgua = parseFloat(consumoAgua) * 0.72
         const formatted = calculoAgua.toFixed(2).replace(".", ",")
         setEmissoesAgua(formatted)
