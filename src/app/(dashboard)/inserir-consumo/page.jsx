@@ -77,9 +77,18 @@ export default function InserirConsumo() {
 
     const [selectedDateConsumo, setSelectedDateConsumo] = useState(null)
     const [getDateConsumo, setGetDateConsumo] = useState('');
+    const [daysOfMonth, setDaysOfMonth] = useState('');
 
     const handleDateConsumoChange = (date) => {
         setSelectedDateConsumo(date);
+
+        const selectedMonth = date.getMonth();
+        const selectedYear = date.getFullYear();
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+        setDaysOfMonth(daysInMonth);
+
+        calculateResiduos();
     };
 
 
@@ -166,7 +175,7 @@ export default function InserirConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoResiduos?login=${login}&senha=${senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -227,6 +236,11 @@ export default function InserirConsumo() {
         });
     };
 
+
+    const [papelDecimal, setPapelDecimal] = useState('');
+    const [plasticoDecimal, setPlasticoDecimal] = useState('');
+    const [organicoDecimal, setOrganicoDecimal] = useState('');
+
     const handleSearchBtn = async () => {
         setSearchBtnText('Buscando...');
 
@@ -257,17 +271,36 @@ export default function InserirConsumo() {
                     return dateA - dateB;
                 });
 
+                const residuosArray = arrayMarcoZero.filter(item => item.tipoEmissao === "residuos");
 
-                setResiduesPerPerson(arrayMarcoZero[0].consumo);
+                setResiduesPerPerson(residuosArray[0].consumo);
 
-                data.forEach(item => {
-                    setProjeto(item.cliente.projeto)
-                    addUniqueProject(item.cliente.projeto);
-                });
+                setProjeto(data[0].cliente.projeto)
+                addUniqueProject(data[0].cliente.projeto);
 
                 formatDate(data[0].cliente.data)
                 setSearchBtnText('Buscar CPF');
                 toast.success('Busca concluída!');
+
+                const responseProjects = await fetch(`http://191.252.38.35:8080/api/projetos/buscar?login=${login}&senha=${senha}&projeto=${data[0].cliente.projeto}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                if (responseProjects.ok) {
+                    const data = await responseProjects.json();
+
+                    const papelD = (parseInt(data.papel) / 100).toFixed(2);
+                    const plasticoD = (parseInt(data.plastico) / 100).toFixed(2);
+                    const organicoD = (parseInt(data.organico) / 100).toFixed(2);
+
+                    setPapelDecimal(papelD);
+                    setPlasticoDecimal(plasticoD);
+                    setOrganicoDecimal(organicoD);
+                }
+
             } else {
                 console.error('Failed to create post');
             }
@@ -339,7 +372,7 @@ export default function InserirConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${login}&senha=${senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -350,7 +383,7 @@ export default function InserirConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${login}&senha=${senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -361,7 +394,7 @@ export default function InserirConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${login}&senha=${senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -372,7 +405,7 @@ export default function InserirConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${userData.login}&senha=${userData.senha}`, {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${login}&senha=${senha}`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -383,7 +416,7 @@ export default function InserirConsumo() {
                                         const data = await response.json();
                                         setEmissoesGas(data.emissao)
                                         try {
-                                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${userData.login}&senha=${userData.senha}`, {
+                                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${login}&senha=${senha}`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -438,7 +471,7 @@ export default function InserirConsumo() {
     }
 
     const calculateAgua = () => {
-        if(!consumoAgua) {
+        if (!consumoAgua) {
             return;
         }
         const calculoAgua = parseFloat(consumoAgua) * 0.72
@@ -463,26 +496,33 @@ export default function InserirConsumo() {
         }
     }
 
-    const calculateResiduos = () => {
-        const calculoResiduos = residuesPerPerson - consumptionOfMouth
+    const calculateResiduosFinal = async () => {
+        setResiduosKg((residuesPerPerson - consumptionOfMouth).toFixed(2))
+    }
 
-        const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
+    const calcularResiduoPorHabitanteAoDia = () => {
+        return residuesPerPerson / (habitantes * daysOfMonth);
+    };
 
-        const residuosPapel = calculoResiduos * papel
+    const calculateResiduos = async () => {
+        calculateResiduosFinal()
 
-        const residuosPlastico = calculoResiduos * plastico
+        const residuoHabPorDia = calcularResiduoPorHabitanteAoDia().toFixed(2);
+        const calculoResiduos = parseFloat((habitantes * residuoHabPorDia * daysOfMonth).toFixed(2));
 
-        const calcPapel = 0.414 * residuosPapel * 3.67
+        const composicaoPapel = parseFloat((papelDecimal * calculoResiduos).toFixed(2));
 
-        const calcPlastico = 0.75 * residuosPlastico * 3.67
+        const composicaoPlastico = parseFloat((plasticoDecimal * calculoResiduos).toFixed(2));
 
-        const calctotal = calcOrganico + calcPapel + calcPlastico
+        const totalResiduosMes = parseFloat((calculoResiduos * 0.14 * organicoDecimal * 1.33 * 28).toFixed(2));
 
-        setResiduosKg(calculoResiduos)
+        const residuosSolidosInorganicoPapel = parseFloat((0.414 * composicaoPapel * 3.67).toFixed(2));
 
-        const formatted = calctotal.toFixed(2).replace(".", ",")
+        const residuosSolidosInorganicoPlastico = parseFloat((0.75 * composicaoPlastico * 3.67).toFixed(2));
 
-        setEmissoesResiduos(formatted)
+        const total = totalResiduosMes + residuosSolidosInorganicoPapel + residuosSolidosInorganicoPlastico;
+
+        setEmissoesResiduos(parseFloat(total).toFixed(2))
     }
 
     const options = projectList?.map((project) => ({
@@ -565,7 +605,6 @@ export default function InserirConsumo() {
                                 <input
                                     type="number"
                                     placeholder="Nº de Habitantes na residência"
-                                    disabled
                                     name=""
                                     id=""
                                     className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
@@ -625,16 +664,35 @@ export default function InserirConsumo() {
                                     className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                                     disabled
                                     value={parseFloat(residuesPerPerson).toFixed(2)}
-                                    onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }}
+                                    onChange={(e) => { setResiduesPerPerson(e.target.value) }}
                                 />
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Consumo do mês</label>
-                                <input type="number" placeholder="Consumo do mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={consumptionOfMouth} onChange={(e) => { setConsumptionOfMouth(e.target.value), calculateResiduos() }} required />
+                                <input
+                                    type="number"
+                                    placeholder="Consumo do mês"
+                                    name=""
+                                    id=""
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    value={consumptionOfMouth}
+                                    onChange={(e) => {
+                                        setConsumptionOfMouth(e.target.value)
+                                    }}
+                                    required
+                                />
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Resíduos final</label>
-                                <input type="number" disabled placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} />
+                                <input
+                                    type="number"
+                                    disabled
+                                    placeholder="Geração de resíduos em kg"
+                                    name=""
+                                    id=""
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    defaultValue={residuosKg}
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 text-black text-sm w-32">
@@ -642,7 +700,6 @@ export default function InserirConsumo() {
                             <ReactDatePicker
                                 selected={selectedDateConsumo}
                                 onChange={handleDateConsumoChange}
-                                value={getDateConsumo}
                                 dateFormat="dd/MM/yyyy"
                                 maxDate={new Date()}
                                 placeholderText="data"
@@ -709,7 +766,15 @@ export default function InserirConsumo() {
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Resíduos</label>
-                            <input type="text" placeholder="Kg CO2e Resíduos" disabled defaultValue={emissoesResiduos} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                            <input
+                                type="text"
+                                placeholder="Kg CO2e Resíduos"
+                                disabled
+                                defaultValue={emissoesResiduos}
+                                name=""
+                                id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                            />
                         </div>
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Gás</label>
