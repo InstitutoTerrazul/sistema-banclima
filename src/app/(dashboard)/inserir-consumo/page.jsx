@@ -480,6 +480,10 @@ export default function InserirConsumo() {
     }
 
     const calculateEnergia = () => {    
+        if(!selectedDateConsumo) {
+            return;
+        }
+        
         const selectedMonth = selectedDateConsumo.getMonth() + 1;
         const selectedYear = selectedDateConsumo.getFullYear();
     
