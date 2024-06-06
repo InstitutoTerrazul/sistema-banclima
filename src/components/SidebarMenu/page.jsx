@@ -1,22 +1,10 @@
 'use client'
-import Image from 'next/image'
 import {
-  ArrowsClockwise,
   HouseSimple,
-  Info,
-  Note,
-  Pen,
-  Question,
   UserList,
   UserPlus,
-  UsersFour,
-  Storefront,
-  Graph,
-  List,
   ListBullets,
-  ListMagnifyingGlass,
   FileText,
-  Pencil,
   NotePencil,
   Plus,
   MagnifyingGlass,
@@ -26,13 +14,12 @@ import {
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
+import { v4 as uuidv4 } from 'uuid';
 
 export default function SidebarMenu(props) {
   const pathname = usePathname()
-
-  const roleName = props.roleName
 
   const { userData, isLoading, setIsLoading } = useAuth();
 
@@ -175,9 +162,9 @@ export default function SidebarMenu(props) {
         <div className="flex flex-col justify-between lg:h-[85%]  overflow-hidden">
           <div className="overflow-y-auto flex-grow">
             <Menu
+              key={uuidv4()}
               menuItemStyles={{
                 button: ({ level, active, disabled }) => {
-                  // only apply styles on first level elements of the tree
                   if (level === 0)
                     return {
                       backgroundColor: '#FFF',
@@ -201,7 +188,7 @@ export default function SidebarMenu(props) {
             >
               {topNavigation.map((item) => (
                 <MenuItem
-                  key={item.id}
+                  key={uuidv4()}
                   component={<Link href={item.href} />}
                   className="hover:text-yellow bg-primary"
                   icon={item.icon}
@@ -219,7 +206,7 @@ export default function SidebarMenu(props) {
                 >
                   {firstLevel.map((item) => (
                     <MenuItem
-                      key={item.id}
+                      key={uuidv4()}
                       component={<Link href={item.href} />}
                       className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                         } `}
@@ -240,7 +227,7 @@ export default function SidebarMenu(props) {
                 >
                   {secondOption.map((item) => (
                     <MenuItem
-                      key={item.id}
+                      key={uuidv4()}
                       component={<Link href={item.href} />}
                       className={`hover:text-yellow bg-primary/80 ${item.isActive && 'text-yellow'
                         } `}
@@ -253,52 +240,45 @@ export default function SidebarMenu(props) {
                 </SubMenu>
               ) : null}
               {fiffthOption.map((item) => (
-                <>
-                  {userData?.tipoUsuario === 'administradorgeral' ?
-                    <MenuItem
-                      key={item.id}
-                      component={<Link href={item.href} />}
-                      className="hover:text-yellow bg-primary"
-                      icon={item.icon}
-                      onClick={() => setIsLoading(true)}
-                    >
-                      {item.name}
-                    </MenuItem>
-                    : null}
-                </>
+                userData?.tipoUsuario === 'administradorgeral' ?
+                  <MenuItem
+                    key={uuidv4()}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                    onClick={() => setIsLoading(true)}
+                  >
+                    {item.name}
+                  </MenuItem>
+                  : null
               ))}
               {thirdOption.map((item) => (
-                <>
-                  {userData?.tipoUsuario === 'administradorgeral' ?
-                    <MenuItem
-                      key={item.id}
-                      component={<Link href={item.href} />}
-                      className="hover:text-yellow bg-primary"
-                      icon={item.icon}
-                      onClick={() => setIsLoading(true)}
-                    >
-                      {item.name}
-                    </MenuItem>
-                    : null}
-                </>
+                userData?.tipoUsuario === 'administradorgeral' ?
+                  <MenuItem
+                    key={uuidv4()}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                    onClick={() => setIsLoading(true)}
+                  >
+                    {item.name}
+                  </MenuItem>
+                  : null
               ))}
 
               {fourthOption.map((item) => (
-                <>
-                  {userData?.tipoUsuario === 'administradorgeral' ?
-                    <MenuItem
-                      key={item.id}
-                      component={<Link href={item.href} />}
-                      className="hover:text-yellow bg-primary"
-                      icon={item.icon}
-                      onClick={() => setIsLoading(true)}
-                    >
+                userData?.tipoUsuario === 'administradorgeral' ?
+                  <MenuItem
+                    key={uuidv4()}
+                    component={<Link href={item.href} />}
+                    className="hover:text-yellow bg-primary"
+                    icon={item.icon}
+                    onClick={() => setIsLoading(true)}
+                  >
 
-                      {item.name}
-                    </MenuItem>
-                    : null
-                  }
-                </>
+                    {item.name}
+                  </MenuItem>
+                  : null
               ))}
               <SubMenu
                 label="Relatórios"
@@ -308,7 +288,7 @@ export default function SidebarMenu(props) {
 
                 {reportsOptions.map((item) => (
                   <MenuItem
-                    key={item.id}
+                    key={uuidv4()}
                     component={<Link href={item.href} />}
                     className="hover:text-yellow bg-primary/80"
                     icon={item.icon}

@@ -13,7 +13,6 @@ export default function CadastrarCadastrador() {
     const [street, setStreet] = useState('');
     const [number, setNumber] = useState('');
     const [btnText, setBtnText] = useState('Cadastrar');
-    const [porcentagem, setPorcentagem] = useState('');
     const [valor, setValor] = useState('R$ 0,00');
     const [papel, setPapel] = useState('');
     const [plastico, setPlastico] = useState('');
@@ -35,7 +34,6 @@ export default function CadastrarCadastrador() {
         setNeighborhood('');
         setStreet('');
         setNumber('');
-        setPorcentagem('');
         setValor('R$ 0,00');
         setPapel('');
         setPlastico('');
@@ -52,15 +50,22 @@ export default function CadastrarCadastrador() {
             rua: street,
             numero: number,
             cidade: city,
-            porcentagem: porcentagem,
-            valor: valor,
             papel: papel,
             plastico: plastico,
-            organico: organico
+            organico: organico,
+            planos: Object.fromEntries([...new Map()])
         }
+        
+        const valorNumerico = parseFloat(valor.replace(/[^\d,.-]/g, '').replace(',', '.')).toFixed(2);
+        
+        for (let i = 1; i <= 10; i++) {
+            const valorCalculado = (valorNumerico * i).toFixed(2);
+            data.planos[i] = parseFloat(valorCalculado).toFixed(2);
+        }
+        
+        console.log(JSON.stringify(data));        
 
         try {
-            console.log(userData)
             const response = await fetch(`http://191.252.38.35:8080/api/projetos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
@@ -112,7 +117,7 @@ export default function CadastrarCadastrador() {
                 <div className="flex flex-row w-full gap-4">
                     <input type="number" min="1" max="10" placeholder="(% Plano)"
                         className="bg-white w-28 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
-                        value={porcentagem} onChange={(e) => setPorcentagem(e.target.value)} title="Plano (%)" />
+                        value={1} disabled title="Plano (%)" />
                     <input type="text" placeholder="Valor (R$)"
                         className="bg-white w-36 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                         value={valor} onChange={handleValorChange} title="Valor (R$)" />

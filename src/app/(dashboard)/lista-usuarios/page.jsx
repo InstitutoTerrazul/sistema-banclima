@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import DataTable from 'react-data-table-component';
 import EditUser from "@/components/EditUser";
 
-export default function ListarProjetos() {
+export default function ListarUsuarios() {
 
     const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp, setIsLoading } = useAuth();
 

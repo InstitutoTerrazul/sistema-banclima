@@ -479,34 +479,31 @@ export default function InserirConsumo() {
         setEmissoesAgua(formatted)
     }
 
-    const calculateEnergia = () => {    
-        if(!selectedDateConsumo) {
+    const calculateEnergia = () => {
+        if (!selectedDateConsumo) {
             return;
         }
-        
+
         const selectedMonth = selectedDateConsumo.getMonth() + 1;
         const selectedYear = selectedDateConsumo.getFullYear();
-    
-        const previousMonthFactor = factors.find(factor => {
+
+        const currentMonthFactor = factors.find(factor => {
             const [month, year] = factor.data.split('/');
             const factorMonth = parseInt(month, 10);
             const factorYear = parseInt(year, 10);
-    
-            if (selectedMonth === 1) {
-                return factorMonth === 12 && factorYear === selectedYear - 1;
-            } else {
-                return factorMonth === selectedMonth - 1 && factorYear === selectedYear;
-            }
+
+            return factorMonth === selectedMonth && factorYear === selectedYear;
         });
-    
-        if (previousMonthFactor) {
-            const energia = parseFloat(previousMonthFactor.energia.replace(',', '.'));
+
+        if (currentMonthFactor) {
+            const energia = parseFloat(currentMonthFactor.energia.replace(',', '.'));
             const calculoEnergia = parseFloat(consumoEnergia) * energia;
             const formatted = calculoEnergia.toFixed(2).replace(".", ",");
             setEmissoesEnergia(formatted);
         }
     };
-    
+
+
     const calculateResiduosFinal = async () => {
         setResiduosKg((residuesPerPerson - consumptionOfMouth).toFixed(2))
     }
