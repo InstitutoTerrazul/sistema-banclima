@@ -504,17 +504,19 @@ export default function InserirConsumo() {
     };
 
 
-    const calculateResiduosFinal = async () => {
-        setResiduosKg((residuesPerPerson - consumptionOfMouth).toFixed(2))
-    }
+    useEffect(() => {
+        const calculateResiduosFinal = async () => {
+            setResiduosKg((residuesPerPerson - consumptionOfMouth).toFixed(2));
+        };
+
+        calculateResiduosFinal();
+    }, [residuesPerPerson, consumptionOfMouth]);
 
     const calcularResiduoPorHabitanteAoDia = () => {
         return residuesPerPerson / (habitantes * daysOfMonth);
     };
 
     const calculateResiduos = async () => {
-        calculateResiduosFinal()
-
         const residuoHabPorDia = calcularResiduoPorHabitanteAoDia().toFixed(2);
         const calculoResiduos = parseFloat((habitantes * residuoHabPorDia * daysOfMonth).toFixed(2));
 
