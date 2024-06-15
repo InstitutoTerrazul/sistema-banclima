@@ -65,7 +65,6 @@ export default function InserirConsumo() {
     const [getDate, setGetDate] = useState('');
 
     const [residuesFactors, setResiduesFactors] = useState('');
-    const [energyFactors, setEnergyFactors] = useState('');
     const [factors, setFactors] = useState([]);
 
     const [papel, setPapel] = useState('');
@@ -78,6 +77,7 @@ export default function InserirConsumo() {
     const [selectedDateConsumo, setSelectedDateConsumo] = useState(null)
     const [getDateConsumo, setGetDateConsumo] = useState('');
     const [daysOfMonth, setDaysOfMonth] = useState('');
+    const [dataConsumo, setDataConsumo] = useState('')
 
     const handleDateConsumoChange = (date) => {
         setSelectedDateConsumo(date);
@@ -106,7 +106,32 @@ export default function InserirConsumo() {
         getEmissions(JSON.parse(userString));
     }, []);
 
-    const formatDate = (selectedDate) => {
+
+    const [yearConsumo, setYearConsumo] = useState('')
+    const [mounthConsumo, setMounthConsumo] = useState('')
+
+    const formatDateDataInsercaoConsumo = (selectedDate) => {
+        if (selectedDate) {
+            const formattedDate = selectedDate.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            setDataConsumo(formattedDate);
+
+            const dateStr = formattedDate;
+            const dateParts = dateStr.split("/");
+
+            const monthPart = dateParts[1];
+            const yearPart = dateParts[2];
+
+            setMounthConsumo(monthPart);
+            setYearConsumo(yearPart);
+        }
+    }
+
+    const formatDateCadastroCliente = (selectedDate) => {
         if (selectedDate) {
             const [day, month, year] = selectedDate.split('/').map(part => parseInt(part, 10));
             const date = new Date(year, month - 1, day);
@@ -278,7 +303,7 @@ export default function InserirConsumo() {
                 setProjeto(data[0].cliente.projeto)
                 addUniqueProject(data[0].cliente.projeto);
 
-                formatDate(data[0].cliente.data)
+                formatDateCadastroCliente(data[0].cliente.data)
                 setSearchBtnText('Buscar CPF');
                 toast.success('Busca concluída!');
 
@@ -321,9 +346,9 @@ export default function InserirConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: dataConsumo,
             consumo: consumoEnergia,
-            emissao: "0",
+            emissao: emissoesEnergia,
             taxaDeReducao: "0"
         }
 
@@ -332,9 +357,9 @@ export default function InserirConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: dataConsumo,
             consumo: consumoAgua,
-            emissao: "0",
+            emissao: emissoesAgua,
             taxaDeReducao: "0"
         }
 
@@ -343,9 +368,9 @@ export default function InserirConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: dataConsumo,
             consumo: residuosKg,
-            emissao: "0",
+            emissao: emissoesResiduos,
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -353,9 +378,9 @@ export default function InserirConsumo() {
             nome: name,
             cpf: cpf,
             endereco: address,
-            data: dateFormatted,
+            data: dataConsumo,
             consumo: consumoGas,
-            emissao: "0",
+            emissao: emissoesGas,
             taxaDeReducao: "0"
         }
 
@@ -364,8 +389,8 @@ export default function InserirConsumo() {
             cpf: cpf,
             projeto: projeto,
             endereco: address,
-            mes: mounth,
-            ano: year,
+            mes: mounthConsumo,
+            ano: yearConsumo,
             emissao: '0',
             taxaDeReducao: '0',
             beneficio: '0'
@@ -380,8 +405,6 @@ export default function InserirConsumo() {
                 body: JSON.stringify(dataConsumoEnergia)
             });
             if (response.ok) {
-                const data = await response.json();
-                setEmissoesEnergia(data.emissao)
                 try {
                     const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${login}&senha=${senha}`, {
                         method: 'POST',
@@ -391,8 +414,6 @@ export default function InserirConsumo() {
                         body: JSON.stringify(dataConsumoAgua)
                     });
                     if (response.ok) {
-                        const data = await response.json();
-                        setEmissoesAgua(data.emissao)
                         try {
                             const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${login}&senha=${senha}`, {
                                 method: 'POST',
@@ -413,8 +434,6 @@ export default function InserirConsumo() {
                                         body: JSON.stringify(dataConsumoGas)
                                     });
                                     if (response.ok) {
-                                        const data = await response.json();
-                                        setEmissoesGas(data.emissao)
                                         try {
                                             const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${login}&senha=${senha}`, {
                                                 method: 'POST',
@@ -516,6 +535,19 @@ export default function InserirConsumo() {
         return residuesPerPerson / (habitantes * daysOfMonth);
     };
 
+    useEffect(() => {
+        const calculateResiduosFinal = async () => {
+            const result = (residuesPerPerson - consumptionOfMouth).toFixed(2);
+            if (!result) {
+                setResiduosKg(0);
+            } else {
+                setResiduosKg(result);
+            }
+        };
+
+        calculateResiduosFinal();
+    }, [residuesPerPerson, consumptionOfMouth]);
+
     const calculateResiduos = async () => {
         const residuoHabPorDia = calcularResiduoPorHabitanteAoDia().toFixed(2);
         const calculoResiduos = parseFloat((habitantes * residuoHabPorDia * daysOfMonth).toFixed(2));
@@ -539,6 +571,11 @@ export default function InserirConsumo() {
         value: project.nome,
         label: project.nome
     }))
+
+    const handleDateChangeConsumo = (date) => {
+        handleDateConsumoChange(date);
+        formatDateDataInsercaoConsumo(date);
+    };
 
     return (
         <div className="flex flex-col items-start justify-center w-full gap-8">
@@ -647,7 +684,7 @@ export default function InserirConsumo() {
                             <label htmlFor="name">Data</label>
                             <ReactDatePicker
                                 selected={selectedDateConsumo}
-                                onChange={handleDateConsumoChange}
+                                onChange={handleDateChangeConsumo}
                                 dateFormat="dd/MM/yyyy"
                                 maxDate={new Date()}
                                 placeholderText="data"
@@ -747,7 +784,20 @@ export default function InserirConsumo() {
                             </div>
                         </div>
                         {selectedGas === 'encanado' ? (
-                            <input type="number" placeholder="Consumo de gás em m³" name="" id="" className={`${selectedGas === 'encanado' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => { setConsumoGas(e.target.value), calculateGas() }} />
+                            <input
+                                type="number"
+                                placeholder="Consumo de gás em m³"
+                                name=""
+                                id=""
+                                className={
+                                    `${selectedGas === 'encanado' ? 'block' : 'hidden'}
+                              bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`
+                                }
+                                value={consumoGas}
+                                onChange={(e) => {
+                                    setConsumoGas(e.target.value),
+                                        calculateGas()
+                                }} />
                         ) : (
                             <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className={`${selectedGas === 'botijao' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => { setConsumoGas(e.target.value), calculateGas() }} />
                         )}

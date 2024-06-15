@@ -158,7 +158,6 @@ export default function EmissoesEvitadas() {
 
         setTimeout(() => {
             setSearchBtnText('Buscar');
-            setSearchCpf('');
         }, 2000);
     }
 

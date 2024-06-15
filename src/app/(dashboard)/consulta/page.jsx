@@ -256,7 +256,6 @@ export default function Consulta() {
                 />
             </div>
             {userConsumptionPopUp && <UserConsumption id={userSelectedId} />}
-            {/* <UserConsumption id={userSelectedId} /> */}
         </>
     )
 }
