@@ -244,7 +244,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoEnergia,
-            emissao: emissoesEnergia,
+            emissao: emissoesEnergia.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
@@ -255,7 +255,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoAgua,
-            emissao: emissoesAgua,
+            emissao: emissoesAgua.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
@@ -266,7 +266,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: residuosKg,
-            emissao: emissoesResiduos,
+            emissao: emissoesResiduos.replace(',', '.'),
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -276,7 +276,7 @@ export default function CadastrarCliente() {
             endereco: address,
             data: dateFormatted,
             consumo: consumoGas,
-            emissao: emissoesGas,
+            emissao: emissoesGas.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
