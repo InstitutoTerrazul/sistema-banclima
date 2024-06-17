@@ -348,7 +348,8 @@ export default function InserirConsumo() {
             endereco: address,
             data: dataConsumo,
             consumo: consumoEnergia,
-            emissao: emissoesEnergia,
+            emissao: parseFloat(emissoesEnergia).toFixed(2),
+            projeto: projeto,
             taxaDeReducao: "0"
         }
 
@@ -359,7 +360,8 @@ export default function InserirConsumo() {
             endereco: address,
             data: dataConsumo,
             consumo: consumoAgua,
-            emissao: emissoesAgua,
+            projeto: projeto,
+            emissao: parseFloat(emissoesAgua).toFixed(2),
             taxaDeReducao: "0"
         }
 
@@ -369,8 +371,9 @@ export default function InserirConsumo() {
             cpf: cpf,
             endereco: address,
             data: dataConsumo,
+            projeto: projeto,
             consumo: residuosKg,
-            emissao: emissoesResiduos,
+            emissao: parseFloat(emissoesResiduos).toFixed(2),
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -379,8 +382,9 @@ export default function InserirConsumo() {
             cpf: cpf,
             endereco: address,
             data: dataConsumo,
+            projeto: projeto,
             consumo: consumoGas,
-            emissao: emissoesGas,
+            emissao: parseFloat(emissoesGas).toFixed(2),
             taxaDeReducao: "0"
         }
 
@@ -389,6 +393,7 @@ export default function InserirConsumo() {
             cpf: cpf,
             projeto: projeto,
             endereco: address,
+            projeto: projeto,
             mes: mounthConsumo,
             ano: yearConsumo,
             emissao: '0',

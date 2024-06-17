@@ -242,6 +242,7 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoEnergia,
             emissao: emissoesEnergia.replace(',', '.'),
@@ -253,6 +254,7 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoAgua,
             emissao: emissoesAgua.replace(',', '.'),
@@ -264,6 +266,7 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: residuosKg,
             emissao: emissoesResiduos.replace(',', '.'),
@@ -274,6 +277,7 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoGas,
             emissao: emissoesGas.replace(',', '.'),
@@ -287,7 +291,7 @@ export default function CadastrarCliente() {
             endereco: address,
             mes: mounth,
             ano: year,
-            emissao: '0',
+            emissao: (parseFloat(emissoesGas) + parseFloat(emissoesResiduos) + parseFloat(emissoesAgua) + parseFloat(emissoesEnergia)).toFixed(2),
             taxaDeReducao: '0',
             beneficio: '0'
         }
@@ -432,7 +436,6 @@ export default function CadastrarCliente() {
 
         if (sortedFactors.length > 0) {
             const energia = parseFloat(sortedFactors[0].energia.replace(',', '.'));
-            console.log("aqui: ", energia)
             const calculoEnergia = parseFloat(consumoEnergia) * energia
             const formatted = calculoEnergia.toFixed(2).replace(".", ",")
             setEmissoesEnergia(formatted)
