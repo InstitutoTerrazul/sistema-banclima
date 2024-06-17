@@ -38,8 +38,16 @@ export default function AvoidedEmissionsGraph() {
     }, [emissionGraphData])
 
     const getGraphData = async () => {
+        if(selectedProject === undefined) {
+            return;
+        }
+        
         const data = selectedProject
-
+        
+        if(userData.login === undefined) {
+            return;
+        }
+        
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',

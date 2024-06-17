@@ -43,6 +43,14 @@ export default function HistoryGraph() {
 
     const getGraphData = async () => {
         const data = selectedProject
+        if(userData.login === undefined) {
+            return;
+        }
+
+
+        if(selectedProject === undefined) {
+            return;
+        }
 
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralPorProjeto?login=${userData.login}&senha=${userData.senha}`, {

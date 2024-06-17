@@ -34,6 +34,10 @@ export default function UserConsumption(props) {
         const data = userData
 
         try {
+            if(userData.login === undefined) {
+                return;
+            }
+            
             const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {

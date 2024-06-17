@@ -36,6 +36,9 @@ export const AuthProvider = ({ children }) => {
 
     const getProjects = async () => {
         try {
+            if(userData.login === undefined) {
+                return;
+            }
             const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {

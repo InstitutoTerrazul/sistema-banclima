@@ -18,6 +18,13 @@ export default function TotalBenefitsAndEmissionsAvoided() {
     }, [selectedProject])
 
     const getCardsData = async () => {
+        if(!selectedProject) {
+            return;
+        }
+
+        if(userData.login === undefined) {
+            return;
+        }
 
         const data = selectedProject
 
