@@ -1,19 +1,13 @@
 'use client'
 import { useEffect, useState } from "react";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import DataTable from 'react-data-table-component';
-import EditUser from "@/components/EditUser";
-import { UserList } from "@phosphor-icons/react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserConsumption(props) {
     const userId = props.id;
 
-    const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp, userConsumptionPopUp, setUserConsumptionPopUp } = useAuth();
+    const { userData, setUserConsumptionPopUp } = useAuth();
 
     const [usersList, setUsersList] = useState([]);
-    const [user, setUser] = useState({});
-    const [editUserId, setEditUserId] = useState('');
-    const [values, setValues] = useState([]);
     const [valuesAgua, setValuesAgua] = useState([]);
     const [valuesEnergia, setValuesEnergia] = useState([]);
     const [valuesGas, setValuesGas] = useState([]);
@@ -34,10 +28,6 @@ export default function UserConsumption(props) {
         const data = userData
 
         try {
-            if(userData.login === undefined) {
-                return;
-            }
-            
             const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {

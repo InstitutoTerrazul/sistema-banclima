@@ -180,7 +180,6 @@ export default function Consulta() {
 
         setTimeout(() => {
             setSearchBtnText('Buscar');
-            setSearchCpf('');
         }, 2000);
     }
 

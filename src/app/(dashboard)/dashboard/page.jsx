@@ -9,11 +9,10 @@ import TotalBenefitsAndEmissionsAvoided from "@/components/TotalBenefitsAndEmiss
 import Select from 'react-select'
 import AvoidedEmission from "@/components/AvoidedEmission";
 
-
 export default function Home() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList, selectedProject, setSelectedProject, setIsLoading } = useAuth();
+    const { projectList, setIsLoading } = useAuth();
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -25,15 +24,28 @@ export default function Home() {
         
     }, []);
 
+    const [projectSelected, setProjectSelected] = useState('');
+
+    useEffect(() => {
+        if (projectList && projectList.length > 0) {
+            setProjectSelected(projectList[0].nome);
+        }
+    }, [projectList]);
+
     const options = projectList?.map((project) => ({
         value: project.nome,
         label: project.nome
-    }))
+    }));
 
     return (
         <>
             <div className="flex flex-row justify-center items-center w-full gap-8 my-8">
-                <Select options={options} defaultValue={options[0]} onChange={(selectedOption) => setSelectedProject(selectedOption?.value)} className=" w-1/2 h-11 text-black z-40" />
+                <Select 
+                    options={options} 
+                    value={options.find(option => option.value === projectSelected)} 
+                    onChange={(selectedOption) => setProjectSelected(selectedOption?.value)} 
+                    className="w-1/2 h-11 text-black z-40" 
+                />
                 {/* <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" >Buscar</button> */}
             </div>
 
