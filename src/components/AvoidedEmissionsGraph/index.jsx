@@ -58,6 +58,7 @@ export default function AvoidedEmissionsGraph() {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log('data: > ', data)
                 setEmissionGraphData(data);
             } else {
                 console.error('Failed to create post');

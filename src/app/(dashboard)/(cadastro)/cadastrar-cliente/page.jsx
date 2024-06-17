@@ -456,7 +456,7 @@ export default function CadastrarCliente() {
         const residuosSolidosInorganicoPlastico = parseFloat((0.75 * composicaoPlastico * 3.67).toFixed(2));
 
         const total = totalResiduosMes + residuosSolidosInorganicoPapel + residuosSolidosInorganicoPlastico;
-
+        
         setEmissoesResiduos(parseFloat(total).toFixed(2))
     }
 

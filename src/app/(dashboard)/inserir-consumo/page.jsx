@@ -428,8 +428,6 @@ export default function InserirConsumo() {
                                 body: JSON.stringify(dataConsumoResiduos)
                             });
                             if (response.ok) {
-                                const data = await response.json();
-                                setEmissoesResiduos(data.emissao)
                                 try {
                                     const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${login}&senha=${senha}`, {
                                         method: 'POST',
