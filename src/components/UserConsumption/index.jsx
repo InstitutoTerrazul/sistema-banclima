@@ -12,10 +12,17 @@ export default function UserConsumption(props) {
     const [valuesEnergia, setValuesEnergia] = useState([]);
     const [valuesGas, setValuesGas] = useState([]);
     const [valuesResiduos, setValuesResiduos] = useState([]);
+    const [totalEmissions, setTotalEmissions] = useState(0);
 
     useEffect(() => {
         getUsers();
     }, [])
+
+    useEffect(() => {
+        const total = calculateTotalEmissions(valuesAgua) + calculateTotalEmissions(valuesEnergia) + calculateTotalEmissions(valuesGas) + calculateTotalEmissions(valuesResiduos);
+        setTotalEmissions(total.toFixed(2));
+    }, [valuesAgua, valuesEnergia, valuesGas, valuesResiduos]);
+
 
     useEffect(() => {
         setValuesAgua(usersList?.listaAgua)
@@ -24,10 +31,16 @@ export default function UserConsumption(props) {
         setValuesResiduos(usersList?.listaResiduos)
     }, [usersList])
 
-    const getUsers = async () => {
-        const data = userData
+    const calculateTotalEmissions = (values) => {
+        return values?.reduce((total, item) => total + parseFloat(item.emissao), 0) || 0;
+    }
 
+    const getUsers = async () => {
         try {
+            if (userData.login === undefined) {
+                return;
+            }
+
             const response = await fetch(`http://191.252.38.35:8080/api/consumos/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
@@ -44,10 +57,6 @@ export default function UserConsumption(props) {
         } catch (error) {
             console.error('Error creating post:', error);
         }
-    }
-
-    const calculateTotalEmissions = (values) => {
-        return values?.reduce((total, item) => total + parseFloat(item.emissao), 0).toFixed(2);
     }
 
     return (
@@ -100,7 +109,7 @@ export default function UserConsumption(props) {
                             ))}
                         </tbody>
                     </table>
-                    <div className="text-lg font-bold text-gray-800 my-4">Total de Emissões: {calculateTotalEmissions(valuesEnergia)} kg CO2e</div>
+                    <div className="text-lg font-bold text-gray-800 my-4">Total de Emissões: {calculateTotalEmissions(valuesEnergia).toFixed(2)} kg CO2e</div>
 
                     <hr className="my-6 border-t-2 border-gray-300" />
 
@@ -147,6 +156,9 @@ export default function UserConsumption(props) {
                         </tbody>
                     </table>
                     <div className="text-lg font-bold text-gray-800 my-4">Total de Emissões: {calculateTotalEmissions(valuesResiduos)} kg CO2e</div>
+                    <div className="fixed bottom-0 left-0 w-full p-4 bg-white text-black text-lg font-bold text-center">
+                        Somatória Total de Emissões: {totalEmissions} kg CO2e
+                    </div>
                 </div>
             </div>
         </>
