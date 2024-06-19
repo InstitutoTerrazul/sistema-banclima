@@ -1,20 +1,41 @@
 import { useEffect, useState } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
-
 export default function AvoidedEmission() {
-    const [totalEmissionsAvoided, setTotalEmissionsAvoided] = useState([])
-
-    const { selectedProject, setSelectedProject } = useAuth();
-
+    const [totalEmissionsAvoided, setTotalEmissionsAvoided] = useState([]);
+    const { selectedProject, userData } = useAuth();
 
     useEffect(() => {
-        getAvoidedEmissions()
-    }, [])
+        const fetchData = async () => {
+            await getAvoidedEmissions();
+        };
 
-    useEffect(() => {
-        getAvoidedEmissions();
-    }, [selectedProject])
+        fetchData();
+    }, [selectedProject]);
+
+    const getAvoidedEmissions = async () => {
+        if (!selectedProject || !userData || !userData.login) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedProject)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setTotalEmissionsAvoided(data);
+            } else {
+                console.error('Failed to fetch data');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     const emissions = [
         {
@@ -37,29 +58,7 @@ export default function AvoidedEmission() {
             value: totalEmissionsAvoided[3]?.emissoesEvitadas.toFixed(2),
             color: 'bg-gray-500'
         },
-    ]
-
-    const getAvoidedEmissions = async () => {
-        const data = selectedProject
-
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setTotalEmissionsAvoided(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-    }
+    ];
 
     return (
         <div className="flex flex-row flex-wrap w-full lg:w-[calc(100%/2-12px)] gap-2">
@@ -75,5 +74,5 @@ export default function AvoidedEmission() {
                 </article>
             ))}
         </div>
-    )
+    );
 }
