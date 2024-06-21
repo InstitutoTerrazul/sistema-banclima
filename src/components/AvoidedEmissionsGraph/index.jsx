@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Bar } from 'react-chartjs-2';
 export default function AvoidedEmissionsGraph() {
-    const { userData, selectedProject} = useAuth();
+    const { userData, selectedProject } = useAuth();
 
     const [emissionGraphData, setEmissionGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
@@ -40,17 +40,23 @@ export default function AvoidedEmissionsGraph() {
     const transformDataForGraph = () => {
         const data = emissionGraphData;
 
-        const meses = data?.meses?.map(item => item.mes);
-        const agua = data?.meses?.map(item => item.emissaoAgua);
-        const gas = data?.meses?.map(item => item.emissaoGas);
-        const energiaEletrica = data?.meses?.map(item => item.emissaoEnergiaEletrica);
-        const residuos = data?.meses?.map(item => item.emissaoResiduos);
+        const mesesOrdenados = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
 
-        const sortedMeses = meses?.sort((a, b) => {
-            const [mesA, anoA] = a.split('/');
-            const [mesB, anoB] = b.split('/');
-            return new Date(anoA, mesA) - new Date(anoB, mesB);
+        const sortedData = data?.meses?.sort((a, b) => {
+            const mesA = a.mes.split('/')[0].toLowerCase();
+            const mesB = b.mes.split('/')[0].toLowerCase();
+
+            return mesesOrdenados.indexOf(mesA) - mesesOrdenados.indexOf(mesB);
         });
+
+        const sortedMeses = sortedData?.map(item => item.mes);
+        const agua = sortedData?.map(item => item.emissaoAgua);
+        const gas = sortedData?.map(item => item.emissaoGas);
+        const energiaEletrica = sortedData?.map(item => item.emissaoEnergiaEletrica);
+        const residuos = sortedData?.map(item => item.emissaoResiduos);
 
         setTransformedData({
             mes: sortedMeses,
@@ -60,6 +66,7 @@ export default function AvoidedEmissionsGraph() {
             residuos
         });
     }
+
 
     const getGraphData = async () => {
         if (selectedProject === undefined) {
