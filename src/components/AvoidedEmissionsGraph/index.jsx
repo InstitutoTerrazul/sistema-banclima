@@ -38,14 +38,14 @@ export default function AvoidedEmissionsGraph() {
     }, [emissionGraphData])
 
     const getGraphData = async () => {
-        if(selectedProject === undefined) {
+        if (selectedProject === undefined) {
             return;
         }
-                
-        if(userData.login === undefined) {
+
+        if (userData.login === undefined) {
             return;
         }
-        
+
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}&projeto=${selectedProject}`, {
                 method: 'POST',
@@ -55,7 +55,6 @@ export default function AvoidedEmissionsGraph() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('data: > ', data)
                 setEmissionGraphData(data);
             } else {
                 console.error('Failed to create post');

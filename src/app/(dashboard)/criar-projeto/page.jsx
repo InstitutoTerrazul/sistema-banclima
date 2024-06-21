@@ -55,15 +55,13 @@ export default function CadastrarCadastrador() {
             organico: organico,
             planos: Object.fromEntries([...new Map()])
         }
-        
+
         const valorNumerico = parseFloat(valor.replace(/[^\d,.-]/g, '').replace(',', '.')).toFixed(2);
-        
+
         for (let i = 1; i <= 10; i++) {
             const valorCalculado = (valorNumerico * i).toFixed(2);
             data.planos[i] = parseFloat(valorCalculado).toFixed(2);
         }
-        
-        console.log(JSON.stringify(data));        
 
         try {
             const response = await fetch(`http://191.252.38.35:8080/api/projetos/salvar?login=${userData.login}&senha=${userData.senha}`, {
