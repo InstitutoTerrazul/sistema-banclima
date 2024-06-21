@@ -200,6 +200,14 @@ export default function InserirConsumo() {
         }
 
         try {
+            if (!login || login === undefined) {
+                return;
+            }
+
+            if (!senha || senha === undefined) {
+                return;
+            }
+
             const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoResiduos?login=${login}&senha=${senha}`, {
                 method: 'POST',
                 headers: {
@@ -262,7 +270,7 @@ export default function InserirConsumo() {
     };
 
 
-    const [papelDecimal, setPapelDecimal] = useState('');
+    const [papelDecimal, setPapelDecimal] = useState(0.0);
     const [plasticoDecimal, setPlasticoDecimal] = useState('');
     const [organicoDecimal, setOrganicoDecimal] = useState('');
 

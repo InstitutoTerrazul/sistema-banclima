@@ -6,7 +6,7 @@ export default function TotalBenefitsAndEmissionsAvoided() {
     const [benefits, setBenefits] = useState(0)
     const [emissionsAvoided, setEmissionsAvoided] = useState(0)
 
-    const { userData, selectedProject, setSelectedProject } = useAuth();
+    const { userData, selectedProject } = useAuth();
 
 
     useEffect(() => {
@@ -18,11 +18,11 @@ export default function TotalBenefitsAndEmissionsAvoided() {
     }, [selectedProject])
 
     const getCardsData = async () => {
-        if(!selectedProject) {
+        if (!selectedProject) {
             return;
         }
 
-        if(userData.login === undefined) {
+        if (userData.login === undefined) {
             return;
         }
 
@@ -47,22 +47,27 @@ export default function TotalBenefitsAndEmissionsAvoided() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/totalEmissoesEvitadasPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarEmissoesEvitadasEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(selectedProject)
             });
+
             if (response.ok) {
                 const data = await response.json();
-                setEmissionsAvoided(data)
+
+                const soma = data.reduce((acc, item) => acc + item.emissoesEvitadas, 0);
+
+                setEmissionsAvoided(soma);
             } else {
-                console.error('Failed to create post');
+                console.error('Failed to fetch data');
             }
         } catch (error) {
-            console.error('Error creating post:', error);
+            console.error('Error fetching data:', error);
         }
+
     }
     return (
         <section className="relative flex flex-row flex-wrap xl:flex-row justify-start items-start w-full gap-6">

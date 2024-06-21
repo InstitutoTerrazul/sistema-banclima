@@ -46,10 +46,6 @@ export default function EditarCliente() {
     const [titularAgua, setTitularAgua] = useState('');
     const [codGas, setCodGas] = useState('');
     const [titularGas, setTitularGas] = useState('');
-    const [consumoEnergia, setConsumoEnergia] = useState('');
-    const [consumoAgua, setConsumoAgua] = useState('');
-    const [consumoGas, setConsumoGas] = useState('');
-    const [geracaoResiduos, setGeracaoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [searchCpf, setSearchCpf] = useState('');
@@ -60,9 +56,6 @@ export default function EditarCliente() {
     const [getDate, setGetDate] = useState('');
     const [dateFormatted, setDateFormatted] = useState('');
 
-    const [co2Emissions, setCo2Emissions] = useState('');
-
-    const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
 
     const handleDateChange = (date) => {
@@ -115,23 +108,6 @@ export default function EditarCliente() {
             if (response.ok) {
                 const data = await response.json();
                 setEnergyFactors(data[1]?.valor);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setResiduesFactors(data);
             } else {
                 console.error('Failed to create post');
             }
@@ -440,12 +416,12 @@ export default function EditarCliente() {
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Projeto</label>
-                                <Select 
-                                options={options} 
-                                Value={projeto} 
-                                onChange={(selectedOption) => setProjeto(selectedOption?.value)} 
-                                className=" w-full h-11 text-black" 
-                                placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
+                                <Select
+                                    options={options}
+                                    Value={projeto}
+                                    onChange={(selectedOption) => setProjeto(selectedOption?.value)}
+                                    className=" w-full h-11 text-black"
+                                    placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
                                 />
                             </div>
                         </div>

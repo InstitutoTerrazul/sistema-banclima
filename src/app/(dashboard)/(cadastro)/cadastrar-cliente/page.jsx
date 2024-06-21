@@ -197,23 +197,6 @@ export default function CadastrarCliente() {
         } catch (error) {
             console.error('Error creating post:', error);
         }
-
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setResiduesFactors(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
     }
 
     const submitForm = async () => {

@@ -1,14 +1,9 @@
 'use client'
-// import { ApexOptions } from "apexcharts";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useAuth } from "@/contexts/AuthContext";
+import { Bar } from 'react-chartjs-2';
 export default function AvoidedEmissionsGraph() {
-    const { userData, projectList, setProjectList, selectedProject, setSelectedProject } = useAuth();
-
+    const { userData, selectedProject} = useAuth();
 
     const [emissionGraphData, setEmissionGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
@@ -37,6 +32,35 @@ export default function AvoidedEmissionsGraph() {
 
     }, [emissionGraphData])
 
+    useEffect(() => {
+        transformDataForGraph();
+    }, [emissionGraphData])
+
+
+    const transformDataForGraph = () => {
+        const data = emissionGraphData;
+
+        const meses = data?.meses?.map(item => item.mes);
+        const agua = data?.meses?.map(item => item.emissaoAgua);
+        const gas = data?.meses?.map(item => item.emissaoGas);
+        const energiaEletrica = data?.meses?.map(item => item.emissaoEnergiaEletrica);
+        const residuos = data?.meses?.map(item => item.emissaoResiduos);
+
+        const sortedMeses = meses?.sort((a, b) => {
+            const [mesA, anoA] = a.split('/');
+            const [mesB, anoB] = b.split('/');
+            return new Date(anoA, mesA) - new Date(anoB, mesB);
+        });
+
+        setTransformedData({
+            mes: sortedMeses,
+            agua,
+            gas,
+            energiaEletrica,
+            residuos
+        });
+    }
+
     const getGraphData = async () => {
         if (selectedProject === undefined) {
             return;
@@ -64,61 +88,11 @@ export default function AvoidedEmissionsGraph() {
         }
     }
 
-    var options = {
-        series: [{
-            name: 'Net Profit',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-            name: 'Revenue',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-            name: 'Free Cash Flow',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-            title: {
-                text: '$ (thousands)'
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "$ " + val + " thousands"
-                }
-            }
-        }
-    };
-
     const options2 = {
         plugins: {
             title: {
                 display: true,
-                text: 'Emissões evitadas no ultimo semestre',
+                text: 'Emissões evitadas no último semestre',
                 padding: {
                     top: 10,
                     bottom: 10

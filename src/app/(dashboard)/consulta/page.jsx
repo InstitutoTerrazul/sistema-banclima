@@ -1,8 +1,8 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Select from 'react-select'
 import { useRouter } from 'next/navigation';
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import ReactInputMask from "react-input-mask";
 import DataTable from 'react-data-table-component';
 import UserConsumption from "@/components/UserConsumption";
@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Consulta() {
+    const inputRef = useRef(null);
+
     const router = useRouter();
 
     const { userData, userConsumptionPopUp, setUserConsumptionPopUp, setIsLoading } = useAuth();
@@ -107,7 +109,7 @@ export default function Consulta() {
 
     const getProjects = async () => {
         try {
-            if(userData.login === undefined) {
+            if (userData.login === undefined) {
                 return;
             }
             const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=${userData.login}&senha=${userData.senha}`, {
@@ -244,7 +246,20 @@ export default function Consulta() {
                     className="w-full lg:w-1/2 h-11 text-black"
                 />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => getClientList()} >Buscar</button>
-                <ReactInputMask required mask="999.999.999-99" maskChar="" placeholder='Digite o cpf do cliente' type="text" className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={searchCpf} onChange={(e) => setSearchCpf(e.target.value)} />
+                <ReactInputMask
+                    ref={inputRef}
+                    required
+                    mask="999.999.999-99"
+                    maskChar=""
+                    placeholder='Digite o cpf do cliente'
+                    type="text"
+                    className="bg-white w-full lg:w-4/12 h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                    value={searchCpf}
+                    onChange={
+                        (e) => setSearchCpf(e.target.value)
+
+                    }
+                />
                 <button type="button" className="flex items-center justify-center bg-white text-primary px-8 py-2 rounded-lg" onClick={() => handleSearchBtn()} >{searchBtnText}</button>
             </div>
 
