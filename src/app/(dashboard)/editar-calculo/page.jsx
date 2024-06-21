@@ -12,7 +12,6 @@ export default function EditarCalculo() {
     const [energia, setEnergia] = useState('');
     const [btnText, setBtnText] = useState('Inserir');
     const [selectedDate, setSelectedDate] = useState(null);
-    const [dateFormatted, setDateFormatted] = useState('');
     const [mounth, setMounth] = useState('');
     const [year, setYear] = useState('');
 
@@ -68,7 +67,6 @@ export default function EditarCalculo() {
                 body: JSON.stringify(dataEnergia)
             });
             if (response.ok) {
-                const data = await response.json();
                 setBtnText('Inserido!');
             } else {
                 console.error('Failed to create post');
@@ -109,8 +107,6 @@ export default function EditarCalculo() {
     useEffect(() => {
         const date = new Date(selectedDate);
         const formattedDate = date.toLocaleDateString('pt-BR');
-
-        setDateFormatted(formattedDate);
 
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
@@ -154,7 +150,39 @@ export default function EditarCalculo() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    customStyles={{
+                        headRow: {
+                            style: {
+                                color: 'black',
+                                fontWeight: 'bold',
+                            },
+                        },
+                        headCells: {
+                            style: {
+                                paddingLeft: '8px',
+                                paddingRight: '8px',
+                                fontSize: '13px',
+                            },
+                        },
+                        rows: {
+                            style: {
+                                '&:not(:last-of-type)': {
+                                    borderBottomStyle: 'solid',
+                                    borderBottomWidth: '1px',
+                                    borderBottomColor: '#ddd',
+                                },
+                            },
+                        },
+                        cells: {
+                            style: {
+                                paddingLeft: '8px',
+                                paddingRight: '8px',
+                                color: '#000000',
+                            },
+                        },
+                    }}
                 />
+
             </div>
         </>
     )
