@@ -3,13 +3,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactInputMask from "react-input-mask";
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { subDays } from 'date-fns';
 import ReactDatePicker from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import Select from 'react-select'
+import { useAuth } from "@/contexts/AuthContext";
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -176,7 +173,7 @@ export default function InserirConsumo() {
 
     useEffect(() => {
         calculateResiduos();
-    }, [residuosKg])
+    }, [residuosKg, habitantes, daysOfMonth])
 
     const getEmissions = async (userData) => {
         setLogin(userData.login)
@@ -575,7 +572,13 @@ export default function InserirConsumo() {
 
         const total = totalResiduosMes + residuosSolidosInorganicoPapel + residuosSolidosInorganicoPlastico;
 
-        setEmissoesResiduos(parseFloat(total).toFixed(2))
+        const result = parseFloat(total).toFixed(2);
+        console.log('result: ', result)
+        if(result === 'NaN') {
+            setEmissoesResiduos('0,00')
+        } else {
+            setEmissoesResiduos(result);
+        }
     }
 
     const options = projectList?.map((project) => ({
@@ -612,7 +615,16 @@ export default function InserirConsumo() {
                         <div className="flex flex-row w-full gap-4">
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Nome completo</label>
-                                <input type="text" placeholder="Nome completo" disabled name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={name} onChange={(e) => setName(e.target.value)} />
+                                <input
+                                    type="text"
+                                    placeholder="Nome Completo"
+                                    disabled
+                                    name="Nome completo"
+                                    id="Nome completo"
+                                    className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
                             </div>
 
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
@@ -798,8 +810,8 @@ export default function InserirConsumo() {
                             <input
                                 type="number"
                                 placeholder="Consumo de gás em m³"
-                                name=""
-                                id=""
+                                name="number"
+                                id="number"
                                 className={
                                     `${selectedGas === 'encanado' ? 'block' : 'hidden'}
                               bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`
@@ -810,7 +822,17 @@ export default function InserirConsumo() {
                                         calculateGas()
                                 }} />
                         ) : (
-                            <input type="number" placeholder="Consumo de gás nº de botijões" name="" id="" className={`${selectedGas === 'botijao' ? 'block' : 'hidden'} bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`} value={consumoGas} onChange={(e) => { setConsumoGas(e.target.value), calculateGas() }} />
+                            <input
+                                type="number"
+                                placeholder="Consumo de gás nº de botijões"
+                                name="number"
+                                id="number"
+                                className={
+                                    `${selectedGas === 'botijao' ? 'block' : 'hidden'}
+                                 bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black`
+                                }
+                                value={consumoGas}
+                                onChange={(e) => { setConsumoGas(e.target.value), calculateGas() }} />
                         )}
 
                     </div>
@@ -825,13 +847,21 @@ export default function InserirConsumo() {
                             <input
                                 type="text"
                                 placeholder="Kg CO2e Energia" disabled defaultValue={emissoesEnergia}
-                                name="" id=""
+                                name="Kg CO2e Energia"
+                                id="Kg CO2e Energia"
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Água</label>
-                            <input type="text" placeholder="Kg CO2e Água" disabled defaultValue={emissoesAgua} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                            <input
+                                type="text"
+                                placeholder="Kg CO2e Água"
+                                disabled
+                                defaultValue={emissoesAgua}
+                                name="Kg CO2e Água"
+                                id="Kg CO2e Água"
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
@@ -841,14 +871,21 @@ export default function InserirConsumo() {
                                 placeholder="Kg CO2e Resíduos"
                                 disabled
                                 defaultValue={emissoesResiduos}
-                                name=""
-                                id=""
+                                name="Kg CO2e Resíduos"
+                                id="Kg CO2e Resíduos"
                                 className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
                             />
                         </div>
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="name">Gás</label>
-                            <input type="text" placeholder="Kg CO2e Gás" disabled defaultValue={emissoesGas} name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
+                            <input
+                                type="text"
+                                placeholder="Kg CO2e Gás"
+                                disabled
+                                defaultValue={emissoesGas}
+                                name="Kg CO2e Gás"
+                                id="Kg CO2e Gás"
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" />
                         </div>
 
                     </div>
