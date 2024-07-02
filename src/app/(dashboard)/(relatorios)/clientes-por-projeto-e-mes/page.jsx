@@ -13,7 +13,6 @@ export default function ClientesPorProjetoEMes() {
 
     const { userData, setProjectList, projectList, setIsLoading } = useAuth();
 
-    // const [projectList, setProjectList] = useState([]);
     const [selectedProject, setSelectedProject] = useState();
     const [searchCpf, setSearchCpf] = useState('');
     const [searchBtnText, setSearchBtnText] = useState('Buscar');
@@ -69,12 +68,6 @@ export default function ClientesPorProjetoEMes() {
         matriculaDeGas: row.matriculaDeGas
     }))
 
-
-    useEffect(() => {
-        // setProjectList(projectList[0]?.nome);
-        console.log(selectedProject);
-    }, [selectedProject]);
-
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -82,8 +75,6 @@ export default function ClientesPorProjetoEMes() {
         }
 
         setIsLoading(false)
-
-        // getProjects();
     }, []);
 
     const handleChangeMounth = (event) => {
@@ -94,48 +85,6 @@ export default function ClientesPorProjetoEMes() {
         setSelectedYear(event.target.value);
     };
 
-    const getProjects = async () => {
-        try {
-            const response = await fetch(`http://191.252.38.35:8080/api/projetos/listar?login=terrazul&senha=1234567`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log('get projetos:', data);
-                setProjectList(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-    }
-
-    const getClientList = async () => {
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorProjeto?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(selectedProject)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log('lista de clientes:', data);
-                setTableData(data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-    }
-
     const handleSearchBtn = async () => {
         setSearchBtnText('Buscando...');
 
@@ -143,7 +92,7 @@ export default function ClientesPorProjetoEMes() {
 
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorProjetoEMesEAno?login=terrazul&senha=1234567&mes=${selectedMonth}&ano=${selectedYear}`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorProjetoEMesEAno?login=${userData.login}&senha=${userData.senha}&mes=${selectedMonth}&ano=${selectedYear}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -152,7 +101,6 @@ export default function ClientesPorProjetoEMes() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data);
                 setTableData(data);
                 setSearchBtnText('Encontrado!');
             } else {
@@ -211,6 +159,7 @@ export default function ClientesPorProjetoEMes() {
                 <DataTable
                     columns={columns}
                     data={data}
+                    noDataComponent="Nenhuma informação encontrada"
                 />
             </div>
         </>

@@ -29,7 +29,7 @@ export default function HeaderMobile() {
                             <span className="sr-only">Your Company</span>
                             <img
                                 className="h-10 w-auto"
-                                src="/logo.png"
+                                src="/v2/assets/logo.png"
                                 alt=""
                             />
                         </a>

@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,7 +31,6 @@ export default function CadastrarCadastrador() {
 
         setIsLoading(false)
 
-        // console.log('userData', userData.tipoUsuario);
     }, []);
 
     const clearForm = () => {
@@ -56,7 +55,7 @@ export default function CadastrarCadastrador() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/usuarios/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,7 +66,6 @@ export default function CadastrarCadastrador() {
                 const data = await response.json();
                 setBtnText('Cadastrado!');
                 toast.success('Cadastrado com sucesso!');
-                // console.log('Post created:', data);
             } else {
                 console.error('Failed to create post');
                 toast.error('ops! algo deu errado');
@@ -111,8 +109,11 @@ export default function CadastrarCadastrador() {
                     </div>
                     <div className="flex flex-col w-full gap-2 text-black text-sm ">
                         <label htmlFor="">Tipo de usuário</label>
-                        <select value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)} className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
-                            <option value="" disabled selected>Tipo de usuário</option>
+                        <select
+                            value={tipoUsuario}
+                            onChange={(e) => setTipoUsuario(e.target.value)}
+                            className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 text-black">
+                            <option value="" disabled>Tipo de usuário</option>
                             {userData?.tipoUsuario === 'administradorgeral' ?
                                 <>
                                     <option value="administradorGeral">Administrador Geral</option>
@@ -120,12 +121,10 @@ export default function CadastrarCadastrador() {
                                     <option value="equipe">Equipe</option>
                                 </>
                                 :
-                                <>
-                                    <option value="equipe">Equipe</option>
-                                </>
+                                <option value="equipe">Equipe</option>
                             }
-
                         </select>
+
                     </div>
                 </div>
                 <div className="flex flex-row justify-end w-full gap-4">

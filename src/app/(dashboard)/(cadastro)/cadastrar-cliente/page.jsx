@@ -12,6 +12,7 @@ import Select from 'react-select'
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { signOut } from "next-auth/react";
 
 
 export default function CadastrarCliente() {
@@ -21,16 +22,12 @@ export default function CadastrarCliente() {
 
     const { userData, projectList, setProjectList, setIsLoading } = useAuth();
 
-    const [selectedProject, setSelectedProject] = useState();
-
-
     const [name, setName] = useState('');
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [habitantes, setHabitantes] = useState('');
     const [address, setAddress] = useState('');
-    const [date, setDate] = useState('');
     const [codEnergia, setCodEnergia] = useState('');
     const [titularEnergia, setTitularEnergia] = useState('');
     const [codAgua, setCodAgua] = useState('');
@@ -40,7 +37,6 @@ export default function CadastrarCliente() {
     const [consumoEnergia, setConsumoEnergia] = useState('');
     const [consumoAgua, setConsumoAgua] = useState('');
     const [consumoGas, setConsumoGas] = useState('');
-    const [consumoResiduos, setconsumoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [dateFormatted, setDateFormatted] = useState('');
@@ -53,8 +49,6 @@ export default function CadastrarCliente() {
     const [emissoesResiduos, setEmissoesResiduos] = useState('');
     const [emissoesGas, setEmissoesGas] = useState('');
 
-    const [co2Emissions, setCo2Emissions] = useState('');
-
     const [selectedGas, setSelectedGas] = useState('');
 
     const [showClearBtn, setShowClearBtn] = useState(false);
@@ -66,10 +60,6 @@ export default function CadastrarCliente() {
     const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
     const [factors, setFactors] = useState([]);
-
-    const handleGasChange = (event) => {
-        setSelectedGas(event.target.value);
-    };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -91,7 +81,7 @@ export default function CadastrarCliente() {
 
     useEffect(() => {
         const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
+        const formattedDate = date.toLocaleDateString('pt-BR');
 
 
         setDateFormatted(formattedDate);
@@ -108,8 +98,6 @@ export default function CadastrarCliente() {
         const factorsDate = factors
 
         const filteredDate = factorsDate?.filter(obj => obj.data === `${month}/${year}` && obj.tipoEmissao === "energiaeletrica");
-
-        console.log(filteredDate[0]?.valor);
 
         setEnergyFactors(filteredDate[0]?.valor);
 
@@ -138,7 +126,6 @@ export default function CadastrarCliente() {
         setPhone('');
         setHabitantes('');
         setAddress('');
-        setDate('');
         setCodEnergia('');
         setTitularEnergia('');
         setCodAgua('');
@@ -148,7 +135,6 @@ export default function CadastrarCliente() {
         setConsumoEnergia('');
         setConsumoAgua('');
         setConsumoGas('');
-        setconsumoResiduos('');
         setProjeto('');
         setSelectedDate(null);
         setDateFormatted('');
@@ -156,7 +142,6 @@ export default function CadastrarCliente() {
         setEmissoesAgua('');
         setEmissoesResiduos('');
         setEmissoesGas('');
-        setCo2Emissions('');
         setSelectedGas('');
 
         setBtnText('Cadastrar');
@@ -164,10 +149,39 @@ export default function CadastrarCliente() {
 
     }
 
+    const [papelDecimal, setPapelDecimal] = useState('');
+    const [plasticoDecimal, setPlasticoDecimal] = useState('');
+    const [organicoDecimal, setOrganicoDecimal] = useState('');
+
+    const getProjectSelected = async (selected) => {
+        try {
+            const response = await fetch(`http://191.252.38.35:8080/api/projetos/buscar?login=${userData.login}&senha=${userData.senha}&projeto=${selected}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                const papelD = (parseInt(data.papel) / 100).toFixed(2);
+                const plasticoD = (parseInt(data.plastico) / 100).toFixed(2);
+                const organicoD = (parseInt(data.organico) / 100).toFixed(2);
+
+                setPapelDecimal(papelD);
+                setPlasticoDecimal(plasticoD);
+                setOrganicoDecimal(organicoD);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/listar', {
+            const response = await fetch('http://191.252.38.35:8080/api/energiaEResiduos/listar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -176,30 +190,7 @@ export default function CadastrarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
-                // setEnergyFactors(data[1]?.valor);
                 setFactors(data);
-                console.log('result:', data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                // body: JSON.stringify()
-            });
-            if (response.ok) {
-                const data = await response.json();
-                // setBtnText('Inserido residuo!');
-                setResiduesFactors(data);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -234,9 +225,10 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoEnergia,
-            emissao: "0",
+            emissao: emissoesEnergia.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
@@ -245,9 +237,10 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoAgua,
-            emissao: "0",
+            emissao: emissoesAgua.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
@@ -256,9 +249,10 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: residuosKg,
-            emissao: "0",
+            emissao: emissoesResiduos.replace(',', '.'),
             taxaDeReducao: "0"
         }
         const dataConsumoGas = {
@@ -266,9 +260,10 @@ export default function CadastrarCliente() {
             nome: name,
             cpf: cpf,
             endereco: address,
+            projeto: projeto,
             data: dateFormatted,
             consumo: consumoGas,
-            emissao: "0",
+            emissao: emissoesGas.replace(',', '.'),
             taxaDeReducao: "0"
         }
 
@@ -279,13 +274,13 @@ export default function CadastrarCliente() {
             endereco: address,
             mes: mounth,
             ano: year,
-            emissao: '0',
+            emissao: (parseFloat(emissoesGas) + parseFloat(emissoesResiduos) + parseFloat(emissoesAgua) + parseFloat(emissoesEnergia)).toFixed(2),
             taxaDeReducao: '0',
             beneficio: '0'
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/salvar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/salvar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -293,10 +288,8 @@ export default function CadastrarCliente() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                const data = await response.json();
-                // console.log('Post created:', data);
                 try {
-                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -305,9 +298,8 @@ export default function CadastrarCliente() {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        setEmissoesEnergia(data.emissao)
                         try {
-                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -316,9 +308,8 @@ export default function CadastrarCliente() {
                             });
                             if (response.ok) {
                                 const data = await response.json();
-                                setEmissoesAgua(data.emissao)
                                 try {
-                                    const response = await fetch('http://191.252.38.35:8080/api/consumos/salvar?login=terrazul&senha=1234567', {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvar?login=${userData.login}&senha=${userData.senha}`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -327,9 +318,8 @@ export default function CadastrarCliente() {
                                     });
                                     if (response.ok) {
                                         const data = await response.json();
-                                        setEmissoesResiduos(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/consumos/salvarGas?login=terrazul&senha=1234567', {
+                                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/salvarGas?login=${userData.login}&senha=${userData.senha}`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -338,9 +328,8 @@ export default function CadastrarCliente() {
                                             });
                                             if (response.ok) {
                                                 const data = await response.json();
-                                                setEmissoesGas(data.emissao)
                                                 try {
-                                                    const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=terrazul&senha=1234567', {
+                                                    const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/criaEmissaoMensal?login=${userData.login}&senha=${userData.senha}`, {
                                                         method: 'POST',
                                                         headers: {
                                                             'Content-Type': 'application/json'
@@ -348,12 +337,9 @@ export default function CadastrarCliente() {
                                                         body: JSON.stringify(dataEmissoesMensal)
                                                     });
                                                     if (response.ok) {
-                                                        const data = await response.json();
-                                                        // setEmissoesMensal(data)
                                                         setBtnText('Cadastrado!');
                                                         setShowClearBtn(true);
                                                         toast.success('Cadastrado com sucesso!');
-                                                        console.log('emissoes mensal:', data);
                                                     } else {
                                                         console.error('Failed to save mensal');
                                                         toast.error('ops! algo deu errado ao criar emissão mensal');
@@ -413,7 +399,6 @@ export default function CadastrarCliente() {
             const calculoGas = consumoGas * 25.09
             const formatted = calculoGas.toFixed(2).replace(".", ",")
             setEmissoesGas(formatted)
-            // setConsumoGas(consumoGasEletrico);
         }
     }
 
@@ -424,45 +409,38 @@ export default function CadastrarCliente() {
     }
 
     const calculateEnergia = () => {
-        console.log(energyFactors);
-        // const calculoEnergia = consumoEnergia * 0.0340  com valor fixo
-        const calculoEnergia = consumoEnergia * energyFactors
-        const formatted = calculoEnergia.toFixed(2).replace(".", ",")
-        setEmissoesEnergia(formatted)
+        const sortedFactors = factors.sort((a, b) => {
+            const [monthA, yearA] = a.data.split('/');
+            const [monthB, yearB] = b.data.split('/');
+            const dateA = new Date(yearA, monthA - 1);
+            const dateB = new Date(yearB, monthB - 1);
+            return dateB - dateA;
+        });
+
+        if (sortedFactors.length > 0) {
+            const energia = parseFloat(sortedFactors[0].energia.replace(',', '.'));
+            const calculoEnergia = parseFloat(consumoEnergia) * energia
+            const formatted = calculoEnergia.toFixed(2).replace(".", ",")
+            setEmissoesEnergia(formatted)
+        }
     }
 
+
     const calculateResiduos = () => {
-        // const papel = 10 / 100
-        // const plastico = 21 / 100
-        // const organico = 45 / 100
-
-        const papel = residuesFactors[0]?.papel
-        const plastico = residuesFactors[0]?.plastico
-        const organico = residuesFactors[0]?.organico
-
-
-        const calculoResiduos = residuesPerPerson * daysOfMouth * habitantes
-
-        const calcOrganico = calculoResiduos * 0.14 * organico * 1.33 * 28
-
-        const residuosPapel = calculoResiduos * papel
-
-        const residuosPlastico = calculoResiduos * plastico
-
-        const calcPapel = 0.414 * residuosPapel * 3.67
-
-        const calcPlastico = 0.75 * residuosPlastico * 3.67
-
-        const calctotal = calcOrganico + calcPapel + calcPlastico
-
+        const calculoResiduos = parseFloat((habitantes * residuesPerPerson * daysOfMouth).toFixed(2));
         setResiduosKg(calculoResiduos)
 
-        console.log(calculoResiduos);
+        const composicaoPapel = parseFloat((papelDecimal * calculoResiduos).toFixed(2));
+        const composicaoPlastico = parseFloat((plasticoDecimal * calculoResiduos).toFixed(2));
 
-        const formatted = calctotal.toFixed(2).replace(".", ",")
+        const totalResiduosMes = parseFloat((calculoResiduos * 0.14 * organicoDecimal * 1.33 * 28).toFixed(2));
 
-        setconsumoResiduos(toString(calctotal))
-        setEmissoesResiduos(formatted)
+        const residuosSolidosInorganicoPapel = parseFloat((0.414 * composicaoPapel * 3.67).toFixed(2));
+        const residuosSolidosInorganicoPlastico = parseFloat((0.75 * composicaoPlastico * 3.67).toFixed(2));
+
+        const total = totalResiduosMes + residuosSolidosInorganicoPapel + residuosSolidosInorganicoPlastico;
+        
+        setEmissoesResiduos(parseFloat(total).toFixed(2))
     }
 
     const options = projectList?.map((project) => ({
@@ -529,12 +507,30 @@ export default function CadastrarCliente() {
                     <div className="flex flex-row w-full gap-2">
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="">Nº de Habitantes</label>
-                            <input type="number" placeholder="Nº de Habitantes na residência" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={habitantes} onChange={(e) => setHabitantes(e.target.value)} required />
+                            <input
+                                type="number"
+                                placeholder="Nº de Habitantes na residência"
+                                name=""
+                                id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                value={habitantes}
+                                onChange={(e) => setHabitantes(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="">Projeto</label>
-                            <Select options={options} placeholder="Projeto" onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" required />
+                            <Select
+                                options={options}
+                                placeholder="Projeto"
+                                onChange={(selectedOption) => {
+                                    setProjeto(selectedOption?.value);
+                                    getProjectSelected(selectedOption?.value);
+                                }}
+                                className=" w-full h-11 text-black"
+                                required
+                            />
                         </div>
                     </div>
 
@@ -599,17 +595,41 @@ export default function CadastrarCliente() {
                     <div className="flex flex-row w-full gap-4">
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="">Resíduos pessoa</label>
-                            <input type="number" placeholder="Geração de resíduos por pessoa em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={residuesPerPerson} onChange={(e) => { setResiduesPerPerson(e.target.value), calculateResiduos() }} required />
+                            <input
+                                type="number"
+                                placeholder="Geração de resíduos por pessoa em kg"
+                                name=""
+                                id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                value={residuesPerPerson}
+                                onChange={(e) => { setResiduesPerPerson(e.target.value) }}
+                                required
+                            />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="">Dias no mês</label>
-                            <input type="number" placeholder="numero de dias no mês" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" value={daysOfMouth} onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} required />
+                            <input
+                                type="number"
+                                placeholder="numero de dias no mês"
+                                name=""
+                                id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                value={daysOfMouth}
+                                onChange={(e) => { setDaysOfMouth(e.target.value), calculateResiduos() }} required />
                         </div>
 
                         <div className="flex flex-col w-full gap-2 text-black text-sm ">
                             <label htmlFor="">Resíduos em kg</label>
-                            <input type="number" placeholder="Geração de resíduos em kg" name="" id="" className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black" defaultValue={residuosKg} required />
+                            <input
+                                type="number"
+                                placeholder="Geração de resíduos em kg"
+                                name=""
+                                id=""
+                                className="bg-white w-full h-11 rounded-lg focus:outline-none border border-gray-700/45 p-3 py-4 text-black"
+                                defaultValue={residuosKg}
+                                required
+                            />
                         </div>
                     </div>
                     <div className="flex flex-col">

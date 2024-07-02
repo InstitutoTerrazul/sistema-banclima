@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import DataTable from 'react-data-table-component';
 import EditUser from "@/components/EditUser";
 
-export default function ListarProjetos() {
+export default function ListarUsuarios() {
 
     const { userData, projectList, setProjectList, editUserPopUp, setEditUserPopUp, setIsLoading } = useAuth();
 
@@ -22,7 +22,7 @@ export default function ListarProjetos() {
         const data = userData
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/usuarios/listar?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/usuarios/listar?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,9 +31,7 @@ export default function ListarProjetos() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('usuarios cadastrados:', data);
                 setUsersList(data);
-                // setSelectedProject(data[0]?.nome);
 
             } else {
                 console.error('Failed to create post');
@@ -70,19 +68,19 @@ export default function ListarProjetos() {
             selector: row => row.id,
             cell: (row) => {
                 return (
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <button
-                      title="Editar"
-                      type="button"
-                      rel="noreferrer"
-                      className="flex justify-center items-center gap-2 text-white px-4 h-10 bg-primary rounded-lg"
-                      onClick={() => handleEditUser(row.id)}
-                    >
-                        Editar
-                    </button>
-                  </div>
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <button
+                            title="Editar"
+                            type="button"
+                            rel="noreferrer"
+                            className="flex justify-center items-center gap-2 text-white px-4 h-10 bg-primary rounded-lg"
+                            onClick={() => handleEditUser(row.id)}
+                        >
+                            Editar
+                        </button>
+                    </div>
                 )
-              },
+            },
         },
     ];
 
@@ -105,7 +103,6 @@ export default function ListarProjetos() {
                 />
             </div>
             {editUserPopUp && <EditUser id={editUserId} />}
-            {/* <EditUser /> */}
         </>
     )
 }

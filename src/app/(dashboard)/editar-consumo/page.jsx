@@ -91,11 +91,7 @@ export default function EditarConsumo() {
     }, []);
 
     useEffect(() => {
-        const date = new Date(getDate);
-        // const formattedDate = date.toLocaleDateString('en-GB');
         const formattedDate = getDate;
-
-        console.log(formattedDate);
 
         setDateFormatted(formattedDate);
 
@@ -113,48 +109,10 @@ export default function EditarConsumo() {
         const month = dateParts[1];
         const year = dateParts[2];
 
-        console.log('mes:', month, 'ano:', year);
-
         setMounth(month);
         setYear(year);
 
     }, [getDate]);
-
-    // const formatDate = async () => {
-    //     const date = new Date(getDate);
-    //     const formattedDate = date.toLocaleDateString('en-GB');
-
-    //     console.log(formattedDate);
-
-    //     // setDateFormatted(formattedDate);
-
-    //     // if (formattedDate === '31/12/1969') {
-    //     //     setGetDate('');
-    //     // } else {
-    //     //     setGetDate(formattedDate);
-    //     // }
-
-    //     // setGetDate(formattedDate);
-
-    //     const dateStr = date;
-    //     const dateParts = dateStr?.split("/");
-
-    //     const month = dateParts[1];
-    //     const year = dateParts[2];
-
-    //     console.log('mes:', month, 'ano:', year);
-
-    //     setMounth(month);
-    //     setYear(year);
-    // }
-
-    const handleChangeMounth = (event) => {
-        setSelectedMonth(event.target.value);
-    };
-
-    const handleChange = (event) => {
-        setSelectedYear(event.target.value);
-    };
 
     useEffect(() => {
         calculateAgua();
@@ -175,7 +133,7 @@ export default function EditarConsumo() {
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoCalculoDeEmissao?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -184,9 +142,7 @@ export default function EditarConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setEnergyFactors(data[1]?.valor);
-                console.log('result:', data);
             } else {
                 console.error('Failed to create post');
             }
@@ -195,7 +151,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -204,9 +160,7 @@ export default function EditarConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setResiduesFactors(data);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -258,7 +212,7 @@ export default function EditarConsumo() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -267,7 +221,6 @@ export default function EditarConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searched:', data[0]);
                 setName(data[0].cliente.nome);
                 setCpf(data[0].cliente.cpf);
                 setEmail(data[0].cliente.email);
@@ -289,7 +242,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/consumos/retornaUltimoConsumo?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/retornaUltimoConsumo?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -298,7 +251,6 @@ export default function EditarConsumo() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('consumos:', data);
                 setDataEmissions(data);
                 setConsumoEnergia(data.listaEnergiaEletrica[0].consumo);
                 setResiduosKg(data.listaResiduos[0].consumo);
@@ -323,15 +275,12 @@ export default function EditarConsumo() {
     const submitForm = async () => {
         setBtnText('Cadastrando...');
 
-        console.log(dataEmissions);
         const emissions = dataEmissions;
 
         const emissionsEnergia = emissions.listaEnergiaEletrica[0]?.id;
         const emissionsGas = emissions.listaGas[0]?.id;
         const emissionsAgua = emissions.listaAgua[0]?.id;
         const emissionsResiduos = emissions.listaResiduos[0]?.id;
-
-        // console.log(emissionsEnergia,emissionsGas,emissionsAgua,emissionsResiduos);
 
         const dataConsumoEnergia = {
             tipoEmissao: "energiaeletrica",
@@ -389,7 +338,7 @@ export default function EditarConsumo() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsEnergia}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsEnergia}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -400,7 +349,7 @@ export default function EditarConsumo() {
                 const data = await response.json();
                 setEmissoesEnergia(data.emissao)
                 try {
-                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsAgua}?login=terrazul&senha=1234567`, {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsAgua}?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -411,7 +360,7 @@ export default function EditarConsumo() {
                         const data = await response.json();
                         setEmissoesAgua(data.emissao)
                         try {
-                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsResiduos}?login=terrazul&senha=1234567`, {
+                            const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsResiduos}?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -422,7 +371,7 @@ export default function EditarConsumo() {
                                 const data = await response.json();
                                 setEmissoesResiduos(data.emissao)
                                 try {
-                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsGas}/gas?login=terrazul&senha=1234567`, {
+                                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/${emissionsGas}/gas?login=${userData.login}&senha=${userData.senha}`, {
                                         method: 'PUT',
                                         headers: {
                                             'Content-Type': 'application/json'
@@ -433,7 +382,7 @@ export default function EditarConsumo() {
                                         const data = await response.json();
                                         setEmissoesGas(data.emissao)
                                         try {
-                                            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/atualizaUltimaEmissaoMensal?login=terrazul&senha=1234567', {
+                                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/atualizaUltimaEmissaoMensal?login=${userData.login}&senha=${userData.senha}`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json'
@@ -441,11 +390,8 @@ export default function EditarConsumo() {
                                                 body: JSON.stringify(dataEmissoesMensal)
                                             });
                                             if (response.ok) {
-                                                const data = await response.json();
-                                                // setEmissoesMensal(data)
                                                 setBtnText('Cadastrado!');
                                                 setShowClearBtn(true);
-                                                console.log('emissoes mensal:', data);
                                                 toast.success('Cadastrado com sucesso!');
                                             } else {
                                                 console.error('Failed to save mensal');
@@ -549,10 +495,6 @@ export default function EditarConsumo() {
         const calcPlastico = 0.75 * residuosPlastico * 3.67
 
         const calctotal = calcOrganico + calcPapel + calcPlastico
-
-        // setResiduosKg(calculoResiduos)
-
-        // console.log(calculoResiduos);
 
         const formatted = calctotal.toFixed(2).replace(".", ",")
 

@@ -1,22 +1,15 @@
 'use client'
-// import { ApexOptions } from "apexcharts";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { Line, Area, PolarArea, Chart as ChartJS, Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-// const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useAuth } from "@/contexts/AuthContext";
+import { Bar } from 'react-chartjs-2';
 export default function AvoidedEmissionsGraph() {
-    const { userData, projectList, setProjectList, selectedProject, setSelectedProject } = useAuth();
-
+    const { userData, selectedProject } = useAuth();
 
     const [emissionGraphData, setEmissionGraphData] = useState([]);
     const [transformedData, setTransformedData] = useState({});
 
-
     useEffect(() => {
         getGraphData();
-
     }, [])
 
     useEffect(() => {
@@ -24,7 +17,6 @@ export default function AvoidedEmissionsGraph() {
     }, [selectedProject])
 
     useEffect(() => {
-
         const data = emissionGraphData;
 
         const transformedData = {
@@ -37,19 +29,60 @@ export default function AvoidedEmissionsGraph() {
 
         setTransformedData(transformedData);
 
-        
-    },[emissionGraphData])
+
+    }, [emissionGraphData])
+
+    useEffect(() => {
+        transformDataForGraph();
+    }, [emissionGraphData])
+
+
+    const transformDataForGraph = () => {
+        const data = emissionGraphData;
+
+        const mesesOrdenados = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
+
+        const sortedData = data?.meses?.sort((a, b) => {
+            const mesA = a.mes.split('/')[0].toLowerCase();
+            const mesB = b.mes.split('/')[0].toLowerCase();
+
+            return mesesOrdenados.indexOf(mesA) - mesesOrdenados.indexOf(mesB);
+        });
+
+        const sortedMeses = sortedData?.map(item => item.mes);
+        const agua = sortedData?.map(item => item.emissaoAgua);
+        const gas = sortedData?.map(item => item.emissaoGas);
+        const energiaEletrica = sortedData?.map(item => item.emissaoEnergiaEletrica);
+        const residuos = sortedData?.map(item => item.emissaoResiduos);
+
+        setTransformedData({
+            mes: sortedMeses,
+            agua,
+            gas,
+            energiaEletrica,
+            residuos
+        });
+    }
+
 
     const getGraphData = async () => {
-        const data = selectedProject
+        if (selectedProject === undefined) {
+            return;
+        }
+
+        if (userData.login === undefined) {
+            return;
+        }
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/listarRelatorioSemestralEspecificoPorProjeto?login=${userData.login}&senha=${userData.senha}&projeto=${selectedProject}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                }
             });
             if (response.ok) {
                 const data = await response.json();
@@ -62,73 +95,21 @@ export default function AvoidedEmissionsGraph() {
         }
     }
 
-    var options = {
-        series: [{
-            name: 'Net Profit',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-            name: 'Revenue',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-            name: 'Free Cash Flow',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-            title: {
-                text: '$ (thousands)'
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return "$ " + val + " thousands"
-                }
-            }
-        }
-    };
-
     const options2 = {
         plugins: {
             title: {
                 display: true,
-                text: 'Emissões evitadas no ultimo semestre',
+                text: 'Emissões evitadas no último semestre',
                 padding: {
                     top: 10,
                     bottom: 10
                 },
-                
+
             }
         }
     }
 
     const opt = {
-        
-        // labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
         labels: transformedData?.mes,
         datasets: [
             {

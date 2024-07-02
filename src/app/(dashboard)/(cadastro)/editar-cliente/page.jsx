@@ -17,14 +17,21 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function EditarCliente() {
     const router = useRouter();
 
-    const { userData, projectList, setProjectList, setIsLoading } = useAuth();
+    const { userData, setIsLoading } = useAuth();
 
+
+    const addUniqueProject = (projectName) => {
+        setProjectList(prevState => {
+            if (!prevState.some(project => project.nome === projectName)) {
+                return [...prevState, { nome: projectName }];
+            }
+            return prevState;
+        });
+    };
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
-    const [selectedProject, setSelectedProject] = useState();
-
-
+    const [projectList, setProjectList] = useState([]);
     const [name, setName] = useState('');
     const [clientId, setClientId] = useState('');
     const [cpf, setCpf] = useState('');
@@ -39,10 +46,6 @@ export default function EditarCliente() {
     const [titularAgua, setTitularAgua] = useState('');
     const [codGas, setCodGas] = useState('');
     const [titularGas, setTitularGas] = useState('');
-    const [consumoEnergia, setConsumoEnergia] = useState('');
-    const [consumoAgua, setConsumoAgua] = useState('');
-    const [consumoGas, setConsumoGas] = useState('');
-    const [geracaoResiduos, setGeracaoResiduos] = useState('');
     const [projeto, setProjeto] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
     const [searchCpf, setSearchCpf] = useState('');
@@ -53,9 +56,6 @@ export default function EditarCliente() {
     const [getDate, setGetDate] = useState('');
     const [dateFormatted, setDateFormatted] = useState('');
 
-    const [co2Emissions, setCo2Emissions] = useState('');
-
-    const [residuesFactors, setResiduesFactors] = useState('');
     const [energyFactors, setEnergyFactors] = useState('');
 
     const handleDateChange = (date) => {
@@ -78,9 +78,7 @@ export default function EditarCliente() {
 
     useEffect(() => {
         const date = new Date(selectedDate);
-        const formattedDate = date.toLocaleDateString('en-GB');
-
-        console.log(formattedDate);
+        const formattedDate = date.toLocaleDateString('pt-BR');
 
         setDateFormatted(formattedDate);
 
@@ -90,56 +88,26 @@ export default function EditarCliente() {
             setGetDate(formattedDate);
         }
 
-        // setGetDate(formattedDate);
-
         const dateStr = formattedDate;
         const dateParts = dateStr.split("/");
 
         const month = dateParts[1];
         const year = dateParts[2];
 
-        console.log('mes:', month, 'ano:', year);
-
-        // setMounth(month);
-        // setYear(year);
-
     }, [selectedDate]);
 
     const getEmissions = async () => {
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/calculoEmissao/retornaUltimoCalculoDeEmissao?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/energiaEResiduos/retornaUltimoCalculoDeEmissao?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify()
             });
             if (response.ok) {
                 const data = await response.json();
-                // setBtnText('Inserido residuo!');
                 setEnergyFactors(data[1]?.valor);
-                console.log('result:', data);
-            } else {
-                console.error('Failed to create post');
-            }
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-
-        try {
-            const response = await fetch('http://191.252.38.35:8080/api/residuos/retornaUltimoResiduos?login=terrazul&senha=1234567', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                // body: JSON.stringify()
-            });
-            if (response.ok) {
-                const data = await response.json();
-                // setBtnText('Inserido residuo!');
-                setResiduesFactors(data);
-                console.log('result ultimo residuo:', data[0].plastico);
             } else {
                 console.error('Failed to create post');
             }
@@ -174,7 +142,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch('http://191.252.38.35:8080/api/clientes/listarPorCpf?login=terrazul&senha=1234567', {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/listarPorCpf?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -183,7 +151,6 @@ export default function EditarCliente() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('Data searchedddd:', data[0].cliente.nome);
                 setClientId(data[0].cliente.id);
                 setName(data[0].cliente.nome);
                 setCpf(data[0].cliente.cpf);
@@ -201,6 +168,9 @@ export default function EditarCliente() {
                 setTitularGas(data[0].cliente.titularGasCpf);
                 setGetDate(data[0].cliente.data);
                 setSearchBtnText('CPF encontrado!');
+                data.forEach(item => {
+                    addUniqueProject(item.cliente.projeto);
+                });
             } else {
                 console.error('Failed to create post');
             }
@@ -236,7 +206,7 @@ export default function EditarCliente() {
 
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -244,14 +214,9 @@ export default function EditarCliente() {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                // console.log('Post created:', data);
-                const data = await response.json();
-                console.log('Post created:', data);
                 setBtnText('Editar');
                 clearForm();
                 toast.success('Editado com sucesso!');
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
             } else {
                 console.error('Failed to create post');
                 toast.error('Erro ao efetuar login');
@@ -275,23 +240,17 @@ export default function EditarCliente() {
         }
 
         try {
-            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=terrazul&senha=1234567`, {
+            const response = await fetch(`http://191.252.38.35:8080/api/clientes/${clientId}?login=${userData.login}&senha=${userData.senha}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // body: JSON.stringify(data)
             });
             if (response.status === 200) {
-                // console.log('Post created:', data);
-                const data = await response.json();
-                console.log('Post created:', data);
                 clearForm();
                 setBtnDeleteCliqued(false);
-                // localStorage.setItem('user', JSON.stringify(data));
-                // router.push('/dashboard');
                 try {
-                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                    const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -299,11 +258,8 @@ export default function EditarCliente() {
                         body: JSON.stringify(deleteData)
                     });
                     if (response.status === 200) {
-                        // console.log('Post created:', data);
-                        const data = await response.json();
-                        console.log('Post created:', data);
                         try {
-                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                            const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -311,9 +267,6 @@ export default function EditarCliente() {
                                 body: JSON.stringify(deleteData)
                             });
                             if (response.status === 200) {
-                                // console.log('Post created:', data);
-                                const data = await response.json();
-                                console.log('Post created:', data);
                                 toast.success('Deletado com sucesso!');
                             } else {
                                 console.error('Failed to delete client');
@@ -338,7 +291,7 @@ export default function EditarCliente() {
             console.error('Error creating post:', error);
 
             try {
-                const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                const response = await fetch(`http://191.252.38.35:8080/api/consumos/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -346,12 +299,8 @@ export default function EditarCliente() {
                     body: JSON.stringify(deleteData)
                 });
                 if (response.status === 200) {
-                    // console.log('Post created:', data);
-                    const data = await response.json();
-                    console.log('Post created:', data);
-
                     try {
-                        const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=terrazul&senha=1234567`, {
+                        const response = await fetch(`http://191.252.38.35:8080/api/emissoesMensal/deletarPorCpfEEndereco?login=${userData.login}&senha=${userData.senha}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -359,9 +308,6 @@ export default function EditarCliente() {
                             body: JSON.stringify(deleteData)
                         });
                         if (response.status === 200) {
-                            // console.log('Post created:', data);
-                            const data = await response.json();
-                            console.log('Post created:', data);
                             toast.success('Deletado com sucesso!');
                             clearForm();
                             setSearchBtnText('Editar');
@@ -391,14 +337,6 @@ export default function EditarCliente() {
             setBtnDeleteCliqued(false);
         }, 2000);
     }
-
-    const calculateEmissions = () => {
-        const energyConsumptionValue = parseFloat(consumoEnergia);
-        if (!isNaN(energyConsumptionValue)) {
-            const co2EmissionsValue = energyConsumptionValue * 0.817; // Assuming 0.88 kg CO2 per kWh
-            setCo2Emissions(co2EmissionsValue.toFixed(2));
-        }
-    };
 
     const options = projectList?.map((project) => ({
         value: project.nome,
@@ -478,7 +416,13 @@ export default function EditarCliente() {
                             </div>
                             <div className="flex flex-col w-full gap-2 text-black text-sm ">
                                 <label htmlFor="name">Projeto</label>
-                                <Select options={options} Value={projeto} onChange={(selectedOption) => setProjeto(selectedOption?.value)} className=" w-full h-11 text-black" />
+                                <Select
+                                    options={options}
+                                    Value={projeto}
+                                    onChange={(selectedOption) => setProjeto(selectedOption?.value)}
+                                    className=" w-full h-11 text-black"
+                                    placeholder={options.length > 0 ? 'Selecione um projeto' : 'Nenhum projeto localizado'}
+                                />
                             </div>
                         </div>
                     </div>
